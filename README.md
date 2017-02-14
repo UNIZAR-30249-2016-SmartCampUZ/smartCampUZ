@@ -2,7 +2,7 @@
 
 Go to the [Wiki](https://github.com/UNIZAR-30249-2016-SmartCampUZ/smartCampUZ/wiki) in order to view our documentation.
 
-[![Build Status](https://travis-ci.org/UNIZAR-30248-2016-TrainingTracker/trainingTracker.svg?branch=master)](https://travis-ci.org/UNIZAR-30248-2016-TrainingTracker/trainingTracker)
+[![Build Status](https://travis-ci.org/UNIZAR-30249-2016-SmartCampUZ/smartCampUZ.svg?branch=master)](https://travis-ci.org/UNIZAR-30249-2016-SmartCampUZ/smartCampUZ)
 
 ## Start using this App
 
