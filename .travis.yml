@@ -3,4 +3,5 @@ jdk:
   - oraclejdk8
 
 after_script:
+  - bash <(curl -s https://codecov.io/bash)
   - "cat build/test-results/*.xml"
