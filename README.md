@@ -3,7 +3,7 @@
 Go to the [Wiki](https://github.com/UNIZAR-30249-2016-SmartCampUZ/smartCampUZ/wiki) in order to view our documentation.
 
 [![Build Status](https://travis-ci.org/UNIZAR-30249-2016-SmartCampUZ/smartCampUZ.svg?branch=master)](https://travis-ci.org/UNIZAR-30249-2016-SmartCampUZ/smartCampUZ)
-[![codecov](https://codecov.io/gh/nebur395/smartCampUZ/branch/master/graph/badge.svg)](https://codecov.io/gh/nebur395/smartCampUZ)
+[![codecov](https://codecov.io/gh/UNIZAR-30249-2016-SmartCampUZ/smartCampUZ/branch/master/graph/badge.svg)](https://codecov.io/gh/UNIZAR-30249-2016-SmartCampUZ/smartCampUZ)
 
 
 ## Start using this App
