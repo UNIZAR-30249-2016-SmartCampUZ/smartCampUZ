@@ -42,7 +42,7 @@ angular.module('smartCampUZApp')
             },
 
             //send the login info to the server
-            login: function (user, password, callback) {
+            login: function (user, password, callbackSuccess, callbackError) {
                 var that = this;
                 $http({
                     method: 'GET',
@@ -53,10 +53,11 @@ angular.module('smartCampUZApp')
                     }
                 }).success(function (data) {
                     that.authenticate(data);
-                    $state.go('home');
+                    callbackSuccess();
+                    $state.go('admin');
 
                 }).error(function (data) {
-                    callback(data);
+                    callbackError(data);
                 });
             }
         };

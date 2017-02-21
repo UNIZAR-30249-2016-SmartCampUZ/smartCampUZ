@@ -9,12 +9,17 @@
         <img src="../../img/login-icon.png" alt="Avatar" class="avatar">
       </div>
 
+      <!-- this div will show only when an error occurs -->
+      <div class="alert alert-danger" ng-if="error" style="margin:2%">
+        <strong>&#10008</strong> {{errorMsg}}
+      </div>
+
       <div style="padding: 16px;">
         <label><b>Nombre de usuario</b></label>
-        <input type="text" placeholder="Introduce el nombre de usuario" name="uname" ng-model="userName" required>
+        <input ng-click="hideError()" type="text" placeholder="Introduce el nombre de usuario" ng-model="userName" required>
 
         <label><b>Contraseña</b></label>
-        <input type="password" placeholder="Introduce la contraseña" name="psw" ng-model="password" required>
+        <input ng-click="hideError()" type="password" placeholder="Introduce la contraseña" ng-model="password" required>
 
         <button type="submit" class="sC-theme-action">Iniciar sesión</button>
       </div>

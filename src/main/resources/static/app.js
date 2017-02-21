@@ -10,7 +10,19 @@ angular.module('smartCampUZApp', ['ui.router', 'base64'])
                 controller: "starterCtrl",
                 onEnter: function ($state, auth) {
                     if (auth.isAuthenticated()) {
-                        //$state.go('home');
+                        $state.go('admin');
+                    }
+                }
+            })
+
+            //starter screen
+            .state('admin', {
+                url: "/admin",
+                templateUrl: "templates/admin.html",
+                controller: "adminCtrl",
+                onEnter: function ($state, auth) {
+                    if (!auth.isAuthenticated()) {
+                        $state.go('starter');
                     }
                 }
             });
