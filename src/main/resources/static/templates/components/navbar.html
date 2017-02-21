@@ -1,0 +1,31 @@
+<!--menu -->
+<nav class="navbar navbar-inverse navbar-fixed-top sC-navbar-theme">
+  <div class="container-fluid">
+    <!-- collapsed NavBar-->
+    <div class="navbar-header">
+      <!-- Right button collapsed-->
+      <button type="button" class="navbar-toggle"
+              data-toggle="collapse"
+              data-target="#myNavbar">
+        <!-- collapsed button bars -->
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" rel="home" id="appLogo">
+        <img src="../../img/logo.png" alt="Smart CampUZ Logo">
+      </a>
+    </div>
+    <!-- NavBar buttons-->
+    <div  class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <!-- sign up button -->
+        <li ng-if="!logged()"><a ng-click="openLoginForm()">Iniciar Sesión</a></li>
+        <!-- log out button -->
+        <li ng-if="logged()"><a ng-click="logout()">Salir</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<login-form></login-form>
