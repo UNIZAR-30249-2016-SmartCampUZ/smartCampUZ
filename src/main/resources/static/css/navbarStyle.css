@@ -1,0 +1,34 @@
+#appLogo {
+  cursor: default;
+}
+
+#appLogo img{
+  max-width: 66px;
+}
+
+/* navbar buttons */
+.navbar-inverse .navbar-nav>li>a {
+  color:#fff;
+}
+
+/* navbar buttons hover */
+.navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover {
+  color:#fff !important; background-color:#00c08d !important;
+  cursor: pointer;
+}
+
+/* collapsed button focus */
+.navbar-inverse .navbar-toggle:focus, .navbar-inverse .navbar-toggle:hover {
+  background-color: #3F51B5;
+}
+
+/* collapsed button border */
+.navbar-inverse .navbar-toggle {
+  border-color: #1A237E
+}
+
+/* font family of the home button */
+#hombeButton {
+  /*font-family: 'Abril Fatface', cursive;*/
+  font-family: 'Noto Serif', serif;
+}
