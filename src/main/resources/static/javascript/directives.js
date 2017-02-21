@@ -8,4 +8,14 @@ angular.module('smartCampUZApp')
             controller: 'navbarCtrl',
             scope: {}
         }
+    })
+
+    // include the 'loginForm.html' into the <login-form> tag
+    .directive('loginForm', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/components/loginForm.html',
+            controller: 'loginFormCtrl',
+            scope: {}
+        }
     });
