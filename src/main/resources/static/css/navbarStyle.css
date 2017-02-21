@@ -1,0 +1,51 @@
+#appLogo {
+  cursor: default;
+}
+
+/* navbar buttons */
+.navbar-inverse .navbar-nav>li>a {
+  color:#fff;
+}
+
+/* navbar buttons hover */
+.navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover {
+  color:#fff !important; background-color:#00c08d !important;
+  cursor: pointer;
+}
+
+/* collapsed button focus */
+.navbar-inverse .navbar-toggle:focus, .navbar-inverse .navbar-toggle:hover {
+  background-color: #00c08d;
+}
+
+/* collapsed button border */
+.navbar-inverse .navbar-toggle {
+  border-color: #004f3a
+}
+
+/* font family of the home button */
+.navbar {
+  font-family: 'Noto Serif', serif;
+  font-weight: 600;
+}
+
+@media only screen and (min-width: 768px) {
+  #appLogo img{
+    max-height: 40px;
+  }
+
+  .navbar {
+    min-height: 70px;
+  }
+
+  .navbar-nav>li>a {
+    padding-top: 25px;
+    padding-bottom: 25px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  #appLogo img{
+    max-height: 20px;
+  }
+}

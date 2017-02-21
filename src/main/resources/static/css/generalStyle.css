@@ -1,0 +1,21 @@
+body {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-color: #f1f1f1;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+/* remove the underline link style */
+a:focus, a:hover {
+  text-decoration: none;
+}
+
+/* add a gap under the navbar */
+#firstContent:before {
+  display: block;
+  content: " ";
+  height: 100px;
+  visibility: hidden;
+}
