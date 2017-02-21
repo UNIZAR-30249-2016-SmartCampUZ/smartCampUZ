@@ -1,0 +1,28 @@
+<div id="loginFormStyle">
+  <!-- The Modal -->
+  <div class="modal" id="loginForm">
+
+    <!-- Modal Content -->
+    <form class="modal-content animate" ng-submit="login()" role="form">
+      <div class="imgcontainer">
+        <span ng-click="closeLoginForm()" class="close" title="Close Modal">&times;</span>
+        <img src="../../img/login-icon.png" alt="Avatar" class="avatar">
+      </div>
+
+      <div style="padding: 16px;">
+        <label><b>Nombre de usuario</b></label>
+        <input type="text" placeholder="Introduce el nombre de usuario" name="uname" ng-model="userName" required>
+
+        <label><b>Contraseña</b></label>
+        <input type="password" placeholder="Introduce la contraseña" name="psw" ng-model="password" required>
+
+        <button type="submit" class="sC-theme-action">Iniciar sesión</button>
+      </div>
+
+      <div style="padding: 16px; background-color:#f1f1f1">
+        <button type="button" ng-click="closeLoginForm()" class="cancelbtn">Cerrar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
