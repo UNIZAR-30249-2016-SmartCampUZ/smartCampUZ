@@ -11,6 +11,16 @@ angular.module('smartCampUZApp')
     })
 
     // include the 'loginForm.html' into the <login-form> tag
+    .directive('leaftletMap', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/components/map.html',
+            controller: 'mapCtrl',
+            scope: {}
+        }
+    })
+
+    // include the 'loginForm.html' into the <login-form> tag
     .directive('loginForm', function () {
         return {
             restrict: 'E',
