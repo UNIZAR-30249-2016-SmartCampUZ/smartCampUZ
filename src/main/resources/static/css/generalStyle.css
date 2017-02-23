@@ -19,3 +19,6 @@ a:focus, a:hover {
   height: 70px;
   visibility: hidden;
 }
+h1 {
+  font-size: 200%;
+}
