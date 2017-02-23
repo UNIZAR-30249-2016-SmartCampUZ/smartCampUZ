@@ -1,11 +1,20 @@
 <div id="starterStyle">
   <div class="container-fluid">
     <div class="row" id="firstContent">
-      <div class="col-sm-6" id="content-mapid">
+      <div class="col-sm-6" style="padding: 0">
         <leaftlet-map></leaftlet-map>
       </div>
-      <div class="col-sm-6">
-        <h1>prueba</h1>
+      <div class="col-sm-6" id="optionsMapSection">
+        <h1>Localización seleccionada: XXXX</h1>
+
+        <div class="divider"></div>
+
+        <p style="text-align:center">
+          <label class="radio-inline"><input type="radio" ng-model="optionUserMap" ng-click="hideError();hideSuccess()"
+                                             value="reserve" name="customButton">Reservar zona</label>
+          <label class="radio-inline"><input type="radio" ng-model="optionUserMap" ng-click="hideError();hideSuccess()"
+                                             value="feedback" name="predButton">Dejar sugerencia</label>
+        </p>
       </div>
     </div>
   </div>
