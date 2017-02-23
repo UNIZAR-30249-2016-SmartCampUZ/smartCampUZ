@@ -1,7 +1,7 @@
 package es.unizar.smartcampuz.controller;
 
 import es.unizar.smartcampuz.model.User;
-import es.unizar.smartcampuz.model.UserDao;
+import es.unizar.smartcampuz.model.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * A class to test interactions with the MySQL database using the UserDao class.
+ * A class to test interactions with the MySQL database using the UserRepository class.
  *
  * @author netgloo
  */
@@ -22,7 +22,7 @@ public class UserController {
     // ------------------------
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     // ------------------------
     // PUBLIC METHODS
@@ -38,7 +38,7 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<User> login(String email, String password) {
         try {
-            User user = userDao.findByEmail(email);
+            User user = userRepository.findByEmail(email);
             if( user.getPassword().equals(password) ){
                 return new ResponseEntity<User>(HttpStatus.ACCEPTED);
             } else {
@@ -64,7 +64,7 @@ public class UserController {
         User user = null;
         try {
             user = new User(email, name, password);
-            userDao.save(user);
+            userRepository.save(user);
             return new ResponseEntity<User>(user,HttpStatus.CREATED);
         }
         catch (Exception ex) {
@@ -83,7 +83,7 @@ public class UserController {
     public ResponseEntity<User> delete(long id) {
         try {
             User user = new User(id);
-            userDao.delete(user);
+            userRepository.delete(user);
             return new ResponseEntity<User>(HttpStatus.ACCEPTED);
         }
         catch (Exception ex) {
@@ -101,7 +101,7 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<User> get(long id) {
         try {
-            User user = userDao.findOne(id);
+            User user = userRepository.findOne(id);
             return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
         }
         catch (Exception ex) {
@@ -123,11 +123,11 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<User> updateUser(long id, String email, String name, String password) {
         try {
-            User user = userDao.findOne(id);
+            User user = userRepository.findOne(id);
             user.setEmail(email);
             user.setName(name);
             user.setPassword(password);
-            userDao.save(user);
+            userRepository.save(user);
             return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
         }
         catch (Exception ex) {
