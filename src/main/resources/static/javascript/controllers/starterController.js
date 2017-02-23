@@ -1,6 +1,7 @@
 angular.module('smartCampUZApp')
 
     .controller('starterCtrl', ['$scope', '$state', 'auth', function ($scope, $state, auth) {
+        /* CALENDAR SECTION*/
         $scope.calendarWeekDays = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sab", "Dom"];    // calendar week days
         $scope.currentMonth = 0;    //current month selected
         $scope.currentDay = 0;  //current day selected
@@ -35,5 +36,27 @@ angular.module('smartCampUZApp')
             $scope.currentMonth += next;
             if ($scope.currentMonth > $scope.calendarMonths.length -1) {$scope.currentMonth = 0}
             if ($scope.currentMonth < 0) {$scope.currentMonth = $scope.calendarMonths.length -1}
-        }
+        };
+
+        /* HOUR SELECTOR SECTION */
+        // Reservable hours
+        $scope.reservableHours = ["8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00", "13:00-14:00",
+            "14:00-15:00", "15:00-16:00", "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00"];
+        /* State of the reservable hours
+         * 0: Disabled
+         * 1: Selected
+         * 2: Unselected
+         */
+        $scope.hoursSelected = [0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
+        $scope.disableHours = function () {
+            $("#hourUL ul li.disabled").off('click');
+        };
+        // Change the [num] reservable hour state
+        $scope.setReservableHour = function (num) {
+            if ($scope.hoursSelected[num] == 1) {
+                $scope.hoursSelected[num] = 2;
+            } else if ($scope.hoursSelected[num] = 2) {
+                $scope.hoursSelected[num] = 1;
+            }
+        };
     }]);

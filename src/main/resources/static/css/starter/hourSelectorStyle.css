@@ -1,0 +1,101 @@
+/* Remove margins and padding from the list */
+#starterStyle #hourUL ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the list items */
+#starterStyle #hourUL ul li {
+  list-style-type: none;
+  cursor: pointer;
+  position: relative;
+  padding: 12px 8px 12px 40px;
+  background: #eee;
+  font-size: 18px;
+  transition: 0.2s;
+
+  /* make the list items unselectable */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Set all odd list items to a different color (zebra-stripes) */
+#starterStyle #hourUL ul li:nth-child(odd) {
+  background: #f9f9f9;
+}
+
+/* Darker background-color on hover */
+#starterStyle #hourUL ul li:hover {
+  background: #ddd;
+}
+
+/* When clicked on, add a background color and strike out text */
+#starterStyle #hourUL ul li.checked {
+  background: #888;
+  color: #fff;
+}
+
+/* Add a "checked" mark when clicked on */
+#starterStyle #hourUL ul li.checked::before {
+  content: '';
+  position: absolute;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 10px;
+  left: 16px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}
+
+/* Style the header */
+#starterStyle #hourHeader {
+  padding: 30px 40px;
+  text-align: center;
+}
+
+/* Clear floats after the header */
+#starterStyle #hourHeader:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Style the header */
+#starterStyle #hourFooter {
+  padding: 30px 40px;
+  text-align: center;
+}
+
+/* Clear floats after the header */
+#starterStyle #hourFooter:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Style the "Reserve" button */
+#starterStyle #reserveBtn {
+  padding: 14px 20px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+#starterStyle #reserveBtn:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+/* When disabled on, add a background color and strike out text */
+#starterStyle #hourUL ul li.disabled {
+  background-color: #f44336;
+  color: #fff;
+  text-decoration: line-through;
+  cursor: not-allowed;
+}

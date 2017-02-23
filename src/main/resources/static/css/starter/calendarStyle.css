@@ -4,7 +4,7 @@
 #calendarReserves .month {
   padding: 70px 25px;
   width: 100%;
-  background: #1abc9c;
+  background: #00c08d;
   text-align: center;
 }
 
@@ -70,6 +70,6 @@
 /* Highlight the "current" day */
 #calendarReserves .days li .active {
   padding: 5px;
-  background: #1abc9c;
+  background: #00c08d;
   color: white !important
 }

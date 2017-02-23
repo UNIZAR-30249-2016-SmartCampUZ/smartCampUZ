@@ -13,7 +13,8 @@
 
         <!-- options switcher selector -->
         <p style="text-align:center">
-          <label class="radio-inline"><input type="radio" ng-model="optionUserMap" ng-click="hideError();hideSuccess()"
+          <label class="radio-inline"><input type="radio" ng-model="optionUserMap"
+                                             ng-click="hideError();hideSuccess();disableHours()"
                                              value="reserve">Reservar zona</label>
           <label class="radio-inline"><input type="radio" ng-model="optionUserMap" ng-click="hideError();hideSuccess()"
                                              value="feedback">Dejar sugerencia</label>
@@ -53,9 +54,17 @@
               </div>
 
               <!-- hour selection section -->
-              <div class="col-sm-6">
-                <div id="hourHeader">
-                  <h1>Selecciona las horas a reservar</h1>
+              <div class="col-sm-6" id="hourUL">
+                <div id="hourHeader" class="sC-theme-l1">
+                  <h2 style="font-size: 20px">Selecciona las horas a reservar</h2>
+                </div>
+                <ul>
+                  <li ng-repeat="hour in reservableHours track by $index"
+                      ng-class="{'checked': hoursSelected[$index]==1, 'disabled': hoursSelected[$index]==0}"
+                      ng-click="setReservableHour($index)">{{hour}}</li>
+                </ul>
+                <div id="hourFooter" class="sC-theme-l1">
+                  <button id="reserveBtn" class="sC-theme-action">Reservar horas</button>
                 </div>
               </div>
             </div>
