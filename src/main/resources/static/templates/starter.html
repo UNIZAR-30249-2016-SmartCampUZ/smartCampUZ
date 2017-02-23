@@ -2,20 +2,65 @@
   <div class="container-fluid">
     <div class="row" id="firstContent">
       <div class="col-sm-6" style="padding: 0">
+        <!-- leaftlet map directive -->
         <leaftlet-map></leaftlet-map>
       </div>
       <div class="col-sm-6" id="optionsMapSection">
+        <!-- location's description section -->
         <h1>Localización seleccionada: XXXX</h1>
 
         <div class="divider"></div>
 
+        <!-- options switcher selector -->
         <p style="text-align:center">
           <label class="radio-inline"><input type="radio" ng-model="optionUserMap" ng-click="hideError();hideSuccess()"
-                                             value="reserve" name="customButton">Reservar zona</label>
+                                             value="reserve">Reservar zona</label>
           <label class="radio-inline"><input type="radio" ng-model="optionUserMap" ng-click="hideError();hideSuccess()"
-                                             value="feedback" name="predButton">Dejar sugerencia</label>
+                                             value="feedback">Dejar sugerencia</label>
         </p>
-      </div>
+
+        <div ng-switch="optionUserMap">
+          <!-- feedback section -->
+          <div ng-switch-when="feedback">
+            <h2>poniendo feedback</h2>
+          </div>
+
+          <!-- reserve section -->
+          <div ng-switch-when="reserve">
+            <div class="row">
+              <!-- calendar section -->
+              <div class="col-sm-6" id="calendarReserves">
+                <div class="month">
+                  <ul>
+                    <li class="prev" ng-click="setMonth(-1)">&#10094;</li>
+                    <li class="next" ng-click="setMonth(1)">&#10095;</li>
+                    <li>
+                      {{calendarMonths[currentMonth].month}}<br>
+                      <span style="font-size:18px">2017</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <ul class="weekdays">
+                  <li ng-repeat="weekDay in calendarWeekDays">{{weekDay}}</li>
+                </ul>
+
+                <ul class="days" id="monthDays">
+                  <li ng-repeat="i in getOffsetDays() track by $index"></li>
+                  <li ng-repeat="i in getDays() track by $index" ng-click="setActive($index)">
+                    <span ng-class="{'active': $index==currentDay}">{{$index+1}}</span></li>
+                </ul>
+              </div>
+
+              <!-- hour selection section -->
+              <div class="col-sm-6">
+
+              </div>
+            </div>
+          </div><!-- end ng-switch-when=reserve -->
+        </div><!-- end ng-switch -->
+      </div><!-- end optionsMapSection -->
+
     </div>
   </div>
 </div>

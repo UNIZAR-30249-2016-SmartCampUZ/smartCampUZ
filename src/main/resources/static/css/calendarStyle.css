@@ -1,0 +1,75 @@
+#calendarReserves ul {list-style-type: none;}
+
+/* Month header */
+#calendarReserves .month {
+  padding: 70px 25px;
+  width: 100%;
+  background: #1abc9c;
+  text-align: center;
+}
+
+/* Month list */
+#calendarReserves .month ul {
+  margin: 0;
+  padding: 0;
+}
+
+#calendarReserves .month ul li {
+  color: white;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+/* Previous button inside month header */
+#calendarReserves .month .prev {
+  float: left;
+  padding-top: 10px;
+  cursor: pointer;
+}
+
+/* Next button */
+#calendarReserves .month .next {
+  float: right;
+  padding-top: 10px;
+  cursor: pointer;
+}
+
+/* Weekdays (Mon-Sun) */
+#calendarReserves .weekdays {
+  margin: 0;
+  padding: 10px 0;
+  background-color:#ddd;
+}
+
+#calendarReserves .weekdays li {
+  display: inline-block;
+  width: 13.6%;
+  color: #666;
+  text-align: center;
+}
+
+/* Days (1-31) */
+#calendarReserves .days {
+  padding: 10px 0;
+  background: #eee;
+  margin: 0;
+}
+
+#calendarReserves .days li {
+  list-style-type: none;
+  display: inline-block;
+  width: 13.6%;
+  text-align: center;
+  margin-bottom: 5px;
+  font-size:12px;
+  color:#777;
+  cursor: pointer;
+}
+
+/* Highlight the "current" day */
+#calendarReserves .days li .active {
+  padding: 5px;
+  background: #1abc9c;
+  color: white !important
+}
