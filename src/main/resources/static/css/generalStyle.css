@@ -16,6 +16,6 @@ a:focus, a:hover {
 #firstContent:before {
   display: block;
   content: " ";
-  height: 100px;
+  height: 70px;
   visibility: hidden;
 }
