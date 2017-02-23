@@ -15,27 +15,6 @@ angular.module('smartCampUZApp')
             marker.bindPopup("<b>EINA</b><br>Escuela de Ingeniería y Arquitectura.").openPopup();
 
             /**
-             * Watermark
-             */
-            L.Control.Watermark = L.Control.extend({
-                onAdd: function(map) {
-                    var img = L.DomUtil.create('img');
-                    img.src = '../../img/logo.png';
-                    img.style.width = '320px';
-                    img.style.height = '45px';
-                    return img;
-                },
-                onRemove: function(map) {
-                }
-            });
-            L.control.watermark = function(opts) {
-                return new L.Control.Watermark(opts);
-            };
-            L.control.watermark({ position: 'bottomleft' }).addTo(map);
-
-
-
-            /**
              * Popup de coordenadas
              */
             var popup2 = L.popup();
