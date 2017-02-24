@@ -23,8 +23,17 @@
         <div ng-switch="optionUserMap">
           <!-- feedback section -->
           <div ng-switch-when="feedback">
-            <h2>poniendo feedback</h2>
-          </div>
+            <!-- feedback form -->
+            <form ng-submit="feedback()" role="form">
+              <div style="padding: 16px;">
+                <label><b>Descripción</b></label>
+                <textarea ng-click="hideError();hideSuccess()" placeholder="Descripción..." rows="2"
+                          ng-model="$parent.descriptionFeedback"></textarea>
+
+                <button type="submit" class="sC-theme-action">Enviar</button>
+              </div>
+            </form>
+          </div><!-- end ng-switch-when=feedback -->
 
           <!-- reserve section -->
           <div ng-switch-when="reserve">
@@ -78,26 +87,24 @@
             </div>
 
             <!-- reserve form -->
-            <div>
-              <form ng-submit="reserve()" role="form">
+            <form ng-submit="reserve()" role="form">
 
-                <div style="padding: 16px;">
-                  <label><b>Nombre de usuario</b></label>
-                  <input ng-click="hideError();hideSuccess()" type="text" placeholder="Nombre de usuario..."
-                         ng-model="$parent.userNameReserve" required>
+              <div style="padding: 16px;">
+                <label><b>Nombre de usuario</b></label>
+                <input ng-click="hideError();hideSuccess()" type="text" placeholder="Nombre de usuario..."
+                       ng-model="$parent.userNameReserve" required>
 
-                  <label><b>Correo electrónico</b></label>
-                  <input ng-click="hideError();hideSuccess()" type="email" placeholder="Correo electrónico..."
-                         ng-model="$parent.emailReserve" required>
+                <label><b>Correo electrónico</b></label>
+                <input ng-click="hideError();hideSuccess()" type="email" placeholder="Correo electrónico..."
+                       ng-model="$parent.emailReserve" required>
 
-                  <label><b>Descripción</b></label>
-                  <textarea ng-click="hideError();hideSuccess()" placeholder="Descripción..." rows="2"
-                            ng-model="$parent.descriptionReserve"></textarea>
+                <label><b>Descripción</b></label>
+                <textarea ng-click="hideError();hideSuccess()" placeholder="Descripción..." rows="2"
+                          ng-model="$parent.descriptionReserve"></textarea>
 
-                  <button type="submit" class="sC-theme-action">Hacer reserva</button>
-                </div>
-              </form>
-            </div>
+                <button type="submit" class="sC-theme-action">Hacer reserva</button>
+              </div>
+            </form>
           </div><!-- end ng-switch-when=reserve -->
         </div><!-- end ng-switch -->
       </div><!-- end optionsMapSection -->

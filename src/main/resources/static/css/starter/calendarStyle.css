@@ -77,3 +77,11 @@
 #calendarReserves #monthDays {
   min-height: 164px;
 }
+
+@media only screen and (max-width: 906px){
+  /* Remove margins and padding from the list */
+  #calendarReserves .month ul li {
+    font-size: 14px;
+  }
+}
+
