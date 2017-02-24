@@ -28,6 +28,17 @@
 
           <!-- reserve section -->
           <div ng-switch-when="reserve">
+
+            <!-- this div will show only when an error occurs -->
+            <div class="alert alert-danger" ng-if="error">
+              <strong>&#10008</strong> {{errorMsg}}
+            </div>
+            <!-- this div will show only when an success occurs -->
+            <div class="alert alert-success" ng-if="success">
+              <strong>&#10004</strong> {{successMsg}}
+            </div>
+
+
             <div class="row">
               <!-- calendar section -->
               <div class="col-sm-6" id="calendarReserves">
@@ -67,7 +78,33 @@
             </div>
 
             <!-- reserve form -->
-            <div></div>
+            <div>
+              <form ng-submit="reserve()" role="form">
+
+                <!-- this div will show only when an error occurs -->
+                <div class="alert alert-danger" ng-if="error" style="margin:2%">
+                  <strong>&#10008</strong> {{errorMsg}}
+                </div>
+
+                <div style="padding: 16px;">
+                  <label><b>Nombre de usuario</b></label>
+                  <input ng-click="hideError();hideSuccess()" type="text" placeholder="Nombre de usuario..."
+                         ng-model="$parent.userNameReserve" ng-disabled="{'active': true}"
+                         ng-class="{'disabledInput': true}" required>
+
+                  <label><b>Correo electrónico</b></label>
+                  <input ng-click="hideError();hideSuccess()" type="email" placeholder="Correo electrónico..."
+                         ng-model="$parent.emailReserve" ng-disabled="{'active': true}"
+                         ng-class="{'disabledInput': true}" required>
+
+                  <label><b>Descripción</b></label>
+                  <textarea ng-click="hideError();hideSuccess()" placeholder="Descripción..." rows="2"
+                            ng-model="$parent.descriptionReserve"></textarea>
+
+                  <button type="submit" class="sC-theme-action">Hacer reserva</button>
+                </div>
+              </form>
+            </div>
           </div><!-- end ng-switch-when=reserve -->
         </div><!-- end ng-switch -->
       </div><!-- end optionsMapSection -->

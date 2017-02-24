@@ -12,6 +12,10 @@ a:focus, a:hover {
   text-decoration: none;
 }
 
+html, body, #starterStyle {
+  height: 100%;
+}
+
 /* add a gap under the navbar */
 #firstContent:before {
   display: block;
