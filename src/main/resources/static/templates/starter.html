@@ -13,9 +13,9 @@
 
         <!-- options switcher selector -->
         <p style="text-align:center">
-          <label class="radio-inline"><input type="radio" ng-model="optionUserMap"
-                                             ng-click="hideError();hideSuccess();disableHours()"
-                                             value="reserve">Reservar zona</label>
+          <label class="radio-inline"><input type="radio" ng-model="optionUserMap" value="reserve"
+                                             ng-click="hideError();hideSuccess();getDate()">
+            Reservar zona</label>
           <label class="radio-inline"><input type="radio" ng-model="optionUserMap" ng-click="hideError();hideSuccess()"
                                              value="feedback">Dejar sugerencia</label>
         </p>
@@ -81,21 +81,14 @@
             <div>
               <form ng-submit="reserve()" role="form">
 
-                <!-- this div will show only when an error occurs -->
-                <div class="alert alert-danger" ng-if="error" style="margin:2%">
-                  <strong>&#10008</strong> {{errorMsg}}
-                </div>
-
                 <div style="padding: 16px;">
                   <label><b>Nombre de usuario</b></label>
                   <input ng-click="hideError();hideSuccess()" type="text" placeholder="Nombre de usuario..."
-                         ng-model="$parent.userNameReserve" ng-disabled="{'active': true}"
-                         ng-class="{'disabledInput': true}" required>
+                         ng-model="$parent.userNameReserve" required>
 
                   <label><b>Correo electrónico</b></label>
                   <input ng-click="hideError();hideSuccess()" type="email" placeholder="Correo electrónico..."
-                         ng-model="$parent.emailReserve" ng-disabled="{'active': true}"
-                         ng-class="{'disabledInput': true}" required>
+                         ng-model="$parent.emailReserve" required>
 
                   <label><b>Descripción</b></label>
                   <textarea ng-click="hideError();hideSuccess()" placeholder="Descripción..." rows="2"

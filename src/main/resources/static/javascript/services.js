@@ -61,4 +61,72 @@ angular.module('smartCampUZApp')
                 });
             }
         };
+    })
+
+    // 'reserve' service manage the reserve service of the page with the server
+    .factory('reserve', function ($state, $http, userMap) {
+
+        return {
+            // Get the current day
+            getCurrentDate: function (callbackSuccess, callbackError) {
+                $http({
+                    method: 'GET',
+                    url: 'currentDate'
+                }).success(function (data) {
+                    callbackSuccess(data);
+                }).error(function (data) {
+                    var date = {month: 01, day: 23};
+                    callbackSuccess(date);
+                    //callbackError(data);
+                });
+            },
+            // Get available hours of a [date]
+            getAvailableHours: function (month, day, callbackSuccess, callbackError) {
+                $http({
+                    method: 'GET',
+                    url: 'availableHours',
+                    headers: {
+                        month: month,
+                        day: day,
+                        location: userMap.getCurrentLocation()
+                    }
+                }).success(function (data) {
+                    callbackSuccess(data);
+                }).error(function (data) {
+                    var date = [0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
+                    callbackSuccess(date);
+                    //callbackError(data);
+                });
+            },
+            // Get available hours of a [date]
+            reserveHours: function (reserveInfo, reserveHours, callbackSuccess, callbackError) {
+                var aux = {
+                    info: reserveInfo,
+                    hours: reserveHours,
+                    location: userMap.getCurrentLocation()
+                };
+                $http({
+                    method: 'POST',
+                    url: 'availableHours',
+                    data: JSON.stringify(aux)
+                }).success(function (data) {
+                    callbackSuccess(data);
+                }).error(function (data) {
+                    callbackError(data);
+                });
+            }
+        };
+    })
+
+    // 'userMap' service manage the user view of the map with the server
+    .factory('userMap', function ($state, $http) {
+
+        var currentLocation = "provisional";
+
+        return {
+            // Get the current day
+            getCurrentLocation: function () {
+                return currentLocation;
+            }
+        };
     });

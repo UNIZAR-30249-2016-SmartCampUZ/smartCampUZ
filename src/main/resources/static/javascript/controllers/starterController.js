@@ -1,6 +1,6 @@
 angular.module('smartCampUZApp')
 
-    .controller('starterCtrl', ['$scope', '$state', 'auth', function ($scope, $state, auth) {
+    .controller('starterCtrl', ['$scope', '$state', 'auth', 'reserve', function ($scope, $state, auth, reserve) {
         /* FEEDBACK MESSAGES */
         // feedback handling variables
         $scope.error = false;
@@ -60,6 +60,7 @@ angular.module('smartCampUZApp')
         // active [day] day of the month
         $scope.setActive = function(day) {
             $scope.currentDay = day;
+            $scope.getAvailableHours($scope.currentMonth, $scope.currentDay);
         };
         // [next] plus/minus the current month % 12
         $scope.setMonth = function(next) {
@@ -67,7 +68,14 @@ angular.module('smartCampUZApp')
             if ($scope.currentMonth > $scope.calendarMonths.length -1) {$scope.currentMonth = 0}
             if ($scope.currentMonth < 0) {$scope.currentMonth = $scope.calendarMonths.length -1}
         };
-
+        // Get current date
+        $scope.getDate = function () {
+            reserve.getCurrentDate(function (date) {
+                $scope.currentMonth = date.month;
+                $scope.currentDay = date.day;
+                $scope.getAvailableHours($scope.currentMonth, $scope.currentDay);
+            }, showError);
+        };
         /* HOUR SELECTOR SECTION */
         // Reservable hours
         $scope.reservableHours = ["8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00", "13:00-14:00",
@@ -77,7 +85,7 @@ angular.module('smartCampUZApp')
          * 1: Selected
          * 2: Unselected
          */
-        $scope.hoursSelected = [0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
+        $scope.hoursSelected = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
         $scope.disableHours = function () {
             $("#hourUL ul li.disabled").off('click');
         };
@@ -89,10 +97,31 @@ angular.module('smartCampUZApp')
                 $scope.hoursSelected[num] = 1;
             }
         };
+        // Get available hours of a [date]
+        $scope.getAvailableHours = function (month, day) {
+            reserve.getAvailableHours(month, day, function (hours) {
+                $scope.hoursSelected = hours;
+                $scope.disableHours();
+            }, showError);
+        };
 
         /* RESERVE FORM SECTION */
         $scope.userNameReserve = "";
         $scope.emailReserve = "";
         $scope.descriptionReserve = "";
+        // Make a reserve
+        $scope.reserve = function () {
+            var reserveInfo = {
+                name: $scope.userNameReserve,
+                email: $scope.emailReserve,
+                description: $scope.descriptionReserve
+            };
+            reserve.reserveHours(reserveInfo, $scope.hoursSelected, function (data) {
+                for (i++; i<$scope.hoursSelected.length;i++) {
+                    $scope.hoursSelected[i] = $scope.hoursSelected[i] == 1 ? 0 : $scope.hoursSelected[i];
+                }
+                showSuccess(data);
+            }, showError);
+        }
 
     }]);
