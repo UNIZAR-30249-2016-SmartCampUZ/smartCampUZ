@@ -106,8 +106,9 @@ angular.module('smartCampUZApp')
         };
 
         /* RESERVE FORM SECTION */
-        $scope.userNameReserve = "";
-        $scope.emailReserve = "";
+        $scope.logged = auth.isAuthenticated();
+        $scope.userNameReserve = $scope.logged ? auth.getUserName() : "";
+        $scope.emailReserve = $scope.logged ? auth.getEmail() : "";
         $scope.descriptionReserve = "";
         // Make a reserve
         $scope.reserve = function () {
@@ -122,6 +123,14 @@ angular.module('smartCampUZApp')
                 }
                 showSuccess(data);
             }, showError);
-        }
+        };
+        // Watches to control input variables length
+        $scope.$watch(function() {
+            return auth.isAuthenticated();
+        }, function () {
+            $scope.logged = auth.isAuthenticated();
+            $scope.userNameReserve = $scope.logged ? auth.getUserName() : "";
+            $scope.emailReserve = $scope.logged ? auth.getEmail() : "";
+        });
 
     }]);

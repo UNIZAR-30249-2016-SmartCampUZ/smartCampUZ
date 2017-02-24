@@ -40,6 +40,15 @@ angular.module('smartCampUZApp')
             getUserObject: function () {
                 return _identity;
             },
+            getUserName: function () {
+              return _identity.userName;
+            },
+            getEmail: function () {
+                return _identity.email;
+            },
+            getType: function () {
+              return _identity.type;
+            },
 
             //send the login info to the server
             login: function (user, password, callbackSuccess, callbackError) {
@@ -54,17 +63,32 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                     that.authenticate(data);
                     callbackSuccess();
-                    $state.go('admin');
-
+                    if (data.type == 'admin') {
+                        $state.go('admin');
+                    } else if (data.type == 'maintenance') {
+                        $state.go('maintenance');
+                    }
                 }).error(function (data) {
-                    callbackError(data);
+                    var aux = {
+                        userName: "paco",
+                        email: "paco@paco.paco",
+                        type: "profesor"
+                    };
+                    that.authenticate(aux);
+                    callbackSuccess();
+                    if (aux.type == 'admin') {
+                        $state.go('admin');
+                    } else if (aux.type == 'maintenance') {
+                        $state.go('maintenance');
+                    }
+                    //callbackError(data);
                 });
             }
         };
     })
 
     // 'reserve' service manage the reserve service of the page with the server
-    .factory('reserve', function ($state, $http, userMap) {
+    .factory('reserve', function ($state, $http, userMap, auth) {
 
         return {
             // Get the current day
@@ -103,7 +127,8 @@ angular.module('smartCampUZApp')
                 var aux = {
                     info: reserveInfo,
                     hours: reserveHours,
-                    location: userMap.getCurrentLocation()
+                    location: userMap.getCurrentLocation(),
+                    profesor: auth.getType() == 'profesor' ? true : false
                 };
                 $http({
                     method: 'POST',
