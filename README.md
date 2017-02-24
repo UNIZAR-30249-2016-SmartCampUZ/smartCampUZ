@@ -18,13 +18,13 @@ Go to the [Wiki](https://github.com/UNIZAR-30249-2016-SmartCampUZ/smartCampUZ/wi
 Fork this repo. After that, you have to clone your forked repo on your local machine on the directory you desire: `git clone https://github.com/your-github-username/smartCampUZ`.
 
 Assuming you have installed PostgreSQL. Access to template1, wich is a default PostgreSQL database.
-```bash
+```
 sudo su postgres
 psql template1
 ```
 
 Once loged in, you should create an user, crate a database and grant him all permisions over it.
-``` SQL
+```
 template1=# CREATE USER <myUser> WITH PASSWORD '<myPassword>';
 template1=# GRANT ALL PRIVILEGES ON DATABASE smartcampuz to <myUser>;
 \q
@@ -32,7 +32,7 @@ template1=# GRANT ALL PRIVILEGES ON DATABASE smartcampuz to <myUser>;
 
 Now locate and set the <myUser> and <myPassword> in /GitHub/smartCampUZ/src/main/resources/application.properties:
 
-``` java
+```
 #Username and password
 spring.datasource.username=smartuser
 spring.datasource.password=smartpass
