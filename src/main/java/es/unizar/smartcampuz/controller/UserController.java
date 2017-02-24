@@ -3,11 +3,18 @@ package es.unizar.smartcampuz.controller;
 import es.unizar.smartcampuz.model.User;
 import es.unizar.smartcampuz.model.UserRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.util.Base64Utils;
+
+import javax.servlet.http.HttpServletRequest;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * A class to test interactions with the MySQL database using the UserRepository class.
@@ -24,6 +31,10 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    private static final Logger LOG = LoggerFactory
+        .getLogger(UserController.class);
+
+
     // ------------------------
     // PUBLIC METHODS
     // ------------------------
@@ -31,22 +42,44 @@ public class UserController {
     /**
      * GET/login  --> Returns true if authentication is correct.
      *
-     * @param email User's email
-     * @param password User's loged.
      */
-    @GetMapping("/login")
+    @GetMapping("/signIn")
     @ResponseBody
-    public ResponseEntity<User> login(String email, String password) {
-        try {
-            User user = userRepository.findByEmail(email);
-            if( user.getPassword().equals(password) ){
-                return new ResponseEntity<User>(HttpStatus.ACCEPTED);
-            } else {
-                return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
+    public ResponseEntity<?> signIn(HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        header = header.substring(6);
+        byte [] decoded = Base64Utils.decode(header.getBytes());
+        String info = "";
+        try{
+            info = new String(decoded, "UTF8");
+        }
+        catch(UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
+        int index = info.indexOf(":");
+        String username = info.substring(0, index);
+        String pass = info.substring(index+1);
+        LOG.info("User: "+username+" Pass: "+pass);
+
+        if(verifyFields(username, pass)){
+            //Pido ususario a la BD, ahora me lo invento
+            User user = userRepository.findByName(username);
+            if(user == null){
+                LOG.info("El usuario no existe");
+                return new ResponseEntity<>("El usuario no existe", HttpStatus.BAD_REQUEST);
+            }
+            else if(!(user.getPassword().equals(pass))){
+                LOG.info("Contraseña incorrecta");
+                return new ResponseEntity<>("Contraseña incorrecta", HttpStatus.BAD_REQUEST);
+            }
+            else{
+                LOG.info("Usuario y contraseña correctos");
+                return new ResponseEntity<>(user, HttpStatus.OK);
             }
         }
-        catch (Exception ex) {
-            return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
+        else{
+            LOG.info("Usuario o contraseña incorrectos");
+            return new ResponseEntity<>("Usuario o contraseña incorrectos", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -133,6 +166,19 @@ public class UserController {
         catch (Exception ex) {
             return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /*
+     * Checks if the username and password fields are null or empty.
+     */
+    private boolean verifyFields(String username, String pass){
+        if((username==null) || (username.trim().equals(""))){
+            return false;
+        }
+        if((pass==null) || (pass.trim().equals(""))){
+            return false;
+        }
+        return true;
     }
 
 } // class UserController
