@@ -73,3 +73,7 @@
   background: #00c08d;
   color: white !important
 }
+
+#calendarReserves #monthDays {
+  min-height: 164px;
+}
