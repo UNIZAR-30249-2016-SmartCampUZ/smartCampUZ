@@ -2,6 +2,8 @@
 #starterStyle #hourUL ul {
   margin: 0;
   padding: 0;
+  max-height: 147px;
+  overflow-y: auto;
 }
 
 /* Style the list items */
@@ -64,13 +66,13 @@
   clear: both;
 }
 
-/* Style the header */
+/* Style the footer */
 #starterStyle #hourFooter {
   padding: 30px 40px;
   text-align: center;
 }
 
-/* Clear floats after the header */
+/* Clear floats after the footer */
 #starterStyle #hourFooter:after {
   content: "";
   display: table;
@@ -98,4 +100,45 @@
   color: #fff;
   text-decoration: line-through;
   cursor: not-allowed;
+}
+
+@media only screen and (min-width: 1593px){
+  #starterStyle #hourHeader {
+    padding: 37px 40px;
+  }
+  #starterStyle #hourFooter {
+    padding: 37px 40px;
+  }
+}
+@media only screen and (max-width: 1592px)  and (min-width: 1053px){
+  #starterStyle #hourHeader {
+    padding: 32px 40px;
+  }
+  #starterStyle #hourFooter {
+    padding: 32px 40px;
+  }
+}
+@media only screen and (max-width: 1052px)  and (min-width: 1052px){
+  #starterStyle #hourHeader {
+    padding: 26px 40px;
+  }
+  #starterStyle #hourFooter {
+    padding: 27px 40px;
+  }
+}
+@media only screen and (max-width: 1051px)  and (min-width: 819px){
+  #starterStyle #hourHeader {
+    padding: 21px 40px;
+  }
+  #starterStyle #hourFooter {
+    padding: 21px 40px;
+  }
+}
+@media only screen and (max-width: 818px){
+  #starterStyle #hourHeader {
+    padding: 21px 33px;
+  }
+  #starterStyle #hourFooter {
+    padding: 21px 20px;
+  }
 }
