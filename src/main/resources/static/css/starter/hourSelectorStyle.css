@@ -2,7 +2,7 @@
 #starterStyle #hourUL ul {
   margin: 0;
   padding: 0;
-  max-height: 147px;
+  max-height: 294px;
   overflow-y: auto;
 }
 
@@ -66,34 +66,6 @@
   clear: both;
 }
 
-/* Style the footer */
-#starterStyle #hourFooter {
-  padding: 30px 40px;
-  text-align: center;
-}
-
-/* Clear floats after the footer */
-#starterStyle #hourFooter:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Style the "Reserve" button */
-#starterStyle #reserveBtn {
-  padding: 14px 20px;
-  text-align: center;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  font-weight: 600;
-  transition: 0.3s;
-}
-
-#starterStyle #reserveBtn:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-}
-
 /* When disabled on, add a background color and strike out text */
 #starterStyle #hourUL ul li.disabled {
   background-color: #f44336;
@@ -104,41 +76,26 @@
 
 @media only screen and (min-width: 1593px){
   #starterStyle #hourHeader {
-    padding: 37px 40px;
-  }
-  #starterStyle #hourFooter {
-    padding: 37px 40px;
+    padding: 27px 40px;
   }
 }
 @media only screen and (max-width: 1592px)  and (min-width: 1053px){
   #starterStyle #hourHeader {
-    padding: 32px 40px;
-  }
-  #starterStyle #hourFooter {
-    padding: 32px 40px;
+    padding: 16px 40px;
   }
 }
 @media only screen and (max-width: 1052px)  and (min-width: 1052px){
   #starterStyle #hourHeader {
-    padding: 26px 40px;
-  }
-  #starterStyle #hourFooter {
-    padding: 27px 40px;
+    padding: 5px 40px;
   }
 }
 @media only screen and (max-width: 1051px)  and (min-width: 819px){
   #starterStyle #hourHeader {
-    padding: 21px 40px;
-  }
-  #starterStyle #hourFooter {
-    padding: 21px 40px;
+    padding: 5px 40px;
   }
 }
 @media only screen and (max-width: 818px){
   #starterStyle #hourHeader {
-    padding: 21px 33px;
-  }
-  #starterStyle #hourFooter {
-    padding: 21px 20px;
+    padding: 5px 33px;
   }
 }

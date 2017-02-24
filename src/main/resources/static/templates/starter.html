@@ -63,11 +63,11 @@
                       ng-class="{'checked': hoursSelected[$index]==1, 'disabled': hoursSelected[$index]==0}"
                       ng-click="setReservableHour($index)">{{hour}}</li>
                 </ul>
-                <div id="hourFooter" class="sC-theme-l1">
-                  <button id="reserveBtn" class="sC-theme-action">Reservar horas</button>
-                </div>
-              </div>
+              </div><!-- end hourUL -->
             </div>
+
+            <!-- reserve form -->
+            <div></div>
           </div><!-- end ng-switch-when=reserve -->
         </div><!-- end ng-switch -->
       </div><!-- end optionsMapSection -->
