@@ -1,4 +1,4 @@
-aangular.module('smartCampUZApp')
+angular.module('smartCampUZApp')
 
     .controller('mapCtrl', ['$scope', '$state', 'auth', function ($scope, $state, auth) {
         $(document).ready(function(){
@@ -51,23 +51,6 @@ aangular.module('smartCampUZApp')
              */
             L.control.scale({ position: 'topright' }).addTo(map);
 
-            /**
-             * Watermark
-             */
-            L.Control.Watermark = L.Control.extend({
-                onAdd: function(map) {
-                    var img = L.DomUtil.create('img');
-                    img.src = 'SmartCampUZ_transparent.png';
-                    img.style.width = '320px';
-                    img.style.height = '45px';
-                    return img;
-                }
-            });
-            L.control.watermark = function(opts) {
-                return new L.Control.Watermark(opts);
-            }
-            L.control.watermark({ position: 'bottomleft' }).addTo(map);
-
 
             /**
              * BuildingLayers
@@ -110,7 +93,7 @@ aangular.module('smartCampUZApp')
                 riseOnHover: true,
                 alt: 'Floor above',
                 iconSize:     [45, 45], // size of the icon
-                iconAnchor:   [45, 45], // point of the icon which will
+                iconAnchor:   [45, 45] // point of the icon which will
                 //correspond to marker's location
             });
             var stairsUpLatLng = L.latLng(map.getCenter().lat,map.getCenter().lng);
@@ -127,7 +110,7 @@ aangular.module('smartCampUZApp')
                 alt: 'Floor below',
                 riseOnHover:true,
                 iconSize:     [45, 45], // size of the icon
-                iconAnchor:   [45, 45], // point of the icon which will
+                iconAnchor:   [45, 45] // point of the icon which will
                 //correspond to marker's location
             });
             var stairsDownLatLng = L.latLng(map.getCenter().lat,map.getCenter().lng);
