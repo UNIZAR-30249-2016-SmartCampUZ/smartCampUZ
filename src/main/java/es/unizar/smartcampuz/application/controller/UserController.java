@@ -1,7 +1,7 @@
-package es.unizar.smartcampuz.controller;
+package es.unizar.smartcampuz.application.controller;
 
-import es.unizar.smartcampuz.model.User;
-import es.unizar.smartcampuz.model.UserRepository;
+import es.unizar.smartcampuz.model.user.User;
+import es.unizar.smartcampuz.model.user.UserRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
