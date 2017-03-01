@@ -23,9 +23,10 @@ angular.module('smartCampUZApp')
             },
 
             //authenticate the [identity] user
-            authenticate: function (identity) {
+            authenticate: function (identity, jwt) {
                 _identity = identity;
                 _authenticated = identity !== undefined;
+                localStorage.smartJWT = angular.toJson(jwt);
                 localStorage.userIdentity = angular.toJson(_identity);
             },
 
@@ -33,6 +34,7 @@ angular.module('smartCampUZApp')
             logout: function () {
                 _identity = undefined;
                 _authenticated = false;
+                localStorage.removeItem('smartJWT');
                 localStorage.removeItem('userIdentity');
                 $state.go('starter');
             },
@@ -60,8 +62,8 @@ angular.module('smartCampUZApp')
                         'Authorization': 'Basic ' +
                         $base64.encode(user + ":" + password)
                     }
-                }).success(function (data) {
-                    that.authenticate(data);
+                }).success(function (data, status, headers) {
+                    that.authenticate(data, headers().Token);
                     callbackSuccess();
                     if (data.type == 'admin') {
                         $state.go('admin');
