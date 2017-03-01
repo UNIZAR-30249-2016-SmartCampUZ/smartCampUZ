@@ -1,4 +1,4 @@
-package es.unizar.smartcampuz.model;
+package es.unizar.smartcampuz.model.user;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -88,4 +88,5 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
 } // class User

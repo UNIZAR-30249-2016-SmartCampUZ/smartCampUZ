@@ -1,12 +1,13 @@
-package es.unizar.smartcampuz.controller;
+package es.unizar.smartcampuz.application.controller;
 
-import es.unizar.smartcampuz.model.User;
-import es.unizar.smartcampuz.model.UserRepository;
-
+import es.unizar.smartcampuz.model.user.User;
+import es.unizar.smartcampuz.model.user.UserRepository;
+import es.unizar.smartcampuz.application.service.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,10 @@ import org.springframework.util.Base64Utils;
 import javax.servlet.http.HttpServletRequest;
 
 import java.io.UnsupportedEncodingException;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import net.sf.json.JSONObject;
+
 
 /**
  * A class to test interactions with the MySQL database using the UserRepository class.
@@ -34,6 +39,21 @@ public class UserController {
     private static final Logger LOG = LoggerFactory
         .getLogger(UserController.class);
 
+    private final JwtService jwtService;
+
+    // ------------------------
+    // CONSTRUCTORS
+    // ------------------------
+
+    @SuppressWarnings("unused")
+    public UserController(){
+        this(null);
+    }
+
+    @Autowired
+    public UserController(JwtService jwtService){
+        this.jwtService = jwtService;
+    }
 
     // ------------------------
     // PUBLIC METHODS
@@ -43,9 +63,9 @@ public class UserController {
      * GET/login  --> Returns true if authentication is correct.
      *
      */
-    @GetMapping("/signIn")
+    @PostMapping("/signIn")
     @ResponseBody
-    public ResponseEntity<?> signIn(HttpServletRequest request) {
+    public ResponseEntity<String> signIn(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
         header = header.substring(6);
         byte [] decoded = Base64Utils.decode(header.getBytes());
@@ -62,25 +82,40 @@ public class UserController {
         LOG.info("User: "+username+" Pass: "+pass);
 
         if(verifyFields(username, pass)){
-            //Pido ususario a la BD, ahora me lo invento
             User user = userRepository.findByName(username);
             if(user == null){
                 LOG.info("El usuario no existe");
-                return new ResponseEntity<>("El usuario no existe", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("\"El usuario no existe\"", HttpStatus.BAD_REQUEST);
             }
             else if(!(user.getPassword().equals(pass))){
                 LOG.info("Contraseña incorrecta");
-                return new ResponseEntity<>("Contraseña incorrecta", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("\"Contraseña incorrecta\"", HttpStatus.BAD_REQUEST);
             }
             else{
                 LOG.info("Usuario y contraseña correctos");
-                return new ResponseEntity<>(user, HttpStatus.OK);
+                HttpHeaders headers = new HttpHeaders();
+                try{
+                    //Creo un token para el usuario y lo añado al header "Token"
+                    headers.add("Token", jwtService.tokenFor(user));
+                }
+                catch (IOException e){
+                    e.printStackTrace();
+                }
+                catch (URISyntaxException e){
+                    e.printStackTrace();
+                }
+                JSONObject jUser = new JSONObject();
+                jUser.element("userName", user.getName());
+                jUser.element("email", user.getEmail());
+                jUser.element("type", "");
+                return new ResponseEntity<>(jUser.toString(), headers, HttpStatus.OK);
             }
         }
         else{
             LOG.info("Usuario o contraseña incorrectos");
-            return new ResponseEntity<>("Usuario o contraseña incorrectos", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("\"Usuario o contraseña incorrectos\"", HttpStatus.BAD_REQUEST);
         }
+
     }
 
     /**
