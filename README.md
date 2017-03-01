@@ -7,7 +7,7 @@ Go to the [Wiki](https://github.com/UNIZAR-30249-2016-SmartCampUZ/smartCampUZ/wi
 
 ## Start using this App
 
-### Prerequirements
+### Prerequisites
 
 - [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [Gradle](https://docs.gradle.org/current/userguide/installation.html)
@@ -17,20 +17,22 @@ Go to the [Wiki](https://github.com/UNIZAR-30249-2016-SmartCampUZ/smartCampUZ/wi
 
 Fork this repo. After that, you have to clone your forked repo on your local machine on the directory you desire: `git clone https://github.com/your-github-username/smartCampUZ`.
 
-Assuming you have installed PostgreSQL. Access to template1, wich is a default PostgreSQL database.
+Assuming you have already installed PostgreSQL, access to template1, wich is a default PostgreSQL database:
 ```
 sudo su postgres
 psql template1
 ```
 
-Once loged in, you should create an user, crate a database and grant him all permisions over it.
+Once you are loged in, you should create a user, a database and grant all permisions over the database to that user.
 ```
 template1=# CREATE USER <myUser> WITH PASSWORD '<myPassword>';
+template1=# CREATE DATABASE smartcampuz;
 template1=# GRANT ALL PRIVILEGES ON DATABASE smartcampuz to <myUser>;
 \q
+exit
 ```
 
-Now locate and set the <myUser> and <myPassword> in /GitHub/smartCampUZ/src/main/resources/application.properties:
+Now locate and set the "<myUser>" and "<myPassword>" in /GitHub/smartCampUZ/src/main/resources/application.properties (the following are the default ones in the project):
 
 ```
 #Username and password
@@ -38,7 +40,7 @@ spring.datasource.username=smartuser
 spring.datasource.password=smartpass
 ```
 
-In order to check that everything is working well, you can execute the commands `gradle build` or `gradle check`.
+In order to check that everything is working correctly, you can execute the commands `gradle build` or `gradle check`.
 
 ## Build & Run
 
