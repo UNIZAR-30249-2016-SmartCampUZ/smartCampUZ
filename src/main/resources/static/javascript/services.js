@@ -45,7 +45,7 @@ angular.module('smartCampUZApp')
             login: function (user, password, callbackSuccess, callbackError) {
                 var that = this;
                 $http({
-                    method: 'GET',
+                    method: 'POST',
                     url: 'signIn',
                     headers: {
                         'Authorization': 'Basic ' +
@@ -57,6 +57,8 @@ angular.module('smartCampUZApp')
                     $state.go('admin');
 
                 }).error(function (data) {
+                    console.log("Entro en error");
+                    console.log(data);
                     callbackError(data);
                 });
             }

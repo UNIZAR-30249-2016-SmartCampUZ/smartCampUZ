@@ -1,34 +1,44 @@
 package es.unizar.smartcampuz.application.config;
 
+import es.unizar.smartcampuz.application.auth.JwtAuthFilter;
+import es.unizar.smartcampuz.application.auth.JwtAuthenticationEntryPoint;
+import es.unizar.smartcampuz.application.auth.JwtAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.*;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .inMemoryAuthentication()
-            .withUser("user").password("password").roles("USER");
+    private JwtAuthFilter jwtAuthFilter;
+
+    @Autowired
+    private JwtAuthenticationProvider jwtAuthenticationProvider;
+
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthEndPoint;
+
+    @Override
+    public void configure(AuthenticationManagerBuilder auth)  throws Exception {
+        auth.authenticationProvider(jwtAuthenticationProvider);
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web
-            .ignoring()
-            .antMatchers("/resources/**");
-    }
+    protected void configure (HttpSecurity http) throws Exception{
+        http.csrf().ignoringAntMatchers("/signIn");
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-            .antMatchers("/*").permitAll();
+        http.authorizeRequests()
+            .antMatchers("/templates/admin.html")
+            .hasAuthority("ROLE_MANAGER")
+            .antMatchers("/**/*")
+            .permitAll()
+            .and()
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            .exceptionHandling()
+            .authenticationEntryPoint(jwtAuthEndPoint);
     }
 }
