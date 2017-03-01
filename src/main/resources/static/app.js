@@ -1,4 +1,4 @@
-angular.module('smartCampUZApp', ['ui.router', 'base64'])
+angular.module('smartCampUZApp', ['ui.router', 'base64', 'angular-jwt'])
 
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
