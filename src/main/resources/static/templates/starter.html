@@ -20,6 +20,15 @@
                                              value="feedback">Dejar sugerencia</label>
         </p>
 
+        <!-- this div will show only when an error occurs -->
+        <div class="alert alert-danger" ng-if="error">
+          <strong>&#10008</strong> {{errorMsg}}
+        </div>
+        <!-- this div will show only when an success occurs -->
+        <div class="alert alert-success" ng-if="success">
+          <strong>&#10004</strong> {{successMsg}}
+        </div>
+
         <div ng-switch="optionUserMap">
           <!-- feedback section -->
           <div ng-switch-when="feedback">
@@ -37,16 +46,6 @@
 
           <!-- reserve section -->
           <div ng-switch-when="reserve">
-
-            <!-- this div will show only when an error occurs -->
-            <div class="alert alert-danger" ng-if="error">
-              <strong>&#10008</strong> {{errorMsg}}
-            </div>
-            <!-- this div will show only when an success occurs -->
-            <div class="alert alert-success" ng-if="success">
-              <strong>&#10004</strong> {{successMsg}}
-            </div>
-
 
             <div class="row">
               <!-- calendar section -->

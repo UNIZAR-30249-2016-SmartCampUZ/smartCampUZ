@@ -1,6 +1,6 @@
 angular.module('smartCampUZApp')
 
-    .controller('starterCtrl', ['$scope', '$state', 'auth', 'reserve', function ($scope, $state, auth, reserve) {
+    .controller('starterCtrl', ['$scope', '$state', 'auth', 'reserve', 'feedback', function ($scope, $state, auth, reserve, feedback) {
         /* FEEDBACK MESSAGES */
         // feedback handling variables
         $scope.error = false;
@@ -132,5 +132,8 @@ angular.module('smartCampUZApp')
             $scope.userNameReserve = $scope.logged ? auth.getUserName() : "";
             $scope.emailReserve = $scope.logged ? auth.getEmail() : "";
         });
-
+        /* FEEDBACK FORM SECTION */
+        $scope.feedback = function () {
+            feedback.reportFeedback($scope.descriptionFeedback, showSuccess, showError)
+        }
     }]);

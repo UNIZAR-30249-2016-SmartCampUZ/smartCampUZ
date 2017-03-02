@@ -124,7 +124,7 @@ angular.module('smartCampUZApp')
                     //callbackError(data);
                 });
             },
-            // Get available hours of a [date]
+            // Reserve [reserveHours] hours with specific [reserveInfo] information
             reserveHours: function (reserveInfo, reserveHours, callbackSuccess, callbackError) {
                 var aux = {
                     info: reserveInfo,
@@ -137,6 +137,29 @@ angular.module('smartCampUZApp')
                     method: 'POST',
                     url: 'reserveHours',
                     headers: {'Authorization': 'Bearer ' + token},
+                    data: JSON.stringify(aux)
+                }).success(function (data) {
+                    callbackSuccess(data);
+                }).error(function (data) {
+                    callbackError(data);
+                });
+            }
+        };
+    })
+
+    // 'feedback' service manage the feedback service of the page with the server
+    .factory('feedback', function ($state, $http, userMap, auth) {
+
+        return {
+            // Report a description of a feedback
+            reportFeedback: function (description, callbackSuccess, callbackError) {
+                var aux = {
+                    description: description,
+                    location: userMap.getCurrentLocation()
+                };
+                $http({
+                    method: 'POST',
+                    url: 'reportFeedback',
                     data: JSON.stringify(aux)
                 }).success(function (data) {
                     callbackSuccess(data);
