@@ -93,7 +93,7 @@ angular.module('smartCampUZApp')
         $scope.setReservableHour = function (num) {
             if ($scope.hoursSelected[num] == 1) {
                 $scope.hoursSelected[num] = 2;
-            } else if ($scope.hoursSelected[num] = 2) {
+            } else if ($scope.hoursSelected[num] == 2) {
                 $scope.hoursSelected[num] = 1;
             }
         };
@@ -118,7 +118,7 @@ angular.module('smartCampUZApp')
                 description: $scope.descriptionReserve
             };
             reserve.reserveHours(reserveInfo, $scope.hoursSelected, function (data) {
-                for (i++; i<$scope.hoursSelected.length;i++) {
+                for (i=0; i<$scope.hoursSelected.length;i++) {
                     $scope.hoursSelected[i] = $scope.hoursSelected[i] == 1 ? 0 : $scope.hoursSelected[i];
                 }
                 showSuccess(data);

@@ -76,7 +76,7 @@ angular.module('smartCampUZApp')
                         email: "paco@paco.paco",
                         type: "profesor"
                     };
-                    that.authenticate(aux);
+                    that.authenticate(aux,"token");
                     callbackSuccess();
                     if (aux.type == 'admin') {
                         $state.go('admin');
@@ -130,17 +130,17 @@ angular.module('smartCampUZApp')
                     info: reserveInfo,
                     hours: reserveHours,
                     location: userMap.getCurrentLocation(),
-                    profesor: auth.getType() == 'profesor' ? true : false
+                    logged: auth.isAuthenticated() ? true : false
                 };
+                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({
                     method: 'POST',
                     url: 'availableHours',
+                    headers: {'Authorization': 'Bearer ' + token},
                     data: JSON.stringify(aux)
                 }).success(function (data) {
                     callbackSuccess(data);
                 }).error(function (data) {
-                    console.log("Entro en error");
-                    console.log(data);
                     callbackError(data);
                 });
             }
