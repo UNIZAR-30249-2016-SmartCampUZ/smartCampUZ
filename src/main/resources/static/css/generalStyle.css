@@ -3,7 +3,7 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  background-color: #f1f1f1;
+  background-color: #ffffff;
   font-family: 'Noto Sans', sans-serif;
 }
 
@@ -12,10 +12,28 @@ a:focus, a:hover {
   text-decoration: none;
 }
 
+html, body, #starterStyle {
+  height: 100%;
+}
+
 /* add a gap under the navbar */
 #firstContent:before {
   display: block;
   content: " ";
-  height: 100px;
+  height: 70px;
   visibility: hidden;
+}
+
+h1 {
+  font-size: 200%;
+}
+
+.divider {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  height: 1px;
+  background: -webkit-gradient(linear, 0 0, 100% 0, from(#d3d3d3), to(#d3d3d3), color-stop(50%, #000000));
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
