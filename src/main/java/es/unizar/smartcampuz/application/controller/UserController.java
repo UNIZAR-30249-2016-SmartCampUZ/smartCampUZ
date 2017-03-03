@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import net.sf.json.JSONObject;
 
-
 /**
  * A class to test interactions with the MySQL database using the UserRepository class.
  *
