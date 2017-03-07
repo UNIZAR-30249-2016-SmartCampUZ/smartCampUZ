@@ -57,8 +57,6 @@ angular.module('smartCampUZApp')
                     $state.go('admin');
 
                 }).error(function (data) {
-                    console.log("Entro en error");
-                    console.log(data);
                     callbackError(data);
                 });
             }

@@ -1,6 +1,8 @@
 package es.unizar.smartcampuz.application.controller;
 
+import es.unizar.smartcampuz.model.user.*;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +14,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Base64;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -22,11 +26,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class UserControllerTest {
 
+    private static final String USERNAME = "test";
+    private static final String EMAIL = "test@testemail.com";
+    private static final String PASS = "testPass";
+
     @Autowired
     private WebApplicationContext context;
 
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private static UserRepository userRepository;
+
+    @BeforeClass
+    public static void initializer(){
+        userRepository.save(new User(EMAIL, USERNAME, PASS));
+    }
 
     @Before
     public void setUp() {
@@ -37,9 +53,9 @@ public class UserControllerTest {
     @Test
     @Ignore
     public void login() throws Exception {
-        this.mvc.perform(get("/login")
-                .requestAttr("email","test")
-                .requestAttr("password","pass"))
+        String header = "Basic " + Base64.getEncoder().encodeToString((USERNAME + ":" + PASS).getBytes());
+        this.mvc.perform(post("/signIn")
+                .header("Authorization", header))
             .andExpect(status().isOk());
     }
 
