@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import net.sf.json.JSONObject;
 
-
 /**
  * A class to test interactions with the MySQL database using the UserRepository class.
  *
@@ -65,7 +64,7 @@ public class UserController {
      */
     @PostMapping("/signIn")
     @ResponseBody
-    public ResponseEntity<String> signIn(HttpServletRequest request) {
+    public ResponseEntity<String> signIn(HttpServletRequest request) throws IOException{
         String header = request.getHeader("Authorization");
         header = header.substring(6);
         byte [] decoded = Base64Utils.decode(header.getBytes());
@@ -81,13 +80,13 @@ public class UserController {
         String pass = info.substring(index+1);
         LOG.info("User: "+username+" Pass: "+pass);
 
-        if(verifyFields(username, pass)){
+        if(notBlank(username) && notBlank(pass)){
             User user = userRepository.findByName(username);
             if(user == null){
                 LOG.info("El usuario no existe");
                 return new ResponseEntity<>("\"El usuario no existe\"", HttpStatus.BAD_REQUEST);
             }
-            else if(!(user.getPassword().equals(pass))){
+            else if( !(user.checkPassword(pass) )){
                 LOG.info("Contraseña incorrecta");
                 return new ResponseEntity<>("\"Contraseña incorrecta\"", HttpStatus.BAD_REQUEST);
             }
@@ -97,9 +96,6 @@ public class UserController {
                 try{
                     //Creo un token para el usuario y lo añado al header "Token"
                     headers.add("Token", jwtService.tokenFor(user));
-                }
-                catch (IOException e){
-                    e.printStackTrace();
                 }
                 catch (URISyntaxException e){
                     e.printStackTrace();
@@ -128,7 +124,9 @@ public class UserController {
      */
     @PostMapping("/user")
     @ResponseBody
-    public ResponseEntity<User> create(String email, String name, String password) {
+    public ResponseEntity<User> create(@RequestAttribute("email") String email,
+                                       @RequestAttribute("name") String name,
+                                       @RequestAttribute("password")String password) {
         User user = null;
         try {
             user = new User(email, name, password);
@@ -206,14 +204,8 @@ public class UserController {
     /*
      * Checks if the username and password fields are null or empty.
      */
-    private boolean verifyFields(String username, String pass){
-        if((username==null) || (username.trim().equals(""))){
-            return false;
-        }
-        if((pass==null) || (pass.trim().equals(""))){
-            return false;
-        }
-        return true;
+    private boolean notBlank(String field){
+        return field!=null || !field.trim().equals("");
     }
 
 } // class UserController

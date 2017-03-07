@@ -1,4 +1,4 @@
-angular.module('smartCampUZApp', ['ui.router', 'base64'])
+angular.module('smartCampUZApp', ['ui.router', 'base64', 'angular-jwt'])
 
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
@@ -9,8 +9,10 @@ angular.module('smartCampUZApp', ['ui.router', 'base64'])
                 templateUrl: "templates/starter.html",
                 controller: "starterCtrl",
                 onEnter: function ($state, auth) {
-                    if (auth.isAuthenticated()) {
+                    if (auth.isAuthenticated() && (auth.getType() == 'admin')) {
                         $state.go('admin');
+                    } else if (auth.isAuthenticated() && (auth.getType() == 'maintenance')) {
+                        $state.go('maintenance');
                     }
                 }
             })
@@ -21,8 +23,10 @@ angular.module('smartCampUZApp', ['ui.router', 'base64'])
                 templateUrl: "templates/admin.html",
                 controller: "adminCtrl",
                 onEnter: function ($state, auth) {
-                    if (!auth.isAuthenticated()) {
+                    if (!auth.isAuthenticated() || auth.isAuthenticated() && (auth.getType() == 'profesor')) {
                         $state.go('starter');
+                    } else if (auth.isAuthenticated() && (auth.getType() == 'maintenance')) {
+                        $state.go('maintenance');
                     }
                 }
             });

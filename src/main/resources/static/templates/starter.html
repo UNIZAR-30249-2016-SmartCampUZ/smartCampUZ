@@ -1,12 +1,115 @@
 <div id="starterStyle">
   <div class="container-fluid">
-    <div class="row" id="firstContent">
-      <div class="col-sm-6" id="content-mapid">
+    <div class="row">
+      <div class="col-sm-6" id="leaftletMapSection">
+        <!-- leaftlet map directive -->
         <leaftlet-map></leaftlet-map>
       </div>
-      <div class="col-sm-6">
-        <h1>prueba</h1>
-      </div>
+      <div class="col-sm-6" id="optionsMapSection">
+        <!-- location's description section -->
+        <h1>Localización seleccionada: XXXX</h1>
+
+        <div class="divider"></div>
+
+        <!-- options switcher selector -->
+        <p style="text-align:center">
+          <label class="radio-inline"><input type="radio" ng-model="optionUserMap" value="reserve"
+                                             ng-click="hideError();hideSuccess();getDate()">
+            Reservar zona</label>
+          <label class="radio-inline"><input type="radio" ng-model="optionUserMap" ng-click="hideError();hideSuccess()"
+                                             value="feedback">Dejar sugerencia</label>
+        </p>
+
+        <!-- this div will show only when an error occurs -->
+        <div class="alert alert-danger" ng-if="error">
+          <strong>&#10008</strong> {{errorMsg}}
+        </div>
+        <!-- this div will show only when an success occurs -->
+        <div class="alert alert-success" ng-if="success">
+          <strong>&#10004</strong> {{successMsg}}
+        </div>
+
+        <div ng-switch="optionUserMap">
+          <!-- feedback section -->
+          <div ng-switch-when="feedback">
+            <!-- feedback form -->
+            <form ng-submit="feedback()" role="form">
+              <div style="padding: 16px;">
+                <label><b>Descripción</b></label>
+                <textarea ng-click="hideError();hideSuccess()" placeholder="Descripción..." rows="2"
+                          ng-model="$parent.descriptionFeedback"></textarea>
+
+                <button type="submit" class="sC-theme-action">Enviar</button>
+              </div>
+            </form>
+          </div><!-- end ng-switch-when=feedback -->
+
+          <!-- reserve section -->
+          <div ng-switch-when="reserve">
+
+            <div class="row">
+              <!-- calendar section -->
+              <div class="col-sm-6" id="calendarReserves">
+                <div class="month">
+                  <ul>
+                    <li class="prev" ng-click="setMonth(-1)">&#10094;</li>
+                    <li class="next" ng-click="setMonth(1)">&#10095;</li>
+                    <li>
+                      {{calendarMonths[currentMonth].month}}<br>
+                      <span style="font-size:18px">2017</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <ul class="weekdays">
+                  <li ng-repeat="weekDay in calendarWeekDays">{{weekDay}}</li>
+                </ul>
+
+                <ul class="days" id="monthDays">
+                  <li ng-repeat="i in getOffsetDays() track by $index"></li>
+                  <li ng-repeat="i in getDays() track by $index" ng-click="setActive($index)">
+                    <span ng-class="{'active': $index==currentDay}">{{$index+1}}</span></li>
+                </ul>
+              </div>
+
+              <!-- hour selection section -->
+              <div class="col-sm-6" id="hourUL">
+                <div id="hourHeader" class="sC-theme-l1">
+                  <h2 style="font-size: 20px">Selecciona las horas a reservar</h2>
+                </div>
+                <ul>
+                  <li ng-repeat="hour in reservableHours track by $index"
+                      ng-class="{'checked': hoursSelected[$index]==1, 'disabled': hoursSelected[$index]==0}"
+                      ng-click="setReservableHour($index)">{{hour}}</li>
+                </ul>
+              </div><!-- end hourUL -->
+            </div>
+
+            <!-- reserve form -->
+            <form ng-submit="reserve()" role="form">
+
+              <div style="padding: 16px;">
+                <label><b>Nombre de usuario</b></label>
+                <input ng-click="hideError();hideSuccess()" type="text" placeholder="Nombre de usuario..."
+                       ng-model="$parent.userNameReserve" ng-disabled="logged"
+                       ng-class="{'inputDisabled': logged}" required>
+
+                <label><b>Correo electrónico</b></label>
+                <input ng-click="hideError();hideSuccess()" type="email" placeholder="Correo electrónico..."
+                       ng-model="$parent.emailReserve" ng-disabled="logged"
+                       ng-class="{'inputDisabled': logged}" required>
+
+                <label><b>Descripción</b></label>
+                <textarea ng-click="hideError();hideSuccess()" placeholder="Descripción..." rows="2"
+                          ng-model="$parent.descriptionReserve"></textarea>
+
+                <button type="submit" class="sC-theme-action">Hacer reserva</button>
+              </div>
+            </form>
+          </div><!-- end ng-switch-when=reserve -->
+        </div><!-- end ng-switch -->
+      </div><!-- end optionsMapSection -->
+
     </div>
   </div>
 </div>
