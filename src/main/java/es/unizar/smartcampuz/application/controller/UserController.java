@@ -124,7 +124,9 @@ public class UserController {
      */
     @PostMapping("/user")
     @ResponseBody
-    public ResponseEntity<User> create(String email, String name, String password) {
+    public ResponseEntity<User> create(@RequestAttribute("email") String email,
+                                       @RequestAttribute("name") String name,
+                                       @RequestAttribute("password")String password) {
         User user = null;
         try {
             user = new User(email, name, password);
