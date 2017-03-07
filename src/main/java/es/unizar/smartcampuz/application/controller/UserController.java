@@ -203,7 +203,7 @@ public class UserController {
      * Checks if the username and password fields are null or empty.
      */
     private boolean notBlank(String field){
-        return field==null || field.trim().equals("");
+        return field!=null || !field.trim().equals("");
     }
 
 } // class UserController
