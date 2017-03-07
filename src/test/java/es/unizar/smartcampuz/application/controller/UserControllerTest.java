@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -19,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 public class UserControllerTest {
 
@@ -44,13 +46,12 @@ public class UserControllerTest {
     }
 
     @Test
-    @Ignore
     public void create() throws Exception {
         this.mvc.perform(post("/user")
             .requestAttr("email","test")
             .requestAttr("name","test")
             .requestAttr("password","pass"))
-            .andExpect(status().isOk());
+            .andExpect(status().isCreated());
     }
 
     @Test
