@@ -1,10 +1,6 @@
 package es.unizar.smartcampuz.model.user;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -29,6 +25,7 @@ public class User {
 
     // The user's email
     @NotNull
+    @Column(unique=true)
     private String email;
 
     // The user's name
@@ -49,10 +46,14 @@ public class User {
         this.id = id;
     }
 
-    public User(String email, String name, String password) {
+    public User(@NotNull String email,@NotNull String name,@NotNull String password) {
         this.email = email;
         this.name = name;
         this.password = password;
+    }
+
+    public boolean checkPassword(String givenPass){
+        return this.password.equals(givenPass);
     }
 
     // Getter and setter methods
@@ -81,9 +82,9 @@ public class User {
         this.name = value;
     }
 
-    public String getPassword() {
-        return password;
-    }
+//    public String getPassword() {
+//        return password;
+//    }
 
     public void setPassword(String password) {
         this.password = password;
