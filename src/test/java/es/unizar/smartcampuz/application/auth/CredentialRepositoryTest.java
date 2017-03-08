@@ -15,9 +15,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
-@Transactional
 @SpringBootTest
-@ActiveProfiles("test")
+@Transactional
 public class CredentialRepositoryTest {
 
     @Autowired
