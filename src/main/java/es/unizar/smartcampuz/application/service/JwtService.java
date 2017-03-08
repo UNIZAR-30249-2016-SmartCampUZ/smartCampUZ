@@ -52,7 +52,6 @@ public class JwtService {
     public User verify(String token) throws IOException, URISyntaxException{
         byte[] secretKey = secretKeyProvider.getKey();
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-        LOG.info("*****ESTOY EN JwtService");
         return userRepository.findByName(claims.getBody().getSubject().toString());
     }
 }
