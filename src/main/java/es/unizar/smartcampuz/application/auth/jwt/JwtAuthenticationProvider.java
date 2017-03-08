@@ -1,6 +1,6 @@
-package es.unizar.smartcampuz.application.auth;
+package es.unizar.smartcampuz.application.auth.jwt;
 
-import es.unizar.smartcampuz.model.user.User;
+import es.unizar.smartcampuz.application.auth.Credential;
 import es.unizar.smartcampuz.application.exceptions.JwtAuthenticationException;
 import es.unizar.smartcampuz.application.service.JwtService;
 import org.slf4j.Logger;
@@ -31,9 +31,9 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate (Authentication authentication) throws AuthenticationException {
         try{
-            User user = jwtService.verify((String)authentication.getCredentials());
+            Credential credential = jwtService.verify((String)authentication.getCredentials());
             //TODO: Aquí tendré que diferenciar qué usuario se ha logeado para saber qué 'JwtAuthenticated' devolver
-            return new JwtAuthenticatedManager(user);
+            return new JwtAuthenticatedManager(credential);
         }
         catch (Exception e){
             throw new JwtAuthenticationException("Failed to verify token", e);

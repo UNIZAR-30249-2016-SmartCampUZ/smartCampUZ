@@ -1,27 +1,26 @@
 package es.unizar.smartcampuz.application.controller;
 
-import es.unizar.smartcampuz.model.user.User;
-import es.unizar.smartcampuz.model.user.UserRepository;
+import es.unizar.smartcampuz.application.auth.Credential;
+import es.unizar.smartcampuz.application.auth.CredentialRepository;
 import es.unizar.smartcampuz.application.service.JwtService;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.util.Base64Utils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.io.UnsupportedEncodingException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import net.sf.json.JSONObject;
 
 /**
- * A class to test interactions with the MySQL database using the UserRepository class.
+ * A class to test interactions with the MySQL database using the CredentialRepository class.
  *
  * @author netgloo
  */
@@ -33,7 +32,7 @@ public class UserController {
     // ------------------------
 
     @Autowired
-    private UserRepository userRepository;
+    private CredentialRepository credentialRepository;
 
     private static final Logger LOG = LoggerFactory
         .getLogger(UserController.class);
@@ -76,17 +75,17 @@ public class UserController {
             e.printStackTrace();
         }
         int index = info.indexOf(":");
-        String username = info.substring(0, index);
+        String email = info.substring(0, index);
         String pass = info.substring(index+1);
-        LOG.info("User: "+username+" Pass: "+pass);
+        LOG.info("Credential: "+email+" Pass: "+pass);
 
-        if(notBlank(username) && notBlank(pass)){
-            User user = userRepository.findByName(username);
-            if(user == null){
+        if(notBlank(email) && notBlank(pass)){
+            Credential credential = credentialRepository.findByEmail(email);
+            if(credential == null){
                 LOG.info("El usuario no existe");
                 return new ResponseEntity<>("\"El usuario no existe\"", HttpStatus.BAD_REQUEST);
             }
-            else if( !(user.checkPassword(pass) )){
+            else if( !(credential.checkPassword(pass) )){
                 LOG.info("Contraseña incorrecta");
                 return new ResponseEntity<>("\"Contraseña incorrecta\"", HttpStatus.BAD_REQUEST);
             }
@@ -95,15 +94,15 @@ public class UserController {
                 HttpHeaders headers = new HttpHeaders();
                 try{
                     //Creo un token para el usuario y lo añado al header "Token"
-                    headers.add("Token", jwtService.tokenFor(user));
+                    headers.add("Token", jwtService.tokenFor(credential));
                 }
                 catch (URISyntaxException e){
                     e.printStackTrace();
                 }
                 JSONObject jUser = new JSONObject();
-                jUser.element("userName", user.getName());
-                jUser.element("email", user.getEmail());
-                jUser.element("type", "");
+                jUser.element("userName", credential.getEmail()); //TODO Delete this
+                jUser.element("email", credential.getEmail());
+                jUser.element("type", credential.getRole());
                 return new ResponseEntity<>(jUser.toString(), headers, HttpStatus.OK);
             }
         }
@@ -117,24 +116,24 @@ public class UserController {
     /**
      * POST/user  --> Create a new user and save it in the database.
      *
-     * @param email User's email
-     * @param name User's name
-     * @param password User's password
+     * @param email Credential's email
+     * @param name Credential's name
+     * @param password Credential's password
      * @return A string describing if the user is succesfully created or not.
      */
     @PostMapping("/user")
     @ResponseBody
-    public ResponseEntity<User> create(@RequestAttribute("email") String email,
-                                       @RequestAttribute("name") String name,
-                                       @RequestAttribute("password")String password) {
-        User user = null;
+    public ResponseEntity<Credential> create(@RequestAttribute("email") String email,
+                                             @RequestAttribute("name") String name,
+                                             @RequestAttribute("password")String password) {
+        Credential credential = null;
         try {
-            user = new User(email, name, password);
-            userRepository.save(user);
-            return new ResponseEntity<User>(user,HttpStatus.CREATED);
+            credential = new Credential(email, name, password);
+            credentialRepository.save(credential);
+            return new ResponseEntity<Credential>(credential,HttpStatus.CREATED);
         }
         catch (Exception ex) {
-            return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Credential>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -146,14 +145,14 @@ public class UserController {
      */
     @DeleteMapping("/user")
     @ResponseBody
-    public ResponseEntity<User> delete(@RequestAttribute("id") long id) {
+    public ResponseEntity<Credential> delete(@RequestAttribute("id") long id) {
         try {
-            User user = new User(id);
-            userRepository.delete(user);
-            return new ResponseEntity<User>(HttpStatus.ACCEPTED);
+            Credential credential = new Credential(id);
+            credentialRepository.delete(credential);
+            return new ResponseEntity<Credential>(HttpStatus.ACCEPTED);
         }
         catch (Exception ex) {
-            return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Credential>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -165,39 +164,13 @@ public class UserController {
      */
     @GetMapping("/user")
     @ResponseBody
-    public ResponseEntity<User> get(long id) {
+    public ResponseEntity<Credential> get(long id) {
         try {
-            User user = userRepository.findOne(id);
-            return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
+            Credential credential = credentialRepository.findOne(id);
+            return new ResponseEntity<Credential>(credential, HttpStatus.ACCEPTED);
         }
         catch (Exception ex) {
-            return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
-     * PUT/user  --> Update the email and the name for the user in the database
-     * having the passed id.
-     *
-     * @param id The id for the user to update.
-     * @param email The new email.
-     * @param name The new name.
-     * @param password The new password.
-     * @return A string describing if the user is succesfully updated or not.
-     */
-    @PutMapping("/user")
-    @ResponseBody
-    public ResponseEntity<User> updateUser(long id, String email, String name, String password) {
-        try {
-            User user = userRepository.findOne(id);
-            user.setEmail(email);
-            user.setName(name);
-            user.setPassword(password);
-            userRepository.save(user);
-            return new ResponseEntity<User>(user, HttpStatus.ACCEPTED);
-        }
-        catch (Exception ex) {
-            return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<Credential>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
