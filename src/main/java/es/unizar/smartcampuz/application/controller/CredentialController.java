@@ -25,7 +25,7 @@ import java.net.URISyntaxException;
  * @author netgloo
  */
 @Controller
-public class UserController {
+public class CredentialController {
 
     // ------------------------
     // PRIVATE FIELDS
@@ -35,7 +35,7 @@ public class UserController {
     private CredentialRepository credentialRepository;
 
     private static final Logger LOG = LoggerFactory
-        .getLogger(UserController.class);
+        .getLogger(CredentialController.class);
 
     private final JwtService jwtService;
 
@@ -44,12 +44,12 @@ public class UserController {
     // ------------------------
 
     @SuppressWarnings("unused")
-    public UserController(){
+    public CredentialController(){
         this(null);
     }
 
     @Autowired
-    public UserController(JwtService jwtService){
+    public CredentialController(JwtService jwtService){
         this.jwtService = jwtService;
     }
 
@@ -111,67 +111,6 @@ public class UserController {
             return new ResponseEntity<>("\"Usuario o contraseña incorrectos\"", HttpStatus.BAD_REQUEST);
         }
 
-    }
-
-    /**
-     * POST/user  --> Create a new user and save it in the database.
-     *
-     * @param email Credential's email
-     * @param name Credential's name
-     * @param password Credential's password
-     * @return A string describing if the user is succesfully created or not.
-     */
-    @PostMapping("/user")
-    @ResponseBody
-    public ResponseEntity<Credential> create(@RequestAttribute("email") String email,
-                                             @RequestAttribute("name") String name,
-                                             @RequestAttribute("password")String password) {
-        Credential credential = null;
-        try {
-            credential = new Credential(email, name, password);
-            credentialRepository.save(credential);
-            return new ResponseEntity<Credential>(credential,HttpStatus.CREATED);
-        }
-        catch (Exception ex) {
-            return new ResponseEntity<Credential>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
-     * DELETE/user  --> Delete the user having the passed id.
-     *
-     * @param id The id of the user to delete
-     * @return A string describing if the user is succesfully deleted or not.
-     */
-    @DeleteMapping("/user")
-    @ResponseBody
-    public ResponseEntity<Credential> delete(@RequestAttribute("id") long id) {
-        try {
-            Credential credential = new Credential(id);
-            credentialRepository.delete(credential);
-            return new ResponseEntity<Credential>(HttpStatus.ACCEPTED);
-        }
-        catch (Exception ex) {
-            return new ResponseEntity<Credential>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
-     * GET/user  --> Return the user identified by id.
-     *
-     * @param id The id to search in the database.
-     * @return The user id or a message error if the user is not found.
-     */
-    @GetMapping("/user")
-    @ResponseBody
-    public ResponseEntity<Credential> get(long id) {
-        try {
-            Credential credential = credentialRepository.findOne(id);
-            return new ResponseEntity<Credential>(credential, HttpStatus.ACCEPTED);
-        }
-        catch (Exception ex) {
-            return new ResponseEntity<Credential>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     /*

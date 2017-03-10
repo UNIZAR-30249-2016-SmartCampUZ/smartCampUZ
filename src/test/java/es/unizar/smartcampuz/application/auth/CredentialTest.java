@@ -9,9 +9,9 @@ public class CredentialTest {
 
     @Test
     public void checkPassword() throws Exception {
-        Credential u = new Credential("777@unizar.es", "pass", "role");
-        assertFalse(u.checkPassword("wrong"));
-        assertTrue(u.checkPassword("pass"));
+        Credential credential = new Credential("777@unizar.es", "pass", "role");
+        assertFalse(credential.checkPassword("wrong"));
+        assertTrue(credential.checkPassword("pass"));
     }
 
 }

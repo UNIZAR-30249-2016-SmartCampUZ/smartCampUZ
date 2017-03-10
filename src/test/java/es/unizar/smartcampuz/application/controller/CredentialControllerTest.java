@@ -121,34 +121,6 @@ public class CredentialControllerTest {
         assertTrue(mockResponse.getContentAsString().equals(WRONG_PASS_MESSAGE));
     }
 
-    @Test
-    public void create() throws Exception {
-        this.mvc.perform(post("/user")
-            .requestAttr("email","test")
-            .requestAttr("name","testCreate")
-            .requestAttr("password","pass"))
-            .andExpect(status().isCreated());
-    }
-
-    @Test
-    @Ignore
-    public void deleteUser() throws Exception {
-        //TODO Implement
-    }
-
-    @Test
-    @Ignore
-    public void getByEmail() throws Exception {
-        //TODO Implement
-    }
-
-    @Test
-    @Ignore
-    public void updateUser() throws Exception {
-        //TODO Implement
-
-    }
-
     /*
      * Sends the request to the signIn endpoint with the given header
      */
