@@ -1,4 +1,4 @@
-package es.unizar.smartcampuz.application.auth;
+package es.unizar.smartcampuz.application.auth.jwt;
 
 import org.springframework.stereotype.Component;
 
