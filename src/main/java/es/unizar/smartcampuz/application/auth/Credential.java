@@ -1,14 +1,10 @@
-package es.unizar.smartcampuz.model.user;
+package es.unizar.smartcampuz.application.auth;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * An entity User composed by three fields (id, email, name).
+ * An entity Credential composed by three fields (id, email, name).
  * The Entity annotation indicates that this class is a JPA entity.
  * The Table annotation specifies the name for the table in the db.
  *
@@ -16,7 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "users")
-public class User {
+public class Credential {
 
     // ------------------------
     // PRIVATE FIELDS
@@ -29,40 +25,42 @@ public class User {
 
     // The user's email
     @NotNull
+    @Column(unique=true)
     private String email;
-
-    // The user's name
-    @NotNull
-    private String name;
 
     // The user's password
     @NotNull
     private String password;
 
+    // The user's role
+    @NotNull
+    private String role;
+
+
     // ------------------------
     // PUBLIC METHODS
     // ------------------------
 
-    public User() { }
+    public Credential() { }
 
-    public User(long id) {
+    public Credential(long id) {
         this.id = id;
     }
 
-    public User(String email, String name, String password) {
+    public Credential(@NotNull String email, @NotNull String password, @NotNull String role) {
         this.email = email;
-        this.name = name;
         this.password = password;
+        this.role = role;
+    }
+
+    public boolean checkPassword(String givenPass){
+        return this.password.equals(givenPass);
     }
 
     // Getter and setter methods
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long value) {
-        this.id = value;
     }
 
     public String getEmail() {
@@ -73,14 +71,6 @@ public class User {
         this.email = value;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String value) {
-        this.name = value;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -89,4 +79,11 @@ public class User {
         this.password = password;
     }
 
-} // class User
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+} // class Credential

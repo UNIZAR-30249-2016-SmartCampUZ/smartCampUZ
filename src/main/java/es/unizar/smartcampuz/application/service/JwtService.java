@@ -1,8 +1,8 @@
 package es.unizar.smartcampuz.application.service;
 
-import es.unizar.smartcampuz.application.auth.SecretKeyProvider;
-import es.unizar.smartcampuz.model.user.User;
-import es.unizar.smartcampuz.model.user.UserRepository;
+import es.unizar.smartcampuz.application.auth.Credential;
+import es.unizar.smartcampuz.application.auth.jwt.SecretKeyProvider;
+import es.unizar.smartcampuz.application.auth.CredentialRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -24,7 +24,7 @@ public class JwtService {
     private static final String ISSUER = "SmartCampUZ";
     private SecretKeyProvider secretKeyProvider;
     @Autowired
-    private UserRepository userRepository;
+    private CredentialRepository credentialRepository;
     private static final Logger LOG = LoggerFactory
         .getLogger(JwtService.class);
 
@@ -38,21 +38,20 @@ public class JwtService {
         this.secretKeyProvider = secretKeyProvider;
     }
 
-    public String tokenFor(User user) throws IOException, URISyntaxException{
+    public String tokenFor(Credential credential) throws IOException, URISyntaxException{
         byte[] secretKey = secretKeyProvider.getKey();
         Date expiration = Date.from(LocalDateTime.now().plusHours(2).toInstant(UTC));
         return Jwts.builder()
-            .setSubject(user.getName())
+            .setSubject(credential.getEmail())
             .setExpiration(expiration)
             .setIssuer(ISSUER)
             .signWith(SignatureAlgorithm.HS512, secretKey)
             .compact();
     }
 
-    public User verify(String token) throws IOException, URISyntaxException{
+    public Credential verify(String token) throws IOException, URISyntaxException{
         byte[] secretKey = secretKeyProvider.getKey();
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-        LOG.info("*****ESTOY EN JwtService");
-        return userRepository.findByName(claims.getBody().getSubject().toString());
+        return credentialRepository.findByEmail(claims.getBody().getSubject().toString());
     }
 }
