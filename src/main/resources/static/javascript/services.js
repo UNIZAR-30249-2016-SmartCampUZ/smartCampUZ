@@ -74,7 +74,7 @@ angular.module('smartCampUZApp')
                     var aux = {
                         userName: "paco",
                         email: "paco@paco.paco",
-                        type: "profesor"
+                        type: "admin"
                     };
                     that.authenticate(aux,"token");
                     callbackSuccess();
@@ -165,6 +165,22 @@ angular.module('smartCampUZApp')
                     callbackSuccess(data);
                 }).error(function (data) {
                     callbackError(data);
+                });
+            },
+
+            // List all feedback from the server
+            getFeedback: function (callbackSuccess, callbackError) {
+                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                $http({
+                    method: 'GET',
+                    url: 'getFeedback',
+                    headers: {'Authorization': 'Bearer ' + token}
+                }).success(function (data) {
+                    callbackSuccess(data);
+                }).error(function (data) {
+
+                    callbackSuccess(data);
+                    //callbackError(data);
                 });
             }
         };

@@ -12,7 +12,7 @@ a:focus, a:hover {
   text-decoration: none;
 }
 
-html, body, #starterStyle {
+html, body, #starterStyle, #adminStyle {
   height: 100%;
 }
 
@@ -36,4 +36,30 @@ h1 {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+}
+
+.container-fluid {
+  height: 100%;
+}
+
+.container-fluid > .row {
+  height: 100%;
+}
+
+#leaftletMapSection {
+  padding: 50px 0 0 0;
+  height: 100%;
+}
+
+@media only screen and (min-width: 768px){
+  #leaftletMapSection {
+    padding: 70px 0 0 0;
+  }
+  #optionsMapSection {
+    padding-top: 70px;
+    overflow-y: auto;
+    box-shadow: -4px 0 8px 0 rgba(0, 0, 0, 0.2), -6px 0 20px 0 rgba(0, 0, 0, 0.19);
+    z-index: 400;
+    height: 100%;
+  }
 }
