@@ -1,0 +1,11 @@
+.nav-tabs>li>a {
+  color: #006e51;
+}
+
+.nav-tabs>li {
+  width: 40%;
+}
+
+#adminStyle #activeToggleable {
+  margin-left: 10%
+}
