@@ -5,9 +5,15 @@
         <!-- leaftlet map directive -->
         <leaftlet-map></leaftlet-map>
       </div>
-      <div class="col-sm-6" id="optionsMapSection">
+
+      <div class="col-sm-6 text-center" ng-class="{'sC-fade-in': !located, 'sC-fade-out': located}" ng-if="!located"
+           id="firstView">
+        <h1>Selecciona primero una localización</h1>
+      </div>
+
+      <div class="col-sm-6" id="optionsMapSection" ng-class="{'sC-fade-in': located, 'sC-fade-out': !located}">
         <!-- location's description section -->
-        <h1>Localización seleccionada: XXXX</h1>
+        <h1>Localización seleccionada: {{location}}</h1>
 
         <div class="divider"></div>
 

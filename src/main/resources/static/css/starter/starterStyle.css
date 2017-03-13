@@ -22,6 +22,9 @@
     z-index: 400;
     height: 100%;
   }
+  #starterStyle #firstView {
+    padding-top: 70px;
+  }
 }
 
 /* Full-width input fields */
@@ -54,4 +57,25 @@
 
 #starterStyle .inputDisabled {
   cursor: not-allowed;
+}
+
+.sC-fade-in {
+  animation: sC-appear 0.3s linear;
+  animation-fill-mode: forwards;
+  animation-delay: 0.3s;
+}
+
+@keyframes sC-appear {
+  from {opacity: 0; transform: scale(0)}
+  to {opacity: 1; transform: scale(1)}
+}
+
+.sC-fade-out {
+  animation: sC-disappear 0.3s linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes sC-disappear {
+  from {opacity: 1; transform: scale(1)}
+  to {opacity: 0; transform: scale(0)}
 }

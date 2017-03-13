@@ -1,6 +1,17 @@
 angular.module('smartCampUZApp')
 
-    .controller('starterCtrl', ['$scope', '$state', 'auth', 'reserve', 'feedback', function ($scope, $state, auth, reserve, feedback) {
+    .controller('starterCtrl', ['$scope', '$state', 'auth', 'reserve', 'feedback', 'userMap',
+        function ($scope, $state, auth, reserve, feedback, userMap) {
+        $scope.location = "";
+        $scope.located = false;
+        // Watches to control if the user have selected a location
+        $scope.$watch(function() {
+            return userMap.getCurrentLocation();
+        }, function () {
+            $scope.location = userMap.getCurrentLocation();
+            $scope.located = $scope.location != "";
+        });
+
         /* FEEDBACK MESSAGES */
         // feedback handling variables
         $scope.error = false;
@@ -124,7 +135,7 @@ angular.module('smartCampUZApp')
                 showSuccess(data);
             }, showError);
         };
-        // Watches to control input variables length
+        // Watches to control if the user is authenticated
         $scope.$watch(function() {
             return auth.isAuthenticated();
         }, function () {
