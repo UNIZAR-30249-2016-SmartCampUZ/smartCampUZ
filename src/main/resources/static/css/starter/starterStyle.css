@@ -60,22 +60,15 @@
 }
 
 .sC-fade-in {
-  animation: sC-appear 0.3s linear;
+  animation: sC-appear 0.5s linear;
   animation-fill-mode: forwards;
-  animation-delay: 0.3s;
 }
 
 @keyframes sC-appear {
-  from {opacity: 0; transform: scale(0)}
-  to {opacity: 1; transform: scale(1)}
+  from {opacity: 0;}
+  to {opacity: 1;}
 }
 
-.sC-fade-out {
-  animation: sC-disappear 0.3s linear;
-  animation-fill-mode: forwards;
-}
-
-@keyframes sC-disappear {
-  from {opacity: 1; transform: scale(1)}
-  to {opacity: 0; transform: scale(0)}
+.sC-hide {
+  opacity: 0;
 }

@@ -173,7 +173,7 @@ angular.module('smartCampUZApp')
     // 'userMap' service manage the user view of the map with the server
     .factory('userMap', function ($state, $http) {
 
-        var currentLocation = "";
+        var currentLocation = "L0.01";
 
         return {
             // Get the current location
