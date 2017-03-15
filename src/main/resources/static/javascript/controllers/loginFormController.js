@@ -3,7 +3,7 @@ angular.module('smartCampUZApp')
     .controller('loginFormCtrl', ['$scope', 'auth', function ($scope, auth) {
 
         // inputs visual variables
-        $scope.userName = "";
+        $scope.email = "";
         $scope.password = "";
 
         // feedback handling variables
@@ -15,7 +15,7 @@ angular.module('smartCampUZApp')
 
         $scope.closeLoginForm = function () {
             modal.style.display = "none";
-            $scope.userName = "";
+            $scope.email = "";
             $scope.password = "";
             $scope.errorMsg = "";
             $scope.error = false;
@@ -42,9 +42,7 @@ angular.module('smartCampUZApp')
 
         // send the login form to the auth service
         $scope.login = function () {
-            var user = $scope.userName;
-            var password = $scope.password;
             // Standard 'authorization basic'
-            auth.login($scope.userName, $scope.password, $scope.closeLoginForm, showError);
+            auth.login($scope.email, $scope.password, $scope.closeLoginForm, showError);
         }
     }]);

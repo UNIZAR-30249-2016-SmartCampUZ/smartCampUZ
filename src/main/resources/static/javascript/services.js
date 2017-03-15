@@ -53,14 +53,14 @@ angular.module('smartCampUZApp')
             },
 
             //send the login info to the server
-            login: function (user, password, callbackSuccess, callbackError) {
+            login: function (email, password, callbackSuccess, callbackError) {
                 var that = this;
                 $http({
                     method: 'POST',
                     url: 'signIn',
                     headers: {
                         'Authorization': 'Basic ' +
-                        $base64.encode(user + ":" + password)
+                        $base64.encode(email + ":" + password)
                     }
                 }).success(function (data, status, headers) {
                     that.authenticate(data, headers().Token);
