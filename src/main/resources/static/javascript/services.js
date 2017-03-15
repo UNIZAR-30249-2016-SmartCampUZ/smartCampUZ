@@ -63,7 +63,7 @@ angular.module('smartCampUZApp')
                         $base64.encode(email + ":" + password)
                     }
                 }).success(function (data, status, headers) {
-                    that.authenticate(data, headers().Token);
+                    that.authenticate(data, headers().token);
                     callbackSuccess();
                     if (data.type == 'admin') {
                         $state.go('admin');
@@ -71,19 +71,7 @@ angular.module('smartCampUZApp')
                         $state.go('maintenance');
                     }
                 }).error(function (data) {
-                    var aux = {
-                        userName: "paco",
-                        email: "paco@paco.paco",
-                        type: "profesor"
-                    };
-                    that.authenticate(aux,"token");
-                    callbackSuccess();
-                    if (aux.type == 'admin') {
-                        $state.go('admin');
-                    } else if (aux.type == 'maintenance') {
-                        $state.go('maintenance');
-                    }
-                    //callbackError(data);
+                    callbackError(data);
                 });
             }
         };
