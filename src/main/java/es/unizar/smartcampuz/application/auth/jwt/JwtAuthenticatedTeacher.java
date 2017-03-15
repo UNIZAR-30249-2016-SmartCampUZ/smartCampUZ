@@ -1,6 +1,6 @@
-package es.unizar.smartcampuz.application.auth;
+package es.unizar.smartcampuz.application.auth.jwt;
 
-import es.unizar.smartcampuz.model.user.User;
+import es.unizar.smartcampuz.application.auth.Credential;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,17 +8,17 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Collection;
 import java.util.Collections;
 
-public class JwtAuthenticatedManager implements Authentication{
+public class JwtAuthenticatedTeacher implements Authentication{
 
-    private final User user;
+    private final Credential credential;
 
-    public JwtAuthenticatedManager(User user){
-        this.user=user;
+    public JwtAuthenticatedTeacher(Credential credential){
+        this.credential = credential;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_MANAGER"));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_TEACHER"));
     }
 
     @Override
@@ -45,9 +45,8 @@ public class JwtAuthenticatedManager implements Authentication{
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
 
     }
-
     @Override
     public String getName() {
-        return user.getName();
+        return credential.getEmail();
     }
 }

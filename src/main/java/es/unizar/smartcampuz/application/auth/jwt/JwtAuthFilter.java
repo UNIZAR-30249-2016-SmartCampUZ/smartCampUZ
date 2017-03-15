@@ -1,6 +1,5 @@
-package es.unizar.smartcampuz.application.auth;
+package es.unizar.smartcampuz.application.auth.jwt;
 
-import es.unizar.smartcampuz.application.controller.UserController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
