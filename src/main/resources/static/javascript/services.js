@@ -167,7 +167,8 @@ angular.module('smartCampUZApp')
                     callbackSuccess(data.feedbacks);
                 }).error(function (data) {
                     var aux = [
-                        {state: "", worker: "", description: "blabla", title: "bla", location: "L0.01"}
+                        {state: "", worker: "", description: "blabla", title: "bla", location: "L0.01"},
+                        {state: "Asignado", worker: "Paco", description: "foobar", title: "foo", location: "A.01"}
                     ];
                     callbackSuccess(aux);
                     //callbackError(data);
