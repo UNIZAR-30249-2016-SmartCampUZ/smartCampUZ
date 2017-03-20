@@ -36,6 +36,6 @@ angular.module('smartCampUZApp')
             restrict: 'E',
             templateUrl: 'templates/components/feedback.html',
             controller: 'feedbackCtrl',
-            scope: {}
+            scope: true
         }
     });
