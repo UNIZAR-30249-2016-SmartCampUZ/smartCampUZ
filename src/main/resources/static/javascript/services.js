@@ -65,9 +65,9 @@ angular.module('smartCampUZApp')
                 }).success(function (data, status, headers) {
                     that.authenticate(data, headers().token);
                     callbackSuccess();
-                    if (data.type == 'manager') {
+                    if (data.type == 'admin') {
                         $state.go('admin');
-                    } else if (data.type == 'worker') {
+                    } else if (data.type == 'maintenance') {
                         $state.go('maintenance');
                     }
                 }).error(function (data) {

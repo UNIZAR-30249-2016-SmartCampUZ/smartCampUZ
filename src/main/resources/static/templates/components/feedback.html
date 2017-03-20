@@ -1,0 +1,17 @@
+<div class="recordStyle">
+  <button class="accordion" ng-click="showCommentary = !showCommentary" ng-class="{active: showCommentary}">
+    Fecha: {{record.date}}
+  </button>
+  <div class="panel" ng-class="{show: showCommentary}">
+    <div class="col-xs-12 col-sm-4">
+      <p>Series: {{record.series}}</p>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+      <p>Repeticiones: {{record.repetitions}}</p>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+      <p>Peso: {{record.weight}}</p>
+    </div>
+    <p class="col-xs-12">Nota: {{record.commentary}}</p>
+  </div>
+</div>
