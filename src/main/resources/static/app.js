@@ -9,10 +9,10 @@ angular.module('smartCampUZApp', ['ui.router', 'base64', 'angular-jwt'])
                 templateUrl: "templates/starter.html",
                 controller: "starterCtrl",
                 onEnter: function ($state, auth) {
-                    if (auth.isAuthenticated() && (auth.getType() == 'admin')) {
+                    if (auth.isAuthenticated() && (auth.getType() == 'manager')) {
                         $state.go('admin');
-                    } else if (auth.isAuthenticated() && (auth.getType() == 'maintenance')) {
-                        $state.go('maintenance');
+                    } else if (auth.isAuthenticated() && (auth.getType() == 'worker')) {
+                        $state.go('worker');
                     }
                 }
             })
@@ -23,10 +23,10 @@ angular.module('smartCampUZApp', ['ui.router', 'base64', 'angular-jwt'])
                 templateUrl: "templates/admin.html",
                 controller: "adminCtrl",
                 onEnter: function ($state, auth) {
-                    if (!auth.isAuthenticated() || auth.isAuthenticated() && (auth.getType() == 'profesor')) {
+                    if (!auth.isAuthenticated() || auth.isAuthenticated() && (auth.getType() == 'teacher')) {
                         $state.go('starter');
-                    } else if (auth.isAuthenticated() && (auth.getType() == 'maintenance')) {
-                        $state.go('maintenance');
+                    } else if (auth.isAuthenticated() && (auth.getType() == 'worker')) {
+                        $state.go('worker');
                     }
                 }
             });
