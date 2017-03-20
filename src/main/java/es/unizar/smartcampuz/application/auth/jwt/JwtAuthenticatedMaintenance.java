@@ -8,17 +8,17 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Collection;
 import java.util.Collections;
 
-public class JwtAuthenticatedManager implements Authentication{
+public class JwtAuthenticatedMaintenance implements Authentication{
 
     private final Credential credential;
 
-    public JwtAuthenticatedManager(Credential credential){
+    public JwtAuthenticatedMaintenance(Credential credential){
         this.credential = credential;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_MANAGER"));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_MAINTENANCE"));
     }
 
     @Override

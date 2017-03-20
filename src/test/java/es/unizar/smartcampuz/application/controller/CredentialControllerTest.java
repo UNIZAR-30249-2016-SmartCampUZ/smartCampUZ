@@ -57,7 +57,6 @@ public class CredentialControllerTest {
         manager = credentialRepository.findByEmail("manager@unizar.es");
         teacher = credentialRepository.findByEmail("teacher@unizar.es");
         worker = credentialRepository.findByEmail("worker@unizar.es");
-
     }
 
     /*

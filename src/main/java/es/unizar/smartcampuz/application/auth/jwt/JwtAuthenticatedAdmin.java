@@ -8,17 +8,17 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Collection;
 import java.util.Collections;
 
-public class JwtAuthenticatedTeacher implements Authentication{
+public class JwtAuthenticatedAdmin implements Authentication{
 
     private final Credential credential;
 
-    public JwtAuthenticatedTeacher(Credential credential){
+    public JwtAuthenticatedAdmin(Credential credential){
         this.credential = credential;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_TEACHER"));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
     @Override
@@ -45,6 +45,7 @@ public class JwtAuthenticatedTeacher implements Authentication{
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
 
     }
+
     @Override
     public String getName() {
         return credential.getEmail();
