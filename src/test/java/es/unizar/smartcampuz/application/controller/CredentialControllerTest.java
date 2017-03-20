@@ -72,7 +72,7 @@ public class CredentialControllerTest {
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
         JSONObject jResponse= JSONObject.fromObject(mockResponse.getContentAsString());
         String token = mockResponse.getHeader("Token");
-        assertTrue(jResponse.getString("userName").equals(manager.getEmail())); //TODO delete this
+        assertTrue(jResponse.getString("userName").equals("Paco"));
         assertTrue(jResponse.getString("email").equals(manager.getEmail()));
         assertTrue(jResponse.getString("type").equals(manager.getRole()));
         // Checks if the token is not blank and retrieves it

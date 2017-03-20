@@ -100,7 +100,7 @@ public class CredentialController {
                     e.printStackTrace();
                 }
                 JSONObject jUser = new JSONObject();
-                jUser.element("userName", credential.getEmail()); //TODO Delete this
+                jUser.element("userName", "Paco");
                 jUser.element("email", credential.getEmail());
                 jUser.element("type", credential.getRole());
                 return new ResponseEntity<>(jUser.toString(), headers, HttpStatus.OK);
