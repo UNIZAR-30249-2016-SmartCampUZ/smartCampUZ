@@ -63,6 +63,7 @@ angular.module('smartCampUZApp')
             AdaByronMarker.bindPopup("<b>Edificio Ada Byron</b>");
             TorresMarker.bindPopup("<b>Edificio Torres Quevedo</b>");
             BetancourtMarker.bindPopup("<b>Edificio Agustín de Betancourt</b>");
+            BetancourtMarker.bindPopup("<b>Edificio Agustín de Betancourt</b>");
 
             var overlays = {
                 "Campus": EINAmarker,
@@ -83,51 +84,6 @@ angular.module('smartCampUZApp')
                     .openOn(map);
             }
             map.on('click', onMapClick);
-
-
-            //Stairs_UP icon
-            var upstairsIcon = L.icon({
-                iconUrl: 'stairs_up.png',
-                zIndexOffset: 1000,
-                title: 'Floor above',
-                riseOnHover: true,
-                alt: 'Floor above',
-                iconSize:     [45, 45], // size of the icon
-                iconAnchor:   [45, 45] // point of the icon which will
-                //correspond to marker's location
-            });
-            var stairsUpLatLng = L.latLng(map.getCenter().lat,map.getCenter().lng);
-            var upstairs = new L.marker(stairsUpLatLng,
-                {icon: upstairsIcon, clickable:true});
-            upstairs.addTo(map);
-
-
-            //Stairs_DOWN icon
-            var downstairsIcon = L.icon({
-                iconUrl: 'stairs_down.png',
-                zIndexOffset: 1000,
-                title: 'Floor below',
-                alt: 'Floor below',
-                riseOnHover:true,
-                iconSize:     [45, 45], // size of the icon
-                iconAnchor:   [45, 45] // point of the icon which will
-                //correspond to marker's location
-            });
-            var stairsDownLatLng = L.latLng(map.getCenter().lat,map.getCenter().lng);
-            var downstairs = new L.marker(stairsDownLatLng,
-                {icon: downstairsIcon, clickable:true});
-            downstairs.addTo(map);
-            /**
-             * When map moves, move the icons
-             */
-            map.on('move', function(e) {
-                stairsUpLatLng = L.latLng(map.getCenter().lat, map.getCenter().lng);
-                stairsDownLatLng = L.latLng(map.getCenter().lat, map.getCenter().lng);
-                upstairs.setLatLng(stairsUpLatLng);
-                downstairs.setLatLng(stairsDownLatLng)
-            });
-
-
 
             /**
              * Background map
