@@ -32,8 +32,15 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate (Authentication authentication) throws AuthenticationException {
         try{
             Credential credential = jwtService.verify((String)authentication.getCredentials());
-            //TODO: Aquí tendré que diferenciar qué usuario se ha logeado para saber qué 'JwtAuthenticated' devolver
-            return new JwtAuthenticatedManager(credential);
+            switch (credential.getRole()){
+
+                case "professor": return new JwtAuthenticatedProfessor(credential);
+
+                case "maintenance": return new JwtAuthenticatedMaintenance(credential);
+
+                default: return new JwtAuthenticatedAdmin(credential);
+            }
+
         }
         catch (Exception e){
             throw new JwtAuthenticationException("Failed to verify token", e);

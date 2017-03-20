@@ -54,10 +54,9 @@ public class CredentialControllerTest {
     @Before
     public void setUp() throws Exception{
         this.mvc = MockMvcBuilders.webAppContextSetup(this.context).build();
-        manager = credentialRepository.findByEmail("manager@unizar.es");
-        teacher = credentialRepository.findByEmail("teacher@unizar.es");
-        worker = credentialRepository.findByEmail("worker@unizar.es");
-
+        manager = credentialRepository.findByEmail("admin@unizar.es");
+        teacher = credentialRepository.findByEmail("professor@unizar.es");
+        worker = credentialRepository.findByEmail("maintenance@unizar.es");
     }
 
     /*
