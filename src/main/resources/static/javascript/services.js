@@ -136,7 +136,7 @@ angular.module('smartCampUZApp')
     })
 
     // 'feedback' service manage the feedback service of the page with the server
-    .factory('feedback', function ($state, $http, userMap, auth) {
+    .factory('feedback', function ($state, $http, userMap) {
 
         return {
             // Report a description of a feedback
@@ -159,19 +159,18 @@ angular.module('smartCampUZApp')
             // List all feedback from the server
             getFeedback: function (callbackSuccess, callbackError) {
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                var aux = {
+                    location: userMap.getCurrentLocation()
+                };
                 $http({
-                    method: 'GET',
-                    url: 'getFeedback',//listFeedback TODO
-                    headers: {'Authorization': 'Bearer ' + token}
+                    method: 'POST',
+                    url: 'listFeedback',
+                    headers: {'Authorization': 'Bearer ' + token},
+                    data: JSON.stringify(aux)
                 }).success(function (data) {
                     callbackSuccess(data.feedbacks);
                 }).error(function (data) {
-                    var aux = [
-                        {state: "", worker: "", description: "blabla", title: "bla", location: "L0.01"},
-                        {state: "Asignado", worker: "Paco", description: "foobar", title: "foo", location: "A.01"}
-                    ];
-                    callbackSuccess(aux);
-                    //callbackError(data);
+                    callbackError(data);
                 });
             }
         };

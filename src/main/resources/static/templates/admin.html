@@ -17,11 +17,33 @@
 
         <div class="tab-content">
           <div id="feedbacks" class="tab-pane fade in active">
-            <h3 style="font-size: 130%">Filtrar por:</h3>
-            <p>trabajador, estado, titulo</p>
+            <h3 style="font-size: 130%">Filtrar por:
+              <i class="fa fa-times" ng-click="resetFilters()" style="cursor:pointer;float:right;color:#f44336"></i></h3>
+
+            <div class="row"><!-- Filters section -->
+              <div class="form-group col-xs-4">
+                <input type="text" ng-model="titleFilter" class="form-control" placeholder="Título..." />
+              </div>
+              <div class="form-group col-xs-4">
+                <select class="form-control" ng-model="workerFilter" ng-options="x for x in workerList">
+                  <option value="" disabled selected>Trabajador...</option>
+                </select>
+              </div>
+              <div class="form-group col-xs-4">
+                <select class="form-control" ng-model="stateFilter" ng-options="x for x in stateList">
+                  <option value="" disabled selected>Estado...</option>
+                </select>
+              </div>
+            </div><!-- END: Filters section -->
+
+            <!-- this div will show only when an error occurs -->
+            <div class="alert alert-danger" ng-if="error">
+              <strong>&#10008</strong> {{errorMsg}}
+            </div>
 
             <div id="feedbackList">
-              <feedback ng-repeat="feedback in feedbackList"></feedback>
+              <feedback ng-repeat="feedback in feedbackList | filter: {'title': titleFilter, 'worker': workerFilter,  'state': stateFilter}">
+              </feedback>
             </div>
 
           </div>
