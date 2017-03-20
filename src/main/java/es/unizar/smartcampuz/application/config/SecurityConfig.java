@@ -29,11 +29,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure (HttpSecurity http) throws Exception{
-        http.csrf().ignoringAntMatchers("/signIn");
+        http.csrf().disable();
 
         http.authorizeRequests()
-            .antMatchers("/templates/admin.html")
-            .hasAuthority("ROLE_MANAGER")
+            .antMatchers("/listFeedback")
+            .hasAuthority("ROLE_ADMIN")
             .antMatchers("/**/*")
             .permitAll()
             .and()
