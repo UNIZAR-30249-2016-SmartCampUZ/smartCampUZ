@@ -161,13 +161,15 @@ angular.module('smartCampUZApp')
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({
                     method: 'GET',
-                    url: 'getFeedback',
+                    url: 'getFeedback',//listFeedback TODO
                     headers: {'Authorization': 'Bearer ' + token}
                 }).success(function (data) {
-                    callbackSuccess(data);
+                    callbackSuccess(data.feedbacks);
                 }).error(function (data) {
-
-                    callbackSuccess(data);
+                    var aux = [
+                        {state: "", worker: "", description: "blabla", title: "bla", location: "L0.01"}
+                    ];
+                    callbackSuccess(aux);
                     //callbackError(data);
                 });
             }

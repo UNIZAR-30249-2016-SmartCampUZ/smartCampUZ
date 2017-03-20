@@ -28,4 +28,14 @@ angular.module('smartCampUZApp')
             controller: 'loginFormCtrl',
             scope: {}
         }
+    })
+
+    // include the 'feedback.html' into the <feedback> tag
+    .directive('feedback', function () {
+        return {
+            restrict: 'E',
+            templateUrl: 'templates/components/feedback.html',
+            controller: 'feedbackCtrl',
+            scope: {}
+        }
     });
