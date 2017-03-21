@@ -63,7 +63,6 @@ angular.module('smartCampUZApp')
             AdaByronMarker.bindPopup("<b>Edificio Ada Byron</b>");
             TorresMarker.bindPopup("<b>Edificio Torres Quevedo</b>");
             BetancourtMarker.bindPopup("<b>Edificio Agustín de Betancourt</b>");
-            BetancourtMarker.bindPopup("<b>Edificio Agustín de Betancourt</b>");
 
             var overlays = {
                 "Campus": EINAmarker,
