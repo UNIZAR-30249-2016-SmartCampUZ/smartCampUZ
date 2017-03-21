@@ -23,7 +23,7 @@ angular.module('smartCampUZApp', ['ui.router', 'base64', 'angular-jwt'])
                 templateUrl: "templates/admin.html",
                 controller: "adminCtrl",
                 onEnter: function ($state, auth) {
-                    if (!auth.isAuthenticated() || auth.isAuthenticated() && (auth.getType() == 'profesor')) {
+                    if (!auth.isAuthenticated() || auth.isAuthenticated() && (auth.getType() == 'professor')) {
                         $state.go('starter');
                     } else if (auth.isAuthenticated() && (auth.getType() == 'maintenance')) {
                         $state.go('maintenance');

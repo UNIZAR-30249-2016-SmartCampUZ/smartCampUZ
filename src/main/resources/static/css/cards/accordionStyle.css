@@ -1,0 +1,50 @@
+/* Style the buttons that are used to open and close the accordion panel */
+.accordionCard button.accordion {
+  background-color: #d7d7d7;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+  font-weight: 600;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.accordionCard button.accordion.active, button.accordion:hover {
+  background-color: #afafaf;
+}
+
+.accordionCard button.accordion:after {
+  content: '\02795'; /* Unicode character for "plus" sign (+) */
+  font-size: 13px;
+  color: #777;
+  float: right;
+  margin-left: 5px;
+}
+
+.accordionCard button.accordion.active:after {
+  content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.accordionCard div.panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition:0.6s ease-in-out;
+  opacity: 0;
+  margin: 0;
+  border: none;
+}
+
+/* The "show" class is added to the accordion panel when the user clicks on one of the buttons. This will show the panel content */
+.accordionCard div.panel.show {
+  opacity: 1;
+  max-height: 500px;
+  border-left: 1px solid #d7d7d7;
+  border-right: 1px solid #d7d7d7;
+}

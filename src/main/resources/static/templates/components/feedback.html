@@ -1,0 +1,46 @@
+<div class="accordionCard">
+  <button class="accordion" ng-click="showCommentary = !showCommentary" ng-class="{active: showCommentary}">
+    {{feedback.title}}
+  </button>
+  <div class="panel" ng-class="{show: showCommentary}">
+
+    <p><strong>Descripción:</strong> {{feedback.description}}</p>
+
+    <p><strong>Localización:</strong> {{feedback.location}}</p>
+
+    <p><strong>Estado:</strong></p>
+
+    <div class="col-xs-4 text-center">
+      <p ng-class="{currentState: currentState=='Aprobado'}" style="cursor:pointer"
+         ng-click="changeState('Aprobado')">Aprobado</p>
+    </div>
+    <div class="col-xs-4 text-center">
+      <p ng-class="{currentState: currentState=='Asignado'}" style="cursor:pointer"
+         ng-click="changeState('Asignado')">Asignado</p>
+    </div>
+    <div class="col-xs-4 text-center">
+      <p ng-class="{currentState: currentState=='Hecho'}" style="cursor:pointer"
+         ng-click="changeState('Hecho')">Hecho</p>
+    </div>
+    <div class="col-xs-4 text-center">
+      <p ng-class="{currentState: currentState=='Confirmado'}" style="cursor:pointer"
+         ng-click="changeState('Confirmado')">Confirmado</p>
+    </div>
+    <div class="col-xs-4 text-center">
+      <p ng-class="{currentState: currentState=='Denegado'}" style="cursor:pointer"
+         ng-click="changeState('Denegado')">Denegado</p>
+    </div>
+    <div class="col-xs-4 text-center">
+      <p ng-class="{currentState: currentState=='Notificado'}" style="cursor:pointer"
+         ng-click="changeState('Notificado')">Notificado</p>
+    </div>
+    <div class="row">
+      <label for="worker" class="col-xs-2">Trabajador:</label>
+      <select id="worker" class="col-xs-6 col-xs-offset-2" ng-model="selectedWorker" ng-disabled="currentState!='Asignado'"
+              ng-options="x for x in workerList" ng-class="{disabled: currentState!='Asignado'}">
+        <option value="" disabled selected>Selecciona el trabajador</option>
+      </select>
+    </div>
+
+  </div>
+</div>
