@@ -1,26 +1,6 @@
-#starterStyle > .container-fluid {
-  height: 100%;
-}
-
-#starterStyle > .container-fluid > .row {
-  height: 100%;
-}
-
-#starterStyle #leaftletMapSection {
-  padding: 50px 0 0 0;
-  height: 100%;
-}
-
 @media only screen and (min-width: 768px){
-  #starterStyle #leaftletMapSection {
-    padding: 70px 0 0 0;
-  }
-  #starterStyle #optionsMapSection {
+  #starterStyle #firstView {
     padding-top: 70px;
-    overflow-y: auto;
-    box-shadow: -4px 0 8px 0 rgba(0, 0, 0, 0.2), -6px 0 20px 0 rgba(0, 0, 0, 0.19);
-    z-index: 400;
-    height: 100%;
   }
 }
 
@@ -54,4 +34,18 @@
 
 #starterStyle .inputDisabled {
   cursor: not-allowed;
+}
+
+.sC-fade-in {
+  animation: sC-appear 0.5s linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes sC-appear {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.sC-hide {
+  opacity: 0;
 }

@@ -136,7 +136,7 @@ angular.module('smartCampUZApp')
     })
 
     // 'feedback' service manage the feedback service of the page with the server
-    .factory('feedback', function ($state, $http, userMap, auth) {
+    .factory('feedback', function ($state, $http, userMap) {
 
         return {
             // Report a description of a feedback
@@ -154,6 +154,24 @@ angular.module('smartCampUZApp')
                 }).error(function (data) {
                     callbackError(data);
                 });
+            },
+
+            // List all feedback from the server
+            getFeedback: function (callbackSuccess, callbackError) {
+                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                var aux = {
+                    location: userMap.getCurrentLocation()
+                };
+                $http({
+                    method: 'POST',
+                    url: 'listFeedback',
+                    headers: {'Authorization': 'Bearer ' + token},
+                    data: JSON.stringify(aux)
+                }).success(function (data) {
+                    callbackSuccess(data.feedbacks);
+                }).error(function (data) {
+                    callbackError(data);
+                });
             }
         };
     })
@@ -161,12 +179,17 @@ angular.module('smartCampUZApp')
     // 'userMap' service manage the user view of the map with the server
     .factory('userMap', function ($state, $http) {
 
-        var currentLocation = "provisional";
+        var currentLocation = "L0.01";
 
         return {
-            // Get the current day
+            // Get the current location
             getCurrentLocation: function () {
                 return currentLocation;
+            },
+
+            // Set the current location
+            setCurrentLocation: function (location) {
+                currentLocation = location;
             }
         };
     });
