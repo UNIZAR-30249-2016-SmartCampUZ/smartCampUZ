@@ -3,19 +3,13 @@
   height: 100%;
 }
 
-body {
-	font-family: sans-serif;
-    font-size: small;
-	margin: 0;
-}
-
-ul {
+#leaftletMapSection ul {
     display: inline;
 	margin: 0;
 }
 
 
-li {
+#leaftletMapSection li {
 	display: inline;
 	margin: 10px;
 	text-decoration: underline;
@@ -23,7 +17,7 @@ li {
 	cursor: pointer;
 }
 
-#tag {
+#leaftletMapSection #tag {
     width: 100px;
     margin: 3px;
 }
