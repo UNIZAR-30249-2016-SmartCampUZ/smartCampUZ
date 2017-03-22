@@ -1,7 +1,58 @@
 <div id="adminStyle">
   <div class="container-fluid">
+    <div class="row">
 
-    <h1 id="firstContent">soy admin</h1>
+      <div class="col-sm-6" id="leaftletMapSection">
+        <!-- leaftlet map directive -->
+        <leaftlet-map></leaftlet-map>
+      </div>
 
+      <div class="col-sm-6" id="optionsMapSection">
+
+        <ul class="nav nav-tabs text-center" style="margin-top: 1%">
+          <li class="active" id="activeToggleable"><a data-toggle="tab" href="#feedbacks">Sugerencias</a></li>
+          <li><a data-toggle="tab" href="#reserves">Reservas</a></li>
+        </ul>
+
+
+        <div class="tab-content">
+          <div id="feedbacks" class="tab-pane fade in active">
+            <h3 style="font-size: 130%">Filtrar por:
+              <i class="fa fa-times" ng-click="resetFilters()" style="cursor:pointer;float:right;color:#f44336"></i></h3>
+
+            <div class="row"><!-- Filters section -->
+              <div class="form-group col-xs-4">
+                <input type="text" ng-model="titleFilter" class="form-control" placeholder="Título..." />
+              </div>
+              <div class="form-group col-xs-4">
+                <select class="form-control" ng-model="workerFilter" ng-options="x for x in workerList">
+                  <option value="" disabled selected>Trabajador...</option>
+                </select>
+              </div>
+              <div class="form-group col-xs-4">
+                <select class="form-control" ng-model="stateFilter" ng-options="x for x in stateList">
+                  <option value="" disabled selected>Estado...</option>
+                </select>
+              </div>
+            </div><!-- END: Filters section -->
+
+            <!-- this div will show only when an error occurs -->
+            <div class="alert alert-danger" ng-if="error">
+              <strong>&#10008</strong> {{errorMsg}}
+            </div>
+
+            <div id="feedbackList">
+              <feedback ng-repeat="feedback in feedbackList | filter: {'title': titleFilter, 'worker': workerFilter,  'state': stateFilter}">
+              </feedback>
+            </div>
+
+          </div>
+          <div id="reserves" class="tab-pane fade">
+            <h3 style="font-size: 130%">día X:</h3>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>
