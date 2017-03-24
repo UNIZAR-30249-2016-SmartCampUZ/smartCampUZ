@@ -189,6 +189,7 @@ angular.module('smartCampUZApp')
 
             // Set the current location
             setCurrentLocation: function (location) {
+            	alert("Hello!"+location);
                 currentLocation = location;
             }
         };
