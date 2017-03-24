@@ -1,9 +1,11 @@
 angular.module('smartCampUZApp')
 
     .controller('mapCtrl', ['$scope', '$state', 'auth', function ($scope, $state, auth) {
+    	
         $(document).ready(function(){
         	var map = L.map('mapid').setView([41.68306, -0.88707], 17);
-
+        	
+        	
         	/**
         	 * GeoJSON LineString circling EINA
         	 */
@@ -65,15 +67,15 @@ angular.module('smartCampUZApp')
         	 */
         	var popup2 = L.popup();
         	function onMapClick(e) {
-        	    popup2
-        	        .setLatLng(e.latlng)
-        	        .setContent("<b>x=</b>" + e.latlng.lat.toString() + "<br>"+
-        	            "<b>y=</b>" +e.latlng.lng.toString()+ "</br>"+e.latlng.toString() )
+        	    popup2.setLatLng(e.latlng).setContent("<b>x=</b>" + e.latlng.lat.toString() + "<br>"+
+        	            "<b>y=</b>" +e.latlng.lng.toString()+ "</br>"+e.latlng.toString())
         	        .openOn(map);
+			//Aqui irá la invocación al servicio del mapa de services.js
         	}
         	map.on('click', onMapClick);
-
-
+        	
+        
+        	
         	document.getElementById('campus').addEventListener('click', function () {
         		map.setView([41.68306, -0.88707], 17);
         		EINAmarker.addTo(map);
