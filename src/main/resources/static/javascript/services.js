@@ -172,6 +172,21 @@ angular.module('smartCampUZApp')
                 }).error(function (data) {
                     callbackError(data);
                 });
+            },
+
+            // State management of a report
+            setState: function (state) {
+                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                $http({
+                    method: 'PUT',
+                    url: 'state',
+                    headers: {'Authorization': 'Bearer ' + token},
+                    data: JSON.stringify(state)
+                }).success(function (data) {
+
+                }).error(function (data) {
+
+                });
             }
         };
     })
