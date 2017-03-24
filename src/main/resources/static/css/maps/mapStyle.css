@@ -2,3 +2,22 @@
   max-width: 100%;
   height: 100%;
 }
+
+#leaftletMapSection ul {
+    display: inline;
+	margin: 0;
+}
+
+
+#leaftletMapSection li {
+	display: inline;
+	margin: 10px;
+	text-decoration: underline;
+	list-style: none;
+	cursor: pointer;
+}
+
+#leaftletMapSection #tag {
+    width: 100px;
+    margin: 3px;
+}
