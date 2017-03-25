@@ -85,13 +85,13 @@ angular.module('smartCampUZApp')
             };
             
             var successMap = function (location) {
-            	alert("3. Aqui llamaría a setCurrentLocation del services.js")
+            	console.log("3. Aqui llamaría a setCurrentLocation del services.js")
             	
             	//userMap.setCurrentLocation(location);
             };
             
         	$scope.sendCoordinates = function (lat, lng) {
-        		alert("1. mapController.sendCoordinates");
+        		console.log("1. mapController.sendCoordinates");
         		
         		userMap.setLocationFromCoordenates(lat, lng, successMap, showError);
             };
