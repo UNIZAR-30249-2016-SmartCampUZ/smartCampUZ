@@ -1,6 +1,6 @@
 angular.module('smartCampUZApp')
 
-    .controller('mapCtrl', ['$scope', '$state', 'auth', function ($scope, $state, auth) {
+    .controller('mapCtrl', ['$scope', '$state', 'auth', 'userMap', function ($scope, $state, auth, userMap) {
     	
         $(document).ready(function(){
         	var map = L.map('mapid').setView([41.68306, -0.88707], 17);
@@ -34,7 +34,6 @@ angular.module('smartCampUZApp')
         	}).addTo(map);
 
 
-
         	/**
         	 * Marker azul
         	 */
@@ -60,7 +59,7 @@ angular.module('smartCampUZApp')
         	var AdaByronMarker = L.marker([41.68363, -0.88891]).bindPopup("<b>Edificio Ada Byron</b>");
         	var TorresMarker = L.marker([41.68363, -0.88736]).bindPopup("<b>Edificio Torres Quevedo</b>");
         	var BetancourtMarker = L.marker([41.68347, -0.88394]).bindPopup("<b>Edificio Agustín de Betancourt</b>");
-
+        	
 
         	/**
         	 * Popup de coordenadas
@@ -70,12 +69,33 @@ angular.module('smartCampUZApp')
         	    popup2.setLatLng(e.latlng).setContent("<b>x=</b>" + e.latlng.lat.toString() + "<br>"+
         	            "<b>y=</b>" +e.latlng.lng.toString()+ "</br>"+e.latlng.toString())
         	        .openOn(map);
-			//Aqui irá la invocación al servicio del mapa de services.js
+        	    
+        	    $scope.lat=e.latlng.lat;
+        	    $scope.lng=e.latlng.lng;
+        	    $scope.latlng=e.latlng.lat + ", " + e.latlng.lng;
+        	    
+        	    $scope.sendCoordinates($scope.lat, $scope.lng);
         	}
         	map.on('click', onMapClick);
         	
-        
-        	
+        	// show the error login message when is false respectively
+            var showError = function (error) {
+                $scope.errorMsg = error;
+                $scope.error = true;
+            };
+            
+            var successMap = function (location) {
+            	console.log("3. Aqui llamaría a setCurrentLocation del services.js")
+            	
+            	//userMap.setCurrentLocation(location);
+            };
+            
+        	$scope.sendCoordinates = function (lat, lng) {
+        		console.log("1. mapController.sendCoordinates");
+        		
+        		userMap.setLocationFromCoordenates(lat, lng, successMap, showError);
+            };
+
         	document.getElementById('campus').addEventListener('click', function () {
         		map.setView([41.68306, -0.88707], 17);
         		EINAmarker.addTo(map);
@@ -111,7 +131,7 @@ angular.module('smartCampUZApp')
         		map.removeLayer(EINAmarker);
         		BetancourtMarker.openPopup();
         	});
-
+        	
         	/**
         	 * Background map
         	 */
