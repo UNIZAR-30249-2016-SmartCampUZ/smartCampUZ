@@ -201,11 +201,32 @@ angular.module('smartCampUZApp')
             getCurrentLocation: function () {
                 return currentLocation;
             },
+            
+            // Get the room from the given coordenates
+            setLocationFromCoordenates: function (lat, lng, callbackSuccess, callbackError) {
+            	
+            	alert("2. setLocationFromCoordenates");
+               
+            	$http({
+                    method: 'GET',
+                    url: 'locationFroomCoords'
+	            	headers: {
+	            		lat: lat,
+	            		lng: lng
+	                }
+                }).success(function (data) {
+                	callbackSuccess(data);
+                }).error(function (data) {
+                	callbackError(data);
+                });
+            },
+            
 
             // Set the current location
             setCurrentLocation: function (location) {
-            	alert("Hello!"+location);
-                currentLocation = location;
+            	
+            	alert("3. currentLocationChanged");
+            	currentLocation = location;
             }
         };
     });
