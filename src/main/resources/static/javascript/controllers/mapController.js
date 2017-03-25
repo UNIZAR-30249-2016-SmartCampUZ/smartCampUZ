@@ -34,7 +34,6 @@ angular.module('smartCampUZApp')
         	}).addTo(map);
 
 
-
         	/**
         	 * Marker azul
         	 */
@@ -85,19 +84,18 @@ angular.module('smartCampUZApp')
                 $scope.error = true;
             };
             
-            successMap = function () {
+            var successMap = function (location) {
             	alert("3. Aqui llamaría a setCurrentLocation del services.js")
             	
-            	//userMap.setCurrentLocation($scope.latlng);
+            	//userMap.setCurrentLocation(location);
             };
             
         	$scope.sendCoordinates = function (lat, lng) {
         		alert("1. mapController.sendCoordinates");
         		
-        		userMap.setLocationFromCoordenates(lat, lng, successMap(), showError());
+        		userMap.setLocationFromCoordenates(lat, lng, successMap, showError);
             };
-        
-        	
+
         	document.getElementById('campus').addEventListener('click', function () {
         		map.setView([41.68306, -0.88707], 17);
         		EINAmarker.addTo(map);

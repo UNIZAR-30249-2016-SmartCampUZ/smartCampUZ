@@ -194,7 +194,7 @@ angular.module('smartCampUZApp')
     // 'userMap' service manage the user view of the map with the server
     .factory('userMap', function ($state, $http) {
 
-        var currentLocation = "L0.01";
+        var currentLocation = "";
 
         return {
             // Get the current location
@@ -209,11 +209,11 @@ angular.module('smartCampUZApp')
                
             	$http({
                     method: 'GET',
-                    url: 'locationFroomCoords'
-	            	headers: {
-	            		lat: lat,
-	            		lng: lng
-	                }
+                    url: 'locationFroomCoords',
+				    headers: {
+				        lat: lat,
+				    	lng: lng
+				    }
                 }).success(function (data) {
                 	callbackSuccess(data);
                 }).error(function (data) {
@@ -223,8 +223,7 @@ angular.module('smartCampUZApp')
             
 
             // Set the current location
-            setCurrentLocation: function (location) {
-            	
+            setCurrentLocation: function (location) {            	
             	alert("3. currentLocationChanged");
             	currentLocation = location;
             }
