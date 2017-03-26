@@ -1,8 +1,8 @@
-package es.unizar.smartcampuz.application.config;
+package es.unizar.smartcampuz.infrastructure.config;
 
-import es.unizar.smartcampuz.application.auth.jwt.JwtAuthFilter;
-import es.unizar.smartcampuz.application.auth.jwt.JwtAuthenticationEntryPoint;
-import es.unizar.smartcampuz.application.auth.jwt.JwtAuthenticationProvider;
+import es.unizar.smartcampuz.infrastructure.auth.jwt.JwtAuthFilter;
+import es.unizar.smartcampuz.infrastructure.auth.jwt.JwtAuthenticationEntryPoint;
+import es.unizar.smartcampuz.infrastructure.auth.jwt.JwtAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

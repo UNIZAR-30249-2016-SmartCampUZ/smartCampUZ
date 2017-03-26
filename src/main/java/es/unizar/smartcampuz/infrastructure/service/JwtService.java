@@ -1,8 +1,8 @@
-package es.unizar.smartcampuz.application.service;
+package es.unizar.smartcampuz.infrastructure.service;
 
-import es.unizar.smartcampuz.application.auth.Credential;
-import es.unizar.smartcampuz.application.auth.jwt.SecretKeyProvider;
-import es.unizar.smartcampuz.application.auth.CredentialRepository;
+import es.unizar.smartcampuz.infrastructure.auth.Credential;
+import es.unizar.smartcampuz.infrastructure.auth.jwt.SecretKeyProvider;
+import es.unizar.smartcampuz.infrastructure.auth.CredentialRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;

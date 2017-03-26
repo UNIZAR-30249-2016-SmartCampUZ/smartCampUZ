@@ -1,4 +1,4 @@
-package es.unizar.smartcampuz.application.auth.jwt;
+package es.unizar.smartcampuz.infrastructure.auth.jwt;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

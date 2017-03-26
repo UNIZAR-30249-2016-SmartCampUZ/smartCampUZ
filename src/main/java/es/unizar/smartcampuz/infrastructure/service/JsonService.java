@@ -1,4 +1,4 @@
-package es.unizar.smartcampuz.application.service;
+package es.unizar.smartcampuz.infrastructure.service;
 
 import net.sf.json.JSONObject;
 

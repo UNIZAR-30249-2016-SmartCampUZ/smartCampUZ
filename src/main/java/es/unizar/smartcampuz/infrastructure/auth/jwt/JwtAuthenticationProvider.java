@@ -1,8 +1,8 @@
-package es.unizar.smartcampuz.application.auth.jwt;
+package es.unizar.smartcampuz.infrastructure.auth.jwt;
 
-import es.unizar.smartcampuz.application.auth.Credential;
+import es.unizar.smartcampuz.infrastructure.auth.Credential;
 import es.unizar.smartcampuz.application.exceptions.JwtAuthenticationException;
-import es.unizar.smartcampuz.application.service.JwtService;
+import es.unizar.smartcampuz.infrastructure.service.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package es.unizar.smartcampuz.application.controller;
 
-import es.unizar.smartcampuz.application.service.JsonService;
+import es.unizar.smartcampuz.infrastructure.service.JsonService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;

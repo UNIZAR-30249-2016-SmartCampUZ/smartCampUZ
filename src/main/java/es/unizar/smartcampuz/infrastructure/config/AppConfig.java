@@ -1,4 +1,4 @@
-package es.unizar.smartcampuz.application.config;
+package es.unizar.smartcampuz.infrastructure.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

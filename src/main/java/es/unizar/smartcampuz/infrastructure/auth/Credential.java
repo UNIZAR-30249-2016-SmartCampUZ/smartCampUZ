@@ -1,4 +1,4 @@
-package es.unizar.smartcampuz.application.auth;
+package es.unizar.smartcampuz.infrastructure.auth;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  * @author netgloo
  */
 @Entity
-@Table(name = "users")
+@Table(name = "credential")
 public class Credential {
 
     // ------------------------

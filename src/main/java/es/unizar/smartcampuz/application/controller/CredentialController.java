@@ -1,8 +1,8 @@
 package es.unizar.smartcampuz.application.controller;
 
-import es.unizar.smartcampuz.application.auth.Credential;
-import es.unizar.smartcampuz.application.auth.CredentialRepository;
-import es.unizar.smartcampuz.application.service.JwtService;
+import es.unizar.smartcampuz.infrastructure.auth.Credential;
+import es.unizar.smartcampuz.infrastructure.auth.CredentialRepository;
+import es.unizar.smartcampuz.infrastructure.service.JwtService;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

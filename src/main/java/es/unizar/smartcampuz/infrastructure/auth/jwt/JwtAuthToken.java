@@ -1,4 +1,4 @@
-package es.unizar.smartcampuz.application.auth.jwt;
+package es.unizar.smartcampuz.infrastructure.auth.jwt;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
