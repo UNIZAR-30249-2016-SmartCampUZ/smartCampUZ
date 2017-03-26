@@ -2,3 +2,27 @@
   max-width: 100%;
   height: 100%;
 }
+
+#leaftletMapSection #selectorBuilding{
+	position: absolute;
+  z-index: 600;
+  cursor: pointer;
+  min-height: 60px;
+  width: 100%;
+}
+
+#leaftletMapSection #selectorBuilding{
+  padding-top: 10px;
+}
+
+@media only screen and (max-width: 802px){
+  #leaftletMapSection #selectorBuilding{
+    font-size: 10px;
+  }
+}
+
+@media only screen and (max-width: 1078px) and (min-width: 769px){
+  #leaftletMapSection #selectorBuilding #ada{
+    padding-top: 10px;
+  }
+}
