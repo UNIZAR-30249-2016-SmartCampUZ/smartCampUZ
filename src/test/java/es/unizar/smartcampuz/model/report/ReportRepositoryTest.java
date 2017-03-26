@@ -20,33 +20,26 @@ public class ReportRepositoryTest {
 
     @Autowired
     private ReportRepository repository;
-    private Report report;
+    private Report report = new Report("204", new Worker(7), "desc", ReportState.APROBED);
 
     @Before
     public void setUp() {
-        report = new Report();
-        report.setRoomID("HD-204");
-        report.setWorker(new Worker(500));
-        report.setDescription("desc");
-        report.setState(ReportState.APROBED);
+        report = repository.save(report);
     }
 
     @Test
     public void save() {
-        report = repository.save(report);
         assertThat(repository.findOne(report.getId()), is(report));
     }
 
     @Test
     public void delete() {
-        report = repository.save(report);
         repository.delete(report);
         assertNull(repository.findOne(report.getId()));
     }
 
     @Test
     public void update() {
-        report = repository.save(report);
         assertThat(repository.findOne(report.getId()), is(report));
         report.setDescription("newDesc");
         report.setState(ReportState.APROBED);
@@ -56,7 +49,6 @@ public class ReportRepositoryTest {
 
     @Test
     public void findOne() {
-        report = repository.save(report);
         assertThat(repository.findOne(report.getId()), is(report));
     }
 
