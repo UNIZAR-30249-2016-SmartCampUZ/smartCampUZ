@@ -1,61 +1,45 @@
-<!-- div id="selectorBuilding" class="text-center sC-text-theme">
-  <div class="col-xs-3" id="campus">Campus Rio Ebro</div>
-  <div class="col-xs-3" id="ada">Ada Byron</div>
-  <div class="col-xs-3" id="torres">Torres Quevedo</div>
-  <div class="col-xs-3" id="betan">Agustín de Betancourt</div>
-</div--->
-
-
 <div id="selectorBuilding" class="text-center sC-text-theme">
   <div class="col-xs-3" id="campus">
-		<div class="dropdown">
-    		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Campus Rio Ebro
-    		<span class="caret"></span></button>
-    		<ul class="dropdown-menu">
-      			<li><a href="#">Sótano</a></li>
-     			<li><a href="#">Planta 0</a></li>
-      			<li><a href="#">Planta 1</a></li>
-      			<li><a href="#">Planta 2</a></li>
-      			<li><a href="#">Planta 3</a></li>
-      			<li><a href="#">Planta 4</a></li>
-      			<li><a href="#">Terraza</a></li>
-    		</ul>
-		</div>
+   		<button class="btn sC-theme-action" type="button" data-toggle="dropdown">Campus Rio Ebro</button>
   </div>
   <div class="col-xs-3" id="ada">
 		<div class="dropdown">
-    		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Ada Byron
+    		<button class="btn sC-theme-action dropdown-toggle" type="button" data-toggle="dropdown">Ada Byron
     		<span class="caret"></span></button>
     		<ul class="dropdown-menu">
-      			<li><a href="#">Sótano</a></li>
-     			<li><a href="#">Planta 0</a></li>
-      			<li><a href="#">Planta 1</a></li>
-      			<li><a href="#">Planta 2</a></li>
-      			<li><a href="#">Planta 3</a></li>
+      			<li><a ng-click="determineFloor('Ada-Sótano')">Sótano</a></li>
+     			<li><a ng-click="determineFloor('Ada-Planta 0')">Planta 0</a></li>
+      			<li><a ng-click="determineFloor('Ada-Planta 1')">Planta 1</a></li>
+      			<li><a ng-click="determineFloor('Ada-Planta 2')">Planta 2</a></li>
+      			<li><a ng-click="determineFloor('Ada-Planta 3')">Planta 3</a></li>
+      			<li><a ng-click="determineFloor('Ada-Planta 4')">Planta 4</a></li>
+      			<li><a ng-click="determineFloor('Ada-Terraza')">Terraza</a></li>
     		</ul>
 		</div>  
   </div>
   <div class="col-xs-3" id="torres">
 		<div class="dropdown">
-    		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Torres Quevedo
+    		<button class="btn sC-theme-action dropdown-toggle" type="button" data-toggle="dropdown">Torres Quevedo
     		<span class="caret"></span></button>
     		<ul class="dropdown-menu">
-      			<li><a href="#">Sótano</a></li>
-     			<li><a href="#">Planta 0</a></li>
-      			<li><a href="#">Planta 1</a></li>
-      			<li><a href="#">Planta 2</a></li>
-      			<li><a href="#">Planta 3</a></li>
+      			<li><a ng-click="determineFloor('Torres-Sótano')">Sótano</a></li>
+     			<li><a ng-click="determineFloor('Torres-Planta 0')">Planta 0</a></li>
+      			<li><a ng-click="determineFloor('Torres-Planta 1')">Planta 1</a></li>
+      			<li><a ng-click="determineFloor('Torres-Planta 2')">Planta 2</a></li>
+      			<li><a ng-click="determineFloor('Torres-Planta 3')">Planta 3</a></li>
     		</ul>
 		</div>
   </div>
   <div class="col-xs-3" id="betan">
 		<div class="dropdown">
-    		<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Agustín de Betancourt
+    		<button class="btn sC-theme-action dropdown-toggle" type="button" data-toggle="dropdown">Agustín de Betancourt
     		<span class="caret"></span></button>
     		<ul class="dropdown-menu">
-     			<li><a href="#">  HTML</a></li>
-      			<li><a href="#">  CSS</a></li>
-      			<li><a href="#">  JavaScript</a></li>
+      			<li><a ng-click="determineFloor('Betancourt-Sótano')">Sótano</a></li>
+     			<li><a ng-click="determineFloor('Betancourt-Planta 0')">Planta 0</a></li>
+      			<li><a ng-click="determineFloor('Betancourt-Planta 1')">Planta 1</a></li>
+      			<li><a ng-click="determineFloor('Betancourt-Planta 2')">Planta 2</a></li>
+      			<li><a ng-click="determineFloor('Betancourt-Planta 3')">Planta 3</a></li>
     		</ul>
 		</div>
 	</div>

@@ -128,6 +128,11 @@ angular.module('smartCampUZApp')
         		BetancourtMarker.openPopup();
         	});
         	
+        	$scope.determineFloor = function (floor) {
+        		alert(floor);
+        	};
+        	
+        	
         	/**
         	 * Background map
         	 */

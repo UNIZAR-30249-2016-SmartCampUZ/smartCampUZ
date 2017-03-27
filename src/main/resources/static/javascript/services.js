@@ -174,7 +174,7 @@ angular.module('smartCampUZApp')
             },
 
             // State management of a report
-            setState: function (state) {
+            setState: function(state) {
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({
                     method: 'PUT',
