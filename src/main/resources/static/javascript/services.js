@@ -102,7 +102,7 @@ angular.module('smartCampUZApp')
                     headers: {
                         month: month,
                         day: day,
-                        location: userMap.getCurrentLocation()
+                        location: userMap.getCurrentLocation().id
                     }
                 }).success(function (data) {
                     callbackSuccess(data);
@@ -117,7 +117,7 @@ angular.module('smartCampUZApp')
                 var aux = {
                     info: reserveInfo,
                     hours: reserveHours,
-                    location: userMap.getCurrentLocation(),
+                    location: userMap.getCurrentLocation().id,
                     logged: auth.isAuthenticated() ? true : false
                 };
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
@@ -143,7 +143,7 @@ angular.module('smartCampUZApp')
             reportFeedback: function (description, callbackSuccess, callbackError) {
                 var aux = {
                     description: description,
-                    location: userMap.getCurrentLocation()
+                    location: userMap.getCurrentLocation().id
                 };
                 $http({
                     method: 'POST',
@@ -159,14 +159,13 @@ angular.module('smartCampUZApp')
             // List all feedback from the server
             getFeedback: function (callbackSuccess, callbackError) {
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
-                var aux = {
-                    location: userMap.getCurrentLocation()
-                };
                 $http({
-                    method: 'POST',
+                    method: 'GET',
                     url: 'listFeedback',
-                    headers: {'Authorization': 'Bearer ' + token},
-                    data: JSON.stringify(aux)
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        location: userMap.getCurrentLocation().id
+                    }
                 }).success(function (data) {
                     callbackSuccess(data.feedbacks);
                 }).error(function (data) {
@@ -194,7 +193,10 @@ angular.module('smartCampUZApp')
     // 'userMap' service manage the user view of the map with the server
     .factory('userMap', function ($state, $http) {
 
-        var currentLocation = "";
+        var currentLocation = {
+            id:0,
+            name: ""
+        };
 
         return {
             // Get the current location
@@ -204,12 +206,9 @@ angular.module('smartCampUZApp')
             
             // Get the room from the given coordenates
             setLocationFromCoordenates: function (lat, lng, callbackSuccess, callbackError) {
-            	
-            	console.log("2. setLocationFromCoordenates");
-               
             	$http({
                     method: 'GET',
-                    url: 'locationFroomCoords',
+                    url: 'locationFromCoords',
 				    headers: {
 				        lat: lat,
 				    	lng: lng
@@ -217,14 +216,15 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                 	callbackSuccess(data);
                 }).error(function (data) {
-                	callbackError(data);
+                	//callbackError(data);
+                    var aux = {id: 123123, name: "L0.01"};
+                    callbackSuccess(aux);
                 });
             },
             
 
             // Set the current location
-            setCurrentLocation: function (location) {            	
-            	console.log("3. currentLocationChanged");
+            setCurrentLocation: function (location) {
             	currentLocation = location;
             }
         };
