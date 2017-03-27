@@ -129,7 +129,16 @@ angular.module('smartCampUZApp')
         	});
         	
         	$scope.determineFloor = function(floor) {
-        		alert(floor);
+        		var building = floor.substring(0,1);
+        		var floor = floor.substring(1,2);
+        		userMap.setFloor(building,floor);
+//        		if(building=="A"){
+//        			alert("Ada. Planta " + floor);
+//        		}else if (building=="B"){
+//        			alert("Betan. Planta " + floor);
+//        		}else{
+//        			alert("Torres. Planta " + floor);
+//        		}
         	};
         	
         	/**
