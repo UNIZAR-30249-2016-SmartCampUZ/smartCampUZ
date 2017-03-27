@@ -84,10 +84,8 @@ angular.module('smartCampUZApp')
                 $scope.error = true;
             };
             
-            var successMap = function (location) {
-            	console.log("3. Aqui llamaría a setCurrentLocation del services.js")
-            	
-            	//userMap.setCurrentLocation(location);
+            var successMap = function (location) {	
+            	userMap.setCurrentLocation(location);
             };
             
         	$scope.sendCoordinates = function (lat, lng) {
@@ -171,18 +169,6 @@ angular.module('smartCampUZApp')
         	}).addTo(map);
 
 
-        	var LineasAda00 = L.tileLayer.wms("http://localhost:8080/geoserver/wms",{
-        		request: 'GetMap',
-        		maxZoom: 25,
-        		layers: 'Smart_CampUZ:LineasAda00',
-        	    noWrap:true,
-        	    continuousWorld: false,
-        	    transparent: true,
-        	    format: 'image/png',
-        	    version: '1.1.0',
-        	    attribution: "myattribution",
-        		zIndex: 2
-        	}).addTo(map);
 
 
         	var Ada00 = L.layerGroup([LineasAda00,PoligonosAda00]);

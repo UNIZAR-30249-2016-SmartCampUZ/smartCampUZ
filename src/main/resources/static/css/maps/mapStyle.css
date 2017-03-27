@@ -12,7 +12,7 @@
 }
 
 #leaftletMapSection #selectorBuilding{
-  padding-top: 10px;
+  padding-top: -2px;
 }
 
 @media only screen and (max-width: 802px){
