@@ -5,7 +5,7 @@
 
 #leaftletMapSection #selectorBuilding{
 	position: absolute;
-  z-index: 600;
+  z-index: 400;
   cursor: pointer;
   min-height: 60px;
   width: 100%;
