@@ -13,20 +13,18 @@ angular.module('smartCampUZApp')
             if ($scope.currentState != 'Asignado') {
                 var tmpState = {
                     id: $scope.feedback.id,
-                    state: $scope.currentState,
-                    worker: $scope.selectedWorker
+                    state: $scope.currentState
                 };
                 feedback.setState(tmpState);
             }
         };
-        $scope.asignWorker = function () {
+        $scope.assignWorker = function () {
             if ($scope.currentState == 'Asignado') {
                 var tmpState = {
                     id: $scope.feedback.id,
-                    state: $scope.currentState,
                     worker: $scope.selectedWorker
                 };
-                feedback.setState(tmpState);
+                feedback.assignWorker(tmpState);
             }
         }
     }]);

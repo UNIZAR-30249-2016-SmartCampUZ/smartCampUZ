@@ -159,15 +159,24 @@ angular.module('smartCampUZApp')
             // List all feedback from the server
             getFeedback: function (callbackSuccess, callbackError) {
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
-                var aux = {
-                    location: userMap.getCurrentLocation()
-                };
                 $http({
-                    method: 'POST',
+                    method: 'GET',
                     url: 'listFeedback',
-                    headers: {'Authorization': 'Bearer ' + token},
-                    data: JSON.stringify(aux)
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        location: userMap.getCurrentLocation().id
+                    },
                 }).success(function (data) {
+                    var feedbacks = data.feedbacks;
+                    for (i=0;i<feedbacks.length;i++) {
+                        if(feedbacks[i].state == 'INBOX') {feedbacks[i].state = '' }
+                        else if (feedbacks[i].state == 'NOTIFIED') {feedbacks[i].state = 'Notificado' }
+                        else if (feedbacks[i].state == 'REFUSED') {feedbacks[i].state = 'Denegado' }
+                        else if (feedbacks[i].state == 'APPROVED') {feedbacks[i].state = 'Aprobado' }
+                        else if (feedbacks[i].state == 'ASSIGNED') {feedbacks[i].state = 'Asignado' }
+                        else if (feedbacks[i].state == 'DONE') {feedbacks[i].state = 'Hecho' }
+                        else if (feedbacks[i].state == 'CONFIRMED') {feedbacks[i].state = 'Confirmado' }
+                    }
                     callbackSuccess(data.feedbacks);
                 }).error(function (data) {
                     callbackError(data);
@@ -176,12 +185,34 @@ angular.module('smartCampUZApp')
 
             // State management of a report
             setState: function (state) {
+                if(state.state == '') {state.state = 'INBOX'}
+                else if (state.state == 'Notificado') {state.state = 'NOTIFIED'}
+                else if (state.state == 'Denegado') {state.state = 'REFUSED'}
+                else if (state.state == 'Aprobado') {state.state = 'APPROVED'}
+                else if (state.state == 'Asignado') {state.state = 'ASSIGNED'}
+                else if (state.state == 'Hecho') {state.state = 'DONE'}
+                else if (state.state == 'Confirmado') {state.state = 'CONFIRMED'}
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({
                     method: 'PUT',
                     url: 'state',
                     headers: {'Authorization': 'Bearer ' + token},
                     data: JSON.stringify(state)
+                }).success(function (data) {
+
+                }).error(function (data) {
+
+                });
+            },
+
+            // Assign worker to a report
+            assignWorker: function (worker) {
+                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                $http({
+                    method: 'PUT',
+                    url: 'assignWorker',
+                    headers: {'Authorization': 'Bearer ' + token},
+                    data: JSON.stringify(worker)
                 }).success(function (data) {
 
                 }).error(function (data) {
