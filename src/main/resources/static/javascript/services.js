@@ -193,9 +193,7 @@ angular.module('smartCampUZApp')
     // 'userMap' service manage the user view of the map with the server
     .factory('userMap', function ($state, $http) {
 
-    	var AdaFloor = "";
-    	var TorresFloor = "";
-    	var BetanFloor = "";
+    	var floors = ["","",""];
     	
         var currentLocation = {
             id:0,
@@ -216,9 +214,7 @@ angular.module('smartCampUZApp')
 				    headers: {
 				        lat: lat,
 				    	lng: lng,
-				    	AFloor: AdaFloor,
-				    	BFloor: BetanFloor,
-				    	TFloor: TorresFloor
+				    	buildingFloors: floors
 				    }
                 }).success(function (data) {
                 	callbackSuccess(data);
@@ -232,13 +228,13 @@ angular.module('smartCampUZApp')
             // Set the active floor for the respective building
             setFloor: function(building, floor){
             	if (building=='A'){
-            		AdaFloor=floor;
+            		floors[0]=floor;
             		alert("Ada. Planta " + floor);
             	}else if (building=='T'){
-            		TorresFloor=floor;
+            		floors[1]=floor;
             		alert("Torres. Planta " + floor);
             	}else{
-            		BetanFloor=floor;
+            		floors[2]=floor;
             		alert("Betan. Planta " + floor);
             	}
             },
