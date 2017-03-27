@@ -52,7 +52,7 @@ public class ReportRepositoryTest {
     public void update() {
         assertThat(rRepository.findOne(report.getId()), is(report));
         report.setDescription("newDesc");
-        report.setState(ReportState.APROBED);
+        report.setState(ReportState.APPROVED);
         report = rRepository.save(report);
         assertThat(rRepository.findOne(report.getId()), is(report));
     }

@@ -40,12 +40,10 @@ public class Report {
         this.id = id;
     }
 
-    public Report(@NotNull String roomID, Worker worker, @NotNull String description,
-                  @NotNull ReportState state){
+    public Report(@NotNull String roomID, Worker worker, @NotNull String description){
         this.roomID=roomID;
         this.worker=worker;
         this.description = description;
-        this.state=state;
     }
 
     public void setId(long id) {

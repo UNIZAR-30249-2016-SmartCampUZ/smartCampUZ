@@ -6,7 +6,7 @@ package es.unizar.smartcampuz.model.report;
  *
  * INBOX -> NOTIFIED*
  *       -> REFUSED*
- *       -> APROBED -> ASIGNED -> DONE -> CONFIRMED*
+ *       -> APPROVED -> ASIGNED -> DONE -> CONFIRMED*
  *
  */
 public class ReportStateChecker {
@@ -19,11 +19,11 @@ public class ReportStateChecker {
                         return true;
                     case REFUSED:
                         return true;
-                    case APROBED:
+                    case APPROVED:
                         return true;
                 }
                 break;
-            case APROBED:
+            case APPROVED:
                 switch (newState) {
                     case ASSIGNED:
                         if (report.getWorker() != null)
@@ -47,5 +47,4 @@ public class ReportStateChecker {
         return false;
 
     }
-
 }

@@ -1,4 +1,4 @@
-package es.unizar.smartcampuz.application.exceptions;
+package es.unizar.smartcampuz.infrastructure.exceptions;
 
 import org.springframework.security.core.AuthenticationException;
 

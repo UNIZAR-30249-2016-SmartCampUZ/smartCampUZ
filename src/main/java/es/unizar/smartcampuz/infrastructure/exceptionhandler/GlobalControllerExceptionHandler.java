@@ -1,4 +1,4 @@
-package es.unizar.smartcampuz.application.exceptionhandler;
+package es.unizar.smartcampuz.infrastructure.exceptionhandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
