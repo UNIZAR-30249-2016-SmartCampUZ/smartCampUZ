@@ -1,6 +1,6 @@
 angular.module('smartCampUZApp')
 
-    .controller('mapCtrl', ['$scope', '$state', 'auth', 'userMap', function ($scope, $state, auth, userMap) {
+    .controller('mapCtrl', ['$scope', '$state', 'userMap', function ($scope, $state, userMap) {
     	
         $(document).ready(function(){
         	var map = L.map('mapid').setView([41.68306, -0.88707], 17);
@@ -85,14 +85,10 @@ angular.module('smartCampUZApp')
             };
             
             var successMap = function (location) {
-            	console.log("3. Aqui llamaría a setCurrentLocation del services.js")
-            	
-            	//userMap.setCurrentLocation(location);
+            	userMap.setCurrentLocation(location);
             };
             
         	$scope.sendCoordinates = function (lat, lng) {
-        		console.log("1. mapController.sendCoordinates");
-        		
         		userMap.setLocationFromCoordenates(lat, lng, successMap, showError);
             };
 

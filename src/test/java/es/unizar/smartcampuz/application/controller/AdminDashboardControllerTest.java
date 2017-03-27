@@ -1,7 +1,7 @@
 package es.unizar.smartcampuz.application.controller;
 
-import es.unizar.smartcampuz.application.auth.Credential;
-import es.unizar.smartcampuz.application.auth.CredentialRepository;
+import es.unizar.smartcampuz.infrastructure.auth.Credential;
+import es.unizar.smartcampuz.infrastructure.auth.CredentialRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

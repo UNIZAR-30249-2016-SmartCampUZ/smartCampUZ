@@ -2,14 +2,14 @@ angular.module('smartCampUZApp')
 
     .controller('starterCtrl', ['$scope', '$state', 'auth', 'reserve', 'feedback', 'userMap',
         function ($scope, $state, auth, reserve, feedback, userMap) {
-        $scope.location = "";
+        $scope.location = {id:0,name:""};
         $scope.located = false;
         // Watches to control if the user have selected a location
         $scope.$watch(function() {
             return userMap.getCurrentLocation();
         }, function () {
             $scope.location = userMap.getCurrentLocation();
-            $scope.located = $scope.location != "";
+            $scope.located = $scope.location.name != 0;
         });
 
         /* FEEDBACK MESSAGES */
