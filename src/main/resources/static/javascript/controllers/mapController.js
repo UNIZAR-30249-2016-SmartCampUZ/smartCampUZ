@@ -70,11 +70,12 @@ angular.module('smartCampUZApp')
         	            "<b>y=</b>" +e.latlng.lng.toString()+ "</br>"+e.latlng.toString())
         	        .openOn(map);
         	    
+        	    $scope.coordsPseudoMerkator = L.Projection.SphericalMercator.project(e.latlng);
+        	    
         	    $scope.lat=e.latlng.lat;
         	    $scope.lng=e.latlng.lng;
         	    $scope.latlng=e.latlng.lat + ", " + e.latlng.lng;
-        	    
-        	    $scope.sendCoordinates($scope.lat, $scope.lng);
+        	    $scope.sendCoordinates($scope.coordsPseudoMerkator.x, $scope.coordsPseudoMerkator.y);
         	}
         	map.on('click', onMapClick);
         	
@@ -156,7 +157,7 @@ angular.module('smartCampUZApp')
         	var PoligonosAda00 = L.tileLayer.wms("http://localhost:8080/geoserver/wms",{
         		request: 'GetMap',
         		maxZoom: 25,
-        		layers: 'Smart_CampUZ:PoligonosAda00',
+        		layers: 'Smart_CampUZ:A00',
         	    noWrap:true,
         	    continuousWorld: false,
         	    transparent: true,
@@ -180,7 +181,7 @@ angular.module('smartCampUZApp')
         	}).addTo(map);
 
 
-
+        	
 
         	var Ada00 = L.layerGroup([LineasAda00,PoligonosAda00]);
 
