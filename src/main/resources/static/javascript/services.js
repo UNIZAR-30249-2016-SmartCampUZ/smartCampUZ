@@ -159,14 +159,13 @@ angular.module('smartCampUZApp')
             // List all feedback from the server
             getFeedback: function (callbackSuccess, callbackError) {
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
-                var aux = {
-                    location: userMap.getCurrentLocation().id
-                };
                 $http({
-                    method: 'POST',
+                    method: 'GET',
                     url: 'listFeedback',
-                    headers: {'Authorization': 'Bearer ' + token},
-                    data: JSON.stringify(aux)
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        location: userMap.getCurrentLocation().id
+                    }
                 }).success(function (data) {
                     callbackSuccess(data.feedbacks);
                 }).error(function (data) {
