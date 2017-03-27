@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-import es.unizar.smartcampuz.application.service.*;
+import es.unizar.smartcampuz.infrastructure.service.*;
 
 @Controller
 public class DashboardController {
