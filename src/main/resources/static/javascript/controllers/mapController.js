@@ -58,7 +58,7 @@ angular.module('smartCampUZApp')
         	 */
         	var AdaByronMarker = L.marker([41.68363, -0.88891]).bindPopup("<b>Edificio Ada Byron</b>");
         	var TorresMarker = L.marker([41.68363, -0.88736]).bindPopup("<b>Edificio Torres Quevedo</b>");
-        	var BetancourtMarker = L.marker([41.68347, -0.88394]).bindPopup("<b>Edificio Agustín de Betancourt</b>");
+        	var BetancourtMarker = L.marker([41.68375, -0.88411]).bindPopup("<b>Edificio Agustín de Betancourt</b>");
         	
 
         	/**
@@ -128,10 +128,9 @@ angular.module('smartCampUZApp')
         		BetancourtMarker.openPopup();
         	});
         	
-        	$scope.determineFloor = function (floor) {
+        	$scope.determineFloor = function(floor) {
         		alert(floor);
         	};
-        	
         	
         	/**
         	 * Background map
