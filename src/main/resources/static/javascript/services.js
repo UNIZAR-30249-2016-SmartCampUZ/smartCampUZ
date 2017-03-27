@@ -193,7 +193,7 @@ angular.module('smartCampUZApp')
     // 'userMap' service manage the user view of the map with the server
     .factory('userMap', function ($state, $http) {
 
-    	var floors = ["","",""];
+    	var floors = ["00","00","00"];
     	
         var currentLocation = {
             id:0,

@@ -130,7 +130,7 @@ angular.module('smartCampUZApp')
         	
         	$scope.determineFloor = function(floor) {
         		var building = floor.substring(0,1);
-        		var floor = floor.substring(1,2);
+        		var floor = floor.substring(1,3);
         		userMap.setFloor(building,floor);
 //        		if(building=="A"){
 //        			alert("Ada. Planta " + floor);
