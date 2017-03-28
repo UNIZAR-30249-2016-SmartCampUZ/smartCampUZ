@@ -3,6 +3,7 @@ package es.unizar.smartcampuz.application.controller;
 import es.unizar.smartcampuz.infrastructure.auth.Credential;
 import es.unizar.smartcampuz.infrastructure.auth.CredentialRepository;
 import es.unizar.smartcampuz.model.report.ReportState;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,25 +37,11 @@ public class AdminDashboardControllerTest {
         "{\"feedbacks\":[{\"state\":\"INBOX\",\"worker\":\"Worker7\",\"description\":\"Report1\",\"title\":\"Report1\",\"location\":\"HD-403\",\"id\":10}," +
         "{\"state\":\"INBOX\",\"worker\":\"Worker7\",\"description\":\"Report2\",\"title\":\"Report2\",\"location\":\"HD-403\",\"id\":11}]}";
 
-    private static final String FEEDBACK_TEST_SQL_LIST =
-        "{\"feedbacks\":[{\"state\":\"INBOX\",\"worker\":\"Worker7\",\"description\":\"Report1\",\"title\":\"Report1\",\"location\":\"HD-403\",\"id\":10}," +
-        "{\"state\":\"INBOX\",\"worker\":\"Worker7\",\"description\":\"Report2\",\"title\":\"Report2\",\"location\":\"HD-403\",\"id\":11}," +
-        "{\"state\":\"INBOX\",\"worker\":\"\",\"description\":\"Report3\",\"title\":\"Report3\",\"location\":\"HD-404\",\"id\":12}," +
-        "{\"state\":\"INBOX\",\"worker\":\"\",\"description\":\"Report4\",\"title\":\"Report4\",\"location\":\"HD-404\",\"id\":13}," +
-        "{\"state\":\"APPROVED\",\"worker\":\"\",\"description\":\"Report5\",\"title\":\"Report5\",\"location\":\"HD-404\",\"id\":14}," +
-        "{\"state\":\"INBOX\",\"worker\":\"Worker7\",\"description\":\"Report6\",\"title\":\"Report6\",\"location\":\"HD-404\",\"id\":15},]}";
+    private static final String WORKERS_LIST = "{\"workers\":[{\"id\":7,\"email\":\"maintenance@unizar.es\",\"name\":\"Worker7\"}," +
+        "{\"id\":8,\"email\":\"maintenance2@unizar.es\",\"name\":\"Worker8\"}]}";
 
-    private static final String FEEDBACK_COMPLETE_LIST =
-        "{\"feedbacks\":[{\"state\":\"INBOX\",\"worker\":\"Worker7\",\"description\":\"Report1\",\"title\":\"Report1\",\"location\":\"HD-403\",\"id\":10}," +
-        "{\"state\":\"INBOX\",\"worker\":\"Worker7\",\"description\":\"Report2\",\"title\":\"Report2\",\"location\":\"HD-403\",\"id\":11}," +
-        "{\"state\":\"INBOX\",\"worker\":\"\",\"description\":\"Report3\",\"title\":\"Report3\",\"location\":\"HD-404\",\"id\":12}," +
-        "{\"state\":\"INBOX\",\"worker\":\"\",\"description\":\"Report4\",\"title\":\"Report4\",\"location\":\"HD-404\",\"id\":13}," +
-        "{\"state\":\"APPROVED\",\"worker\":\"\",\"description\":\"Report5\",\"title\":\"Report5\",\"location\":\"HD-404\",\"id\":14}," +
-        "{\"state\":\"INBOX\",\"worker\":\"Worker7\",\"description\":\"Report6\",\"title\":\"Report6\",\"location\":\"HD-404\",\"id\":15}," +
-        "{\"state\":\"INBOX\",\"worker\":\"\",\"description\":\"Una descripcion\",\"title\":\"Una descripcion\",\"location\":\"Una localizacion\",\"id\":16}]}";
-
-    private static final String WORKERS_LIST = "{\"workers\":[{\"id\":7,\"email\":\"maintenance@unizar.es\",\"name\":\"Worker7\"}]}";
-
+    private static final int FEEDBACK_COMPLETE_LIST = 7;
+    private static final int FEEDBACK_TEST_SQL_LIST = 6;
     private static final String STATE_CHANGED_SUCCESS_MSG = "\"Estado modificado correctamente\"";
     private static final String STATE_CHANGED_ERROR_MSG = "\"El cambio de estado solicitado no es posible.\"";
     private static final String REPORT_NOT_FOUND_MSG = "\"La sugerencia no existe.\"";
@@ -68,7 +55,7 @@ public class AdminDashboardControllerTest {
     private static final long REPORT_ID_4 = 13;
     private static final long REPORT_ID_5 = 14;
     private static final long REPORT_ID_6 = 15;
-    private static final long WORKER_ID = 7;
+    private static final long WORKER_ID = 8;
 
 
 
@@ -103,8 +90,8 @@ public class AdminDashboardControllerTest {
         ResultActions result = sendFeedbackListRequest(header1, header2);
         result.andExpect(status().isOk());
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
-        assertTrue(mockResponse.getContentAsString().equals(FEEDBACK_COMPLETE_LIST)
-           || mockResponse.getContentAsString().equals(FEEDBACK_TEST_SQL_LIST));
+        int listSize = StringUtils.countMatches(mockResponse.getContentAsString(), "id");
+        assertTrue(listSize==FEEDBACK_COMPLETE_LIST || listSize==FEEDBACK_TEST_SQL_LIST);
     }
 
     /*
