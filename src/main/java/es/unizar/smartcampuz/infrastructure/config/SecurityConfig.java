@@ -31,8 +31,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure (HttpSecurity http) throws Exception{
         http.csrf().disable();
 
+        String[] matchers = {
+
+            "/listFeedback",
+            "/state",
+            "/assignWorker",
+            "/listWorkers"
+
+        };
+
         http.authorizeRequests()
-            .antMatchers("/listFeedback")
+            .antMatchers(matchers)
             .hasAuthority("ROLE_ADMIN")
             .antMatchers("/**/*")
             .permitAll()

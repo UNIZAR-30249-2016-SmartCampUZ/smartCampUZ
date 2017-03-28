@@ -65,10 +65,11 @@ public class ReportRepositoryTest {
     @Test
     public void findByWorker() {
         Set<Report> set = rRepository.findByWorker(worker);
-        assertEquals(2,set.size());
+        assertEquals(3,set.size());
         Iterator<Report> i = set.iterator();
         assertEquals(10, i.next().getId());
-        assertEquals(11, i.next().getId()); //Fully test.sql dependant
+        assertEquals(11, i.next().getId());
+        assertEquals(15, i.next().getId());//Fully test.sql dependant
     }
 
     @Test
