@@ -34,8 +34,7 @@ public class CoordController {
             Room room = new Room();
             room.setId(rs.getString("id_utc"));
             room.setType(rs.getInt("tipo_de_us"));
-            room.setName(rs.getString("text"));
-
+            room.setName(rs.getString("id_centro"));
             return room;
         }
     };
@@ -82,8 +81,8 @@ public class CoordController {
     // ------------------------
     @GetMapping("/locationFromCoords")
     @ResponseBody
-    public ResponseEntity<Room> getRoom(@RequestAttribute double x, @RequestAttribute double y,
-                                        @RequestAttribute String[] buildingFloors ) throws IOException, SQLException{
+    public ResponseEntity<Room> getRoom(@RequestParam double x, @RequestParam double y,
+                                        @RequestParam String[] buildingFloors ) throws IOException, SQLException{
 
         String tableName = getTableCode(x,y,buildingFloors); //TODO: Be carefull with floor typo
 
@@ -96,7 +95,11 @@ public class CoordController {
         ArrayList<Room> obj = (ArrayList<Room>) jdbcTemplate.query(query, rowMapper);
 
 
-        obj.get(0).setId(tableName + '.' + obj.get(0).getId());
-        return new ResponseEntity<Room>(obj.get(0), HttpStatus.ACCEPTED);
+        if(obj.size()>0) {
+            obj.get(0).setId(tableName + '.' + obj.get(0).getId());
+            return new ResponseEntity<Room>(obj.get(0), HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<Room>(HttpStatus.NOT_FOUND);
+        }
     }
 }

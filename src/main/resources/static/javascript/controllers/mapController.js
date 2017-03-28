@@ -40,11 +40,11 @@ angular.module('smartCampUZApp')
         	var EINAmarker = L.marker([41.6839, -0.88598]).addTo(map);
 
 
-        	/**
-        	 * Popup binding
-        	 */
-        	EINAmarker.bindPopup("<b>EINA</b><br>Escuela de"+
-        	    " Ingeniería y Arquitectura.").openPopup();
+        	// /**
+        	//  * Popup binding
+        	//  */
+        	// EINAmarker.bindPopup("<b>EINA</b><br>Escuela de"+
+        	//     " Ingeniería y Arquitectura.").openPopup();
 
 
         	/**
@@ -59,17 +59,16 @@ angular.module('smartCampUZApp')
         	var AdaByronMarker = L.marker([41.68363, -0.88891]).bindPopup("<b>Edificio Ada Byron</b>");
         	var TorresMarker = L.marker([41.68363, -0.88736]).bindPopup("<b>Edificio Torres Quevedo</b>");
         	var BetancourtMarker = L.marker([41.68375, -0.88411]).bindPopup("<b>Edificio Agustín de Betancourt</b>");
-        	
+            var RoomMarker = L.marker([41.6839, -0.88598]);
 
         	/**
         	 * Popup de coordenadas
         	 */
         	var popup2 = L.popup();
         	function onMapClick(e) {
-        	    popup2.setLatLng(e.latlng).setContent("<b>x=</b>" + e.latlng.lat.toString() + "<br>"+
-        	            "<b>y=</b>" +e.latlng.lng.toString()+ "</br>"+e.latlng.toString())
-        	        .openOn(map);
-        	    
+                map.removeLayer(RoomMarker);
+                RoomMarker = L.marker([ e.latlng.lat, e.latlng.lng]).addTo(map);
+
         	    $scope.coordsPseudoMerkator = L.Projection.SphericalMercator.project(e.latlng);
         	    //$scope.sendCoordinates($scope.coordsPseudoMerkator.x, $scope.coordsPseudoMerkator.y, $scope.floors);
         	    userMap.setLocationFromCoordenates($scope.coordsPseudoMerkator.x, $scope.coordsPseudoMerkator.y, $scope.floors, successMap, showError);
@@ -91,11 +90,11 @@ angular.module('smartCampUZApp')
 
         	document.getElementById('campus').addEventListener('click', function () {
         		map.setView([41.68306, -0.88707], 17);
-        		EINAmarker.addTo(map);
+        		// EINAmarker.addTo(map);
         		map.removeLayer(AdaByronMarker);
         		map.removeLayer(TorresMarker);
         		map.removeLayer(BetancourtMarker);
-        		EINAmarker.openPopup();
+        		// EINAmarker.openPopup();
         	});
         	
         	$scope.determineBuildingAndFloor = function(buildingAndFloor) {
@@ -105,33 +104,33 @@ angular.module('smartCampUZApp')
         		
         		if (building=='A'){
             		$scope.floors[0]=floor;
-            		alert("Ada. Planta " + floor);
+            		// alert("Ada. Planta " + floor);
             		map.setView([41.68363, -0.88891], 19);
-            		AdaByronMarker.addTo(map);
+            		// AdaByronMarker.addTo(map);
             		map.removeLayer(TorresMarker);
             		map.removeLayer(EINAmarker);
             		map.removeLayer(BetancourtMarker);
-            		AdaByronMarker.openPopup();
+            		// AdaByronMarker.openPopup();
             		
             	}else if (building=='T'){
             		$scope.floors[1]=floor;
-            		alert("Torres. Planta " + floor);
+            		// alert("Torres. Planta " + floor);
             		map.setView([41.68363, -0.88736], 19);
-            		TorresMarker.addTo(map);
+            		// TorresMarker.addTo(map);
             		map.removeLayer(AdaByronMarker);
             		map.removeLayer(EINAmarker);
             		map.removeLayer(BetancourtMarker);
-            		TorresMarker.openPopup();
+            		// TorresMarker.openPopup();
             		
             	}else{
             		$scope.floors[2]=floor;
-            		alert("Betan. Planta " + floor);
+            		// alert("Betan. Planta " + floor);
             		map.setView([41.68347, -0.88394], 19);
-            		BetancourtMarker.addTo(map);
+            		// BetancourtMarker.addTo(map);
             		map.removeLayer(TorresMarker);
             		map.removeLayer(AdaByronMarker);
             		map.removeLayer(EINAmarker);
-            		BetancourtMarker.openPopup();
+            		// BetancourtMarker.openPopup();
             	}
         	};
         	
