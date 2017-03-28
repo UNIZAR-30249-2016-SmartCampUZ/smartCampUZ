@@ -71,11 +71,8 @@ angular.module('smartCampUZApp')
         	        .openOn(map);
         	    
         	    $scope.coordsPseudoMerkator = L.Projection.SphericalMercator.project(e.latlng);
-        	    
-        	    $scope.lat=e.latlng.lat;
-        	    $scope.lng=e.latlng.lng;
-        	    $scope.latlng=e.latlng.lat + ", " + e.latlng.lng;
-        	    $scope.sendCoordinates($scope.coordsPseudoMerkator.x, $scope.coordsPseudoMerkator.y);
+        	    //$scope.sendCoordinates($scope.coordsPseudoMerkator.x, $scope.coordsPseudoMerkator.y, $scope.floors);
+        	    userMap.setLocationFromCoordenates($scope.coordsPseudoMerkator.x, $scope.coordsPseudoMerkator.y, $scope.floors, successMap, showError);
         	}
         	map.on('click', onMapClick);
         	
@@ -88,10 +85,9 @@ angular.module('smartCampUZApp')
             var successMap = function (location) {	
             	userMap.setCurrentLocation(location);
             };
+
+        	$scope.floors = ["00","00","00"];
             
-        	$scope.sendCoordinates = function (lat, lng) {
-        		userMap.setLocationFromCoordenates(lat, lng, successMap, showError);
-            };
 
         	document.getElementById('campus').addEventListener('click', function () {
         		map.setView([41.68306, -0.88707], 17);
@@ -101,45 +97,42 @@ angular.module('smartCampUZApp')
         		map.removeLayer(BetancourtMarker);
         		EINAmarker.openPopup();
         	});
-
-        	document.getElementById('ada').addEventListener('click', function () {
-        		map.setView([41.68363, -0.88891], 19);
-        		AdaByronMarker.addTo(map);
-        		map.removeLayer(TorresMarker);
-        		map.removeLayer(EINAmarker);
-        		map.removeLayer(BetancourtMarker);
-        		AdaByronMarker.openPopup();
-        	});
-
-        	document.getElementById('torres').addEventListener('click', function () {
-        		map.setView([41.68363, -0.88736], 19);
-        		TorresMarker.addTo(map);
-        		map.removeLayer(AdaByronMarker);
-        		map.removeLayer(EINAmarker);
-        		map.removeLayer(BetancourtMarker);
-        		TorresMarker.openPopup();
-        	});
-
-        	document.getElementById('betan').addEventListener('click', function () {
-        		map.setView([41.68347, -0.88394], 19);
-        		BetancourtMarker.addTo(map);
-        		map.removeLayer(TorresMarker);
-        		map.removeLayer(AdaByronMarker);
-        		map.removeLayer(EINAmarker);
-        		BetancourtMarker.openPopup();
-        	});
         	
-        	$scope.determineFloor = function(floor) {
-        		var building = floor.substring(0,1);
-        		var floor = floor.substring(1,3);
-        		userMap.setFloor(building,floor);
-//        		if(building=="A"){
-//        			alert("Ada. Planta " + floor);
-//        		}else if (building=="B"){
-//        			alert("Betan. Planta " + floor);
-//        		}else{
-//        			alert("Torres. Planta " + floor);
-//        		}
+        	$scope.determineBuildingAndFloor = function(buildingAndFloor) {
+        		
+        		var building = buildingAndFloor.substring(0,1);
+        		var floor = buildingAndFloor.substring(1,3);
+        		
+        		if (building=='A'){
+            		$scope.floors[0]=floor;
+            		alert("Ada. Planta " + floor);
+            		map.setView([41.68363, -0.88891], 19);
+            		AdaByronMarker.addTo(map);
+            		map.removeLayer(TorresMarker);
+            		map.removeLayer(EINAmarker);
+            		map.removeLayer(BetancourtMarker);
+            		AdaByronMarker.openPopup();
+            		
+            	}else if (building=='T'){
+            		$scope.floors[1]=floor;
+            		alert("Torres. Planta " + floor);
+            		map.setView([41.68363, -0.88736], 19);
+            		TorresMarker.addTo(map);
+            		map.removeLayer(AdaByronMarker);
+            		map.removeLayer(EINAmarker);
+            		map.removeLayer(BetancourtMarker);
+            		TorresMarker.openPopup();
+            		
+            	}else{
+            		$scope.floors[2]=floor;
+            		alert("Betan. Planta " + floor);
+            		map.setView([41.68347, -0.88394], 19);
+            		BetancourtMarker.addTo(map);
+            		map.removeLayer(TorresMarker);
+            		map.removeLayer(AdaByronMarker);
+            		map.removeLayer(EINAmarker);
+            		BetancourtMarker.openPopup();
+            	}
         	};
         	
         	/**

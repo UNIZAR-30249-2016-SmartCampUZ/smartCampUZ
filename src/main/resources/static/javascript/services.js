@@ -193,7 +193,6 @@ angular.module('smartCampUZApp')
     // 'userMap' service manage the user view of the map with the server
     .factory('userMap', function ($state, $http) {
 
-    	var floors = ["00","00","00"];
     	
         var currentLocation = {
             id:0,
@@ -207,16 +206,15 @@ angular.module('smartCampUZApp')
             },
             
             // Get the room from the given coordenates
-            setLocationFromCoordenates: function (lat, lng, callbackSuccess, callbackError) {
-            	//alert("Lat3857: "+ lat + " Lng3857: "+lng);
+            setLocationFromCoordenates: function (x, y, buildingFloors, callbackSuccess, callbackError) {
             	
             	$http({
                     method: 'GET',
                     url: 'locationFromCoords',
 				    headers: {
-				        lat: lat,
-				    	lng: lng,
-				    	buildingFloors: floors
+				        x: x,
+				    	y: y,
+				    	buildingFloors: buildingFloors
 				    }
                 }).success(function (data) {
                 	callbackSuccess(data);
@@ -227,19 +225,7 @@ angular.module('smartCampUZApp')
                 });
             },
             
-            // Set the active floor for the respective building
-            setFloor: function(building, floor){
-            	if (building=='A'){
-            		floors[0]=floor;
-            		alert("Ada. Planta " + floor);
-            	}else if (building=='T'){
-            		floors[1]=floor;
-            		alert("Torres. Planta " + floor);
-            	}else{
-            		floors[2]=floor;
-            		alert("Betan. Planta " + floor);
-            	}
-            },
+            
             
             // Set the current location
             setCurrentLocation: function (location) {        
