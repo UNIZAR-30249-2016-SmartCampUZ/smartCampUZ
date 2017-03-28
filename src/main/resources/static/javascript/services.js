@@ -174,7 +174,7 @@ angular.module('smartCampUZApp')
             },
 
             // State management of a report
-            setState: function (state) {
+            setState: function(state) {
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({
                     method: 'PUT',
@@ -193,6 +193,7 @@ angular.module('smartCampUZApp')
     // 'userMap' service manage the user view of the map with the server
     .factory('userMap', function ($state, $http) {
 
+    	
         var currentLocation = {
             id:0,
             name: ""
@@ -205,13 +206,15 @@ angular.module('smartCampUZApp')
             },
             
             // Get the room from the given coordenates
-            setLocationFromCoordenates: function (lat, lng, callbackSuccess, callbackError) {
+            setLocationFromCoordenates: function (x, y, buildingFloors, callbackSuccess, callbackError) {
+            	
             	$http({
                     method: 'GET',
                     url: 'locationFromCoords',
 				    headers: {
-				        lat: lat,
-				    	lng: lng
+				        x: x,
+				    	y: y,
+				    	buildingFloors: buildingFloors
 				    }
                 }).success(function (data) {
                 	callbackSuccess(data);
@@ -222,9 +225,10 @@ angular.module('smartCampUZApp')
                 });
             },
             
-
+            
+            
             // Set the current location
-            setCurrentLocation: function (location) {
+            setCurrentLocation: function (location) {        
             	currentLocation = location;
             }
         };

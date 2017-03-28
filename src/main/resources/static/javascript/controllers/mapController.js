@@ -58,7 +58,7 @@ angular.module('smartCampUZApp')
         	 */
         	var AdaByronMarker = L.marker([41.68363, -0.88891]).bindPopup("<b>Edificio Ada Byron</b>");
         	var TorresMarker = L.marker([41.68363, -0.88736]).bindPopup("<b>Edificio Torres Quevedo</b>");
-        	var BetancourtMarker = L.marker([41.68347, -0.88394]).bindPopup("<b>Edificio Agustín de Betancourt</b>");
+        	var BetancourtMarker = L.marker([41.68375, -0.88411]).bindPopup("<b>Edificio Agustín de Betancourt</b>");
         	
 
         	/**
@@ -70,11 +70,9 @@ angular.module('smartCampUZApp')
         	            "<b>y=</b>" +e.latlng.lng.toString()+ "</br>"+e.latlng.toString())
         	        .openOn(map);
         	    
-        	    $scope.lat=e.latlng.lat;
-        	    $scope.lng=e.latlng.lng;
-        	    $scope.latlng=e.latlng.lat + ", " + e.latlng.lng;
-        	    
-        	    $scope.sendCoordinates($scope.lat, $scope.lng);
+        	    $scope.coordsPseudoMerkator = L.Projection.SphericalMercator.project(e.latlng);
+        	    //$scope.sendCoordinates($scope.coordsPseudoMerkator.x, $scope.coordsPseudoMerkator.y, $scope.floors);
+        	    userMap.setLocationFromCoordenates($scope.coordsPseudoMerkator.x, $scope.coordsPseudoMerkator.y, $scope.floors, successMap, showError);
         	}
         	map.on('click', onMapClick);
         	
@@ -84,13 +82,12 @@ angular.module('smartCampUZApp')
                 $scope.error = true;
             };
             
-            var successMap = function (location) {
+            var successMap = function (location) {	
             	userMap.setCurrentLocation(location);
             };
+
+        	$scope.floors = ["00","00","00"];
             
-        	$scope.sendCoordinates = function (lat, lng) {
-        		userMap.setLocationFromCoordenates(lat, lng, successMap, showError);
-            };
 
         	document.getElementById('campus').addEventListener('click', function () {
         		map.setView([41.68306, -0.88707], 17);
@@ -100,33 +97,43 @@ angular.module('smartCampUZApp')
         		map.removeLayer(BetancourtMarker);
         		EINAmarker.openPopup();
         	});
-
-        	document.getElementById('ada').addEventListener('click', function () {
-        		map.setView([41.68363, -0.88891], 19);
-        		AdaByronMarker.addTo(map);
-        		map.removeLayer(TorresMarker);
-        		map.removeLayer(EINAmarker);
-        		map.removeLayer(BetancourtMarker);
-        		AdaByronMarker.openPopup();
-        	});
-
-        	document.getElementById('torres').addEventListener('click', function () {
-        		map.setView([41.68363, -0.88736], 19);
-        		TorresMarker.addTo(map);
-        		map.removeLayer(AdaByronMarker);
-        		map.removeLayer(EINAmarker);
-        		map.removeLayer(BetancourtMarker);
-        		TorresMarker.openPopup();
-        	});
-
-        	document.getElementById('betan').addEventListener('click', function () {
-        		map.setView([41.68347, -0.88394], 19);
-        		BetancourtMarker.addTo(map);
-        		map.removeLayer(TorresMarker);
-        		map.removeLayer(AdaByronMarker);
-        		map.removeLayer(EINAmarker);
-        		BetancourtMarker.openPopup();
-        	});
+        	
+        	$scope.determineBuildingAndFloor = function(buildingAndFloor) {
+        		
+        		var building = buildingAndFloor.substring(0,1);
+        		var floor = buildingAndFloor.substring(1,3);
+        		
+        		if (building=='A'){
+            		$scope.floors[0]=floor;
+            		alert("Ada. Planta " + floor);
+            		map.setView([41.68363, -0.88891], 19);
+            		AdaByronMarker.addTo(map);
+            		map.removeLayer(TorresMarker);
+            		map.removeLayer(EINAmarker);
+            		map.removeLayer(BetancourtMarker);
+            		AdaByronMarker.openPopup();
+            		
+            	}else if (building=='T'){
+            		$scope.floors[1]=floor;
+            		alert("Torres. Planta " + floor);
+            		map.setView([41.68363, -0.88736], 19);
+            		TorresMarker.addTo(map);
+            		map.removeLayer(AdaByronMarker);
+            		map.removeLayer(EINAmarker);
+            		map.removeLayer(BetancourtMarker);
+            		TorresMarker.openPopup();
+            		
+            	}else{
+            		$scope.floors[2]=floor;
+            		alert("Betan. Planta " + floor);
+            		map.setView([41.68347, -0.88394], 19);
+            		BetancourtMarker.addTo(map);
+            		map.removeLayer(TorresMarker);
+            		map.removeLayer(AdaByronMarker);
+            		map.removeLayer(EINAmarker);
+            		BetancourtMarker.openPopup();
+            	}
+        	};
         	
         	/**
         	 * Background map
@@ -143,7 +150,7 @@ angular.module('smartCampUZApp')
         	var PoligonosAda00 = L.tileLayer.wms("http://localhost:8080/geoserver/wms",{
         		request: 'GetMap',
         		maxZoom: 25,
-        		layers: 'Smart_CampUZ:PoligonosAda00',
+        		layers: 'Smart_CampUZ:A00',
         	    noWrap:true,
         	    continuousWorld: false,
         	    transparent: true,
@@ -167,19 +174,7 @@ angular.module('smartCampUZApp')
         	}).addTo(map);
 
 
-        	var LineasAda00 = L.tileLayer.wms("http://localhost:8080/geoserver/wms",{
-        		request: 'GetMap',
-        		maxZoom: 25,
-        		layers: 'Smart_CampUZ:LineasAda00',
-        	    noWrap:true,
-        	    continuousWorld: false,
-        	    transparent: true,
-        	    format: 'image/png',
-        	    version: '1.1.0',
-        	    attribution: "myattribution",
-        		zIndex: 2
-        	}).addTo(map);
-
+        	
 
         	var Ada00 = L.layerGroup([LineasAda00,PoligonosAda00]);
 
