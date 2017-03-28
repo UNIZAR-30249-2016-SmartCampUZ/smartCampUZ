@@ -185,6 +185,7 @@ angular.module('smartCampUZApp')
             },
 
             // State management of a report
+
             setState: function (state, callbackSuccess, callbackError) {
                 if(state.state == '') {state.state = 'INBOX'}
                 else if (state.state == 'Notificado') {state.state = 'NOTIFIED'}
@@ -193,6 +194,7 @@ angular.module('smartCampUZApp')
                 else if (state.state == 'Asignado') {state.state = 'ASSIGNED'}
                 else if (state.state == 'Hecho') {state.state = 'DONE'}
                 else if (state.state == 'Confirmado') {state.state = 'CONFIRMED'}
+
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({
                     method: 'PUT',
@@ -272,6 +274,7 @@ angular.module('smartCampUZApp')
     // 'userMap' service manage the user view of the map with the server
     .factory('userMap', function ($http) {
 
+    	
         var currentLocation = {
             id:0,
             name: ""
@@ -284,13 +287,15 @@ angular.module('smartCampUZApp')
             },
             
             // Get the room from the given coordenates
-            setLocationFromCoordenates: function (lat, lng, callbackSuccess, callbackError) {
+            setLocationFromCoordenates: function (x, y, buildingFloors, callbackSuccess, callbackError) {
+            	
             	$http({
                     method: 'GET',
                     url: 'locationFromCoords',
 				    headers: {
-				        lat: lat,
-				    	lng: lng
+				        x: x,
+				    	y: y,
+				    	buildingFloors: buildingFloors
 				    }
                 }).success(function (data) {
                 	callbackSuccess(data);
@@ -301,9 +306,10 @@ angular.module('smartCampUZApp')
                 });
             },
             
-
+            
+            
             // Set the current location
-            setCurrentLocation: function (location) {
+            setCurrentLocation: function (location) {        
             	currentLocation = location;
             }
         };
