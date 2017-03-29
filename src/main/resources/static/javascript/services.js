@@ -60,7 +60,8 @@ angular.module('smartCampUZApp')
                     url: 'signIn',
                     headers: {
                         'Authorization': 'Basic ' +
-                        $base64.encode(email + ":" + password)
+                        $base64.encode(email + ":" + password),
+                        'Content-Type': 'application/json; charset=UTF-8'
                     }
                 }).success(function (data, status, headers) {
                     that.authenticate(data, headers().token);
@@ -85,7 +86,10 @@ angular.module('smartCampUZApp')
             getCurrentDate: function (callbackSuccess, callbackError) {
                 $http({
                     method: 'GET',
-                    url: 'currentDate'
+                    url: 'currentDate',
+                    headers: {
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    }
                 }).success(function (data) {
                     callbackSuccess(data);
                 }).error(function (data) {
@@ -102,7 +106,8 @@ angular.module('smartCampUZApp')
                     headers: {
                         month: month,
                         day: day,
-                        location: userMap.getCurrentLocation().id
+                        location: userMap.getCurrentLocation().id,
+                        'Content-Type': 'application/json; charset=UTF-8'
                     }
                 }).success(function (data) {
                     callbackSuccess(data);
@@ -124,7 +129,10 @@ angular.module('smartCampUZApp')
                 $http({
                     method: 'POST',
                     url: 'reserveHours',
-                    headers: {'Authorization': 'Bearer ' + token},
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    },
                     data: JSON.stringify(aux)
                 }).success(function (data) {
                     callbackSuccess(data);
@@ -148,6 +156,9 @@ angular.module('smartCampUZApp')
                 $http({
                     method: 'POST',
                     url: 'reportFeedback',
+                    headers: {
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    },
                     data: JSON.stringify(aux)
                 }).success(function (data) {
                     callbackSuccess(data);
@@ -164,7 +175,8 @@ angular.module('smartCampUZApp')
                     url: 'listFeedback',
                     headers: {
                         'Authorization': 'Bearer ' + token,
-                        location: userMap.getCurrentLocation().id
+                        location: userMap.getCurrentLocation().id,
+                        'Content-Type': 'application/json; charset=UTF-8'
                     }
                 }).success(function (data) {
                     callbackSuccess(data.feedbacks);
@@ -179,7 +191,10 @@ angular.module('smartCampUZApp')
                 $http({
                     method: 'PUT',
                     url: 'state',
-                    headers: {'Authorization': 'Bearer ' + token},
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    },
                     data: JSON.stringify(state)
                 }).success(function (data) {
 
@@ -211,7 +226,8 @@ angular.module('smartCampUZApp')
                     url: 'locationFromCoords',
 				    headers: {
 				        lat: lat,
-				    	lng: lng
+				    	lng: lng,
+                        'Content-Type': 'application/json; charset=UTF-8'
 				    }
                 }).success(function (data) {
                 	callbackSuccess(data);
