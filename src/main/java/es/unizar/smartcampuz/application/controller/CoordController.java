@@ -97,7 +97,7 @@ public class CoordController {
 
         if(obj.size()>0) {
             obj.get(0).setId(tableName + '.' + obj.get(0).getId());
-            return new ResponseEntity<Room>(obj.get(0), HttpStatus.ACCEPTED);
+            return new ResponseEntity<Room>(obj.get(0), HttpStatus.OK);
         } else {
             return new ResponseEntity<Room>(HttpStatus.NOT_FOUND);
         }
