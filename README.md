@@ -19,17 +19,22 @@ Fork this repo. After that, you have to clone your forked repo on your local mac
 
 Assuming you have already installed PostgreSQL, access to template1, wich is a default PostgreSQL database:
 ```
-sudo su postgres
-psql template1
+user@smachine:/smartCampuz$ sudo su postgres
+postgres@smachine:/smartCampuz$ psql template1
 ```
 
-Once you are loged in, you should create a user, a database and grant all permisions over the database to that user.
+Once you are loged in, you should create a user.
 ```
 template1=# CREATE USER <myUser> WITH PASSWORD '<myPassword>';
-template1=# CREATE DATABASE smartcampuz;
-template1=# GRANT ALL PRIVILEGES ON DATABASE smartcampuz to <myUser>;
 \q
 exit
+```
+
+Without logging out from `posrtgres` account, execute the resetDB.sh script. This will create a database named 
+**smartcampuz** owned by a user named **smartuser**. If you want to change those values you can manually replace-them-all with
+your chosen one.
+```
+postgres@smachine:/smartCampuz$ sh resetDB.sh
 ```
 
 Now locate and set the "<myUser>" and "<myPassword>" in /GitHub/smartCampUZ/src/main/resources/application.properties (the following are the default ones in the project):

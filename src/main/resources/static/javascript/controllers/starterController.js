@@ -19,24 +19,24 @@ angular.module('smartCampUZApp')
         $scope.successMsg = "";
         $scope.errorMsg = "";
 
-        // hide the error mensage
+        // hide the error message
         $scope.hideError = function () {
             $scope.errorMsg = "";
             $scope.error = false;
         };
-        // show the error mensage
+        // show the error message
         var showError = function (error) {
             $scope.errorMsg = error;
             $scope.error = true;
         };
 
-        // show the success mensage
+        // show the success message
         var showSuccess = function (message) {
             $scope.successMsg = message;
             $scope.success = true;
         };
 
-        // hide the success mensage
+        // hide the success message
         $scope.hideSuccess = function () {
             $scope.success = false;
             $scope.successMsg = "";

@@ -37,8 +37,12 @@
             </div><!-- END: Filters section -->
 
             <!-- this div will show only when an error occurs -->
-            <div class="alert alert-danger" ng-if="error">
-              <strong>&#10008</strong> {{errorMsg}}
+            <div class="alert alert-danger" ng-if="error" ng-click="$parent.errorMsg='';$parent.error=false">
+              <strong>&#10008</strong>Pincha aquí para ocultar. {{errorMsg}}
+            </div>
+            <!-- this div will show only when an success occurs -->
+            <div class="alert alert-success" ng-if="success" ng-click="$parent.successMsg='';$parent.success=false">
+              <strong>&#10004</strong>Pincha aquí para ocultar. {{successMsg}}
             </div>
 
             <div id="feedbackList">

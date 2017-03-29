@@ -3,6 +3,7 @@ package es.unizar.smartcampuz.application.controller;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,13 +13,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-import es.unizar.smartcampuz.application.service.*;
+import es.unizar.smartcampuz.infrastructure.service.*;
+import es.unizar.smartcampuz.model.report.Report;
+import es.unizar.smartcampuz.model.report.ReportRepository;
 
 @Controller
 public class DashboardController {
 
     private static final Logger LOG = LoggerFactory
         .getLogger(CredentialController.class);
+
+    @Autowired
+    private ReportRepository reportRepository;
 
     @PostMapping("/reportFeedback")
     @ResponseBody
@@ -45,7 +51,8 @@ public class DashboardController {
         }
         //TODO: ¿Comprobar que la localización existe?
 
-        //TODO: Crear el nuevo report e insertarlo en la BD
+        Report newReport = new Report(location, null, description);
+        reportRepository.save(newReport);
         return new ResponseEntity<>("\"Feedback guardado correctamente.\"", HttpStatus.OK);
     }
 }
