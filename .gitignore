@@ -2,6 +2,8 @@
 /build/
 !gradle/wrapper/gradle-wrapper.jar
 
+dump.sql
+
 ### STS ###
 .apt_generated
 .classpath
