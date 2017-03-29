@@ -35,6 +35,9 @@ public class ReportStateChecker {
                     case DONE:
                         if(report.getWorker()!=null)
                             return true;
+                    case ASSIGNED:
+                        if(report.getWorker()!=null)
+                            return true;
                 }
                 break;
             case DONE:

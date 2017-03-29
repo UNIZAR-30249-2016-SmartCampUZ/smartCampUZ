@@ -165,16 +165,36 @@ angular.module('smartCampUZApp')
                     headers: {
                         'Authorization': 'Bearer ' + token,
                         location: userMap.getCurrentLocation().id
+
                     }
                 }).success(function (data) {
-                    callbackSuccess(data.feedbacks);
+                    var feedbacks = data.feedbacks;
+                    for (i=0;i<feedbacks.length;i++) {
+                        if(feedbacks[i].state == 'INBOX') {feedbacks[i].state = '' }
+                        else if (feedbacks[i].state == 'NOTIFIED') {feedbacks[i].state = 'Notificado' }
+                        else if (feedbacks[i].state == 'REFUSED') {feedbacks[i].state = 'Denegado' }
+                        else if (feedbacks[i].state == 'APPROVED') {feedbacks[i].state = 'Aprobado' }
+                        else if (feedbacks[i].state == 'ASSIGNED') {feedbacks[i].state = 'Asignado' }
+                        else if (feedbacks[i].state == 'DONE') {feedbacks[i].state = 'Hecho' }
+                        else if (feedbacks[i].state == 'CONFIRMED') {feedbacks[i].state = 'Confirmado' }
+                    }
+                    callbackSuccess(feedbacks);
                 }).error(function (data) {
                     callbackError(data);
                 });
             },
 
             // State management of a report
-            setState: function(state) {
+
+            setState: function (state, callbackSuccess, callbackError) {
+                if(state.state == '') {state.state = 'INBOX'}
+                else if (state.state == 'Notificado') {state.state = 'NOTIFIED'}
+                else if (state.state == 'Denegado') {state.state = 'REFUSED'}
+                else if (state.state == 'Aprobado') {state.state = 'APPROVED'}
+                else if (state.state == 'Asignado') {state.state = 'ASSIGNED'}
+                else if (state.state == 'Hecho') {state.state = 'DONE'}
+                else if (state.state == 'Confirmado') {state.state = 'CONFIRMED'}
+
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({
                     method: 'PUT',
@@ -182,16 +202,77 @@ angular.module('smartCampUZApp')
                     headers: {'Authorization': 'Bearer ' + token},
                     data: JSON.stringify(state)
                 }).success(function (data) {
-
+                    callbackSuccess(data);
                 }).error(function (data) {
+                    callbackError(data);
+                });
+            }
+        };
+    })
 
+    // 'workers' service manage the workers functionallities of the app with the server
+    .factory('workers', function ($http) {
+
+        var workers = [];
+
+        return {
+            // Get the list of the workers
+            getListOfWorkers: function (callback) {
+                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                $http({
+                    method: 'GET',
+                    url: 'listWorkers',
+                    headers: {'Authorization': 'Bearer ' + token}
+                }).success(function (data) {
+                    workers = data.workers;
+                    callback();
+                }).error(function (data) {
+                    alert(data);
+                });
+            },
+
+            // Get an array containing all names of the workers
+            getWorkersName: function () {
+                var names = [];
+                var i = workers.length;
+                for (i=0;i<workers.length;i++) {
+                    names.push(workers[i].name);
+                }
+                return names;
+            },
+
+            //
+            getWorkerId: function (name) {
+                var found = false;
+                var id = 0;
+                for (i=0;i<workers.length || !found;i++) {
+                    if (workers[i].name == name) {
+                        id = workers[i].id;
+                        found = true;
+                    }
+                }
+                return id;
+            },
+
+            // Assign worker to a report
+            assignWorker: function (worker, callbackSuccess, callbackError) {
+                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                $http({
+                    method: 'PUT',
+                    url: 'assignWorker',
+                    headers: {'Authorization': 'Bearer ' + token},
+                    data: JSON.stringify(worker)
+                }).success(function (data) {
+                    callbackSuccess(data);
+                }).error(function (data) {
+                    callbackError(data);
                 });
             }
         };
     })
 
     // 'userMap' service manage the user view of the map with the server
-    .factory('userMap', function ($state, $http) {
+    .factory('userMap', function ($http) {
 
     	
         var currentLocation = {

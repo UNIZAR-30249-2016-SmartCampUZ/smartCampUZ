@@ -37,7 +37,7 @@
     <div class="row">
       <label for="worker" class="col-xs-2">Trabajador:</label>
       <select id="worker" class="col-xs-6 col-xs-offset-2" ng-model="selectedWorker"
-              ng-disabled="currentState!='Asignado'" ng-change="asignWorker()"
+              ng-disabled="currentState!='Asignado'" ng-change="assignWorker()"
               ng-options="x for x in workerList" ng-class="{disabled: currentState!='Asignado'}">
         <option value="" disabled selected>Selecciona el trabajador</option>
       </select>
