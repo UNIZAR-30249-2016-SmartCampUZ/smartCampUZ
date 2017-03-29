@@ -4,14 +4,12 @@ angular.module('smartCampUZApp')
 
         // show the error message
         var showError = function (error) {
-            $scope.errorMsg = error;
-            $scope.error = true;
+            alert(error + " Por favor, recarga la página.");
         };
 
         // show the success message
         var showSuccess = function (message) {
-            $scope.successMsg = message;
-            $scope.success = true;
+            alert(message + " Por favor, recarga la página.");
         };
 
         $scope.workerList = workers.getWorkersName();
