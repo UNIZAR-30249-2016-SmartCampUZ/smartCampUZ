@@ -210,22 +210,13 @@ angular.module('smartCampUZApp')
             	
             	$http({
                     method: 'GET',
-                    url: 'locationFromCoords',
-				    headers: {
-				        x: x,
-				    	y: y,
-				    	buildingFloors: buildingFloors
-				    }
+                    url: 'locationFromCoords?x=' + x + '&y=' + y + '&buildingFloors=' + buildingFloors,
                 }).success(function (data) {
                 	callbackSuccess(data);
                 }).error(function (data) {
                 	//callbackError(data);
-                    var aux = {id: 123123, name: "L0.01"};
-                    callbackSuccess(aux);
                 });
             },
-            
-            
             
             // Set the current location
             setCurrentLocation: function (location) {        
