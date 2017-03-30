@@ -67,7 +67,6 @@ angular.module('smartCampUZApp')
         	var popup2 = L.popup();
         	function onMapClick(e) {
                 map.removeLayer(RoomMarker);
-                alert(e.latlng);
                 RoomMarker = L.marker([ e.latlng.lat, e.latlng.lng]).addTo(map);
         	    $scope.coordsPseudoMerkator = L.Projection.SphericalMercator.project(e.latlng);
         	    userMap.setLocationFromCoordenates($scope.coordsPseudoMerkator.x, $scope.coordsPseudoMerkator.y, $scope.floors, successMap, showError);
