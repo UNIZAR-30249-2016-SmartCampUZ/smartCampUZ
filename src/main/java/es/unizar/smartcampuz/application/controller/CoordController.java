@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 @Controller
 public class CoordController {
@@ -90,7 +91,7 @@ public class CoordController {
             return null;
         }
 
-        String query = String.format("SELECT * FROM \"%s\" WHERE st_contains(geom ,st_geomfromtext(" +
+        String query = String.format(Locale.US, "SELECT * FROM \"%s\" WHERE st_contains(geom ,st_geomfromtext(" +
             "'point(%f %f)', 3857))",tableName,x,y);
         ArrayList<Room> obj = (ArrayList<Room>) jdbcTemplate.query(query, rowMapper);
 

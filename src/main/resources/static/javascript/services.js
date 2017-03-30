@@ -288,7 +288,6 @@ angular.module('smartCampUZApp')
             
             // Get the room from the given coordenates
             setLocationFromCoordenates: function (x, y, buildingFloors, callbackSuccess, callbackError) {
-            	
             	$http({
                     method: 'GET',
                     url: 'locationFromCoords?x=' + x + '&y=' + y + '&buildingFloors=' + buildingFloors,
