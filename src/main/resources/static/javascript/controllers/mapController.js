@@ -5,7 +5,8 @@ angular.module('smartCampUZApp')
         $(document).ready(function(){
         	//var map = L.map('mapid').setView([41.68306, -0.88707], 17);
         	var map = L.map('mapid', {
-        	    minZoom: 17
+        	    minZoom: 17,
+        	    maxBoundsViscosity: 1.0
         	}).setView([41.68306, -0.88627],17);
         	
         	/**
@@ -36,6 +37,16 @@ angular.module('smartCampUZApp')
         	}).addTo(map);
 
 
+        	var southWest = L.latLng(41.68089, -0.89085),
+        	northEast = L.latLng(41.68607, -0.88141);
+        	var bounds = L.latLngBounds(southWest, northEast);
+
+        	map.setMaxBounds(bounds);
+        	map.on('drag', function() {
+        	    map.panInsideBounds(bounds, { animate: false });
+        	});
+        	
+        	
         	/**
         	 * Scale control
         	 */
@@ -56,8 +67,8 @@ angular.module('smartCampUZApp')
         	var popup2 = L.popup();
         	function onMapClick(e) {
                 map.removeLayer(RoomMarker);
+                alert(e.latlng);
                 RoomMarker = L.marker([ e.latlng.lat, e.latlng.lng]).addTo(map);
-
         	    $scope.coordsPseudoMerkator = L.Projection.SphericalMercator.project(e.latlng);
         	    userMap.setLocationFromCoordenates($scope.coordsPseudoMerkator.x, $scope.coordsPseudoMerkator.y, $scope.floors, successMap, showError);
         	}
