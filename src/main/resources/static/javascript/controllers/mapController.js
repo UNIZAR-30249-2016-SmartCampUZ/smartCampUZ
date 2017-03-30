@@ -3,8 +3,10 @@ angular.module('smartCampUZApp')
     .controller('mapCtrl', ['$scope', '$state', 'userMap', function ($scope, $state, userMap) {
     	
         $(document).ready(function(){
-        	var map = L.map('mapid').setView([41.68306, -0.88707], 17);
-        	
+        	//var map = L.map('mapid').setView([41.68306, -0.88707], 17);
+        	var map = L.map('mapid', {
+        	    minZoom: 17
+        	}).setView([41.68306, -0.88627],17);
         	
         	/**
         	 * GeoJSON LineString circling EINA
@@ -35,19 +37,6 @@ angular.module('smartCampUZApp')
 
 
         	/**
-        	 * Marker azul
-        	 */
-        	var EINAmarker = L.marker([41.6839, -0.88598]).addTo(map);
-
-
-        	// /**
-        	//  * Popup binding
-        	//  */
-        	// EINAmarker.bindPopup("<b>EINA</b><br>Escuela de"+
-        	//     " Ingeniería y Arquitectura.").openPopup();
-
-
-        	/**
         	 * Scale control
         	 */
         	L.control.scale({ position: 'topright' }).addTo(map);
@@ -70,7 +59,6 @@ angular.module('smartCampUZApp')
                 RoomMarker = L.marker([ e.latlng.lat, e.latlng.lng]).addTo(map);
 
         	    $scope.coordsPseudoMerkator = L.Projection.SphericalMercator.project(e.latlng);
-        	    //$scope.sendCoordinates($scope.coordsPseudoMerkator.x, $scope.coordsPseudoMerkator.y, $scope.floors);
         	    userMap.setLocationFromCoordenates($scope.coordsPseudoMerkator.x, $scope.coordsPseudoMerkator.y, $scope.floors, successMap, showError);
         	}
         	map.on('click', onMapClick);
@@ -90,11 +78,6 @@ angular.module('smartCampUZApp')
 
         	document.getElementById('campus').addEventListener('click', function () {
         		map.setView([41.68306, -0.88707], 17);
-        		// EINAmarker.addTo(map);
-        		map.removeLayer(AdaByronMarker);
-        		map.removeLayer(TorresMarker);
-        		map.removeLayer(BetancourtMarker);
-        		// EINAmarker.openPopup();
         	});
         	
         	$scope.determineBuildingAndFloor = function(buildingAndFloor) {
@@ -104,33 +87,14 @@ angular.module('smartCampUZApp')
         		
         		if (building=='A'){
             		$scope.floors[0]=floor;
-            		// alert("Ada. Planta " + floor);
             		map.setView([41.68363, -0.88891], 19);
-            		// AdaByronMarker.addTo(map);
-            		map.removeLayer(TorresMarker);
-            		map.removeLayer(EINAmarker);
-            		map.removeLayer(BetancourtMarker);
-            		// AdaByronMarker.openPopup();
             		
             	}else if (building=='T'){
             		$scope.floors[1]=floor;
-            		// alert("Torres. Planta " + floor);
             		map.setView([41.68363, -0.88736], 19);
-            		// TorresMarker.addTo(map);
-            		map.removeLayer(AdaByronMarker);
-            		map.removeLayer(EINAmarker);
-            		map.removeLayer(BetancourtMarker);
-            		// TorresMarker.openPopup();
-            		
             	}else{
             		$scope.floors[2]=floor;
-            		// alert("Betan. Planta " + floor);
             		map.setView([41.68347, -0.88394], 19);
-            		// BetancourtMarker.addTo(map);
-            		map.removeLayer(TorresMarker);
-            		map.removeLayer(AdaByronMarker);
-            		map.removeLayer(EINAmarker);
-            		// BetancourtMarker.openPopup();
             	}
         	};
         	
@@ -173,12 +137,8 @@ angular.module('smartCampUZApp')
         	}).addTo(map);
 
 
-        	
-
-        	var Ada00 = L.layerGroup([LineasAda00,PoligonosAda00]);
-
         	var overlaysAda = {
-        		    "Ada Byron P00": Ada00,
+        		    "Ada Byron P00": PoligonosAda00,
         		    "Ada Byron P04": PoligonosAda04
         	};
         	L.control.layers(overlaysAda).addTo(map);
