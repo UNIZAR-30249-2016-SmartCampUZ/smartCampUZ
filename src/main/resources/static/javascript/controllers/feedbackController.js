@@ -9,7 +9,7 @@ angular.module('smartCampUZApp')
 
         // show the success message
         var showSuccess = function (message) {
-            alert(message + " Por favor, recarga la página.");
+            alert(message);
         };
 
         $scope.workerList = workers.getWorkersName();
