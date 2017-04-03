@@ -1,45 +1,48 @@
 <div id="selectorBuilding" class="text-center sC-text-theme">
-  <div class="col-xs-3" id="campus">
-   		<button class="btn sC-border-theme" type="button" data-toggle="dropdown">Campus Rio Ebro</button>
-  </div>
+
+  <div class="col-xs-3" id="campus">Campus Rio Ebro</div>
+
+
   <div class="col-xs-3" id="ada">
 		<div class="dropdown">
-    		<button class="btn sC-border-theme dropdown-toggle" type="button" data-toggle="dropdown">Ada Byron
-    		<span class="caret"></span></button>
+    		<span data-toggle="dropdown">Ada Byron
+    		<span class="caret"></span></span>
     		<ul class="dropdown-menu">
-      			<li><a ng-click="determineBuildingAndFloor('AS1')">Sótano</a></li>
+          <li><a ng-click="determineBuildingAndFloor('AS1')">Sótano</a></li>
      			<li><a ng-click="determineBuildingAndFloor('A00')">Planta 0</a></li>
-      			<li><a ng-click="determineBuildingAndFloor('A01')">Planta 1</a></li>
-      			<li><a ng-click="determineBuildingAndFloor('A02')">Planta 2</a></li>
-      			<li><a ng-click="determineBuildingAndFloor('A03')">Planta 3</a></li>
-      			<li><a ng-click="determineBuildingAndFloor('A04')">Planta 4</a></li>
-      			<li><a ng-click="determineBuildingAndFloor('APT')">Terraza</a></li>
-    		</ul>
-		</div>  
-  </div>
-  <div class="col-xs-3" id="torres">
-		<div class="dropdown">
-    		<button class="btn sC-border-theme dropdown-toggle" type="button" data-toggle="dropdown">Torres Quevedo
-    		<span class="caret"></span></button>
-    		<ul class="dropdown-menu">
-      			<li><a ng-click="determineBuildingAndFloor('TS1')">Sótano</a></li>
-     			<li><a ng-click="determineBuildingAndFloor('T00')">Planta 0</a></li>
-      			<li><a ng-click="determineBuildingAndFloor('T01')">Planta 1</a></li>
-      			<li><a ng-click="determineBuildingAndFloor('T02')">Planta 2</a></li>
-      			<li><a ng-click="determineBuildingAndFloor('T03')">Planta 3</a></li>
+      		<li><a ng-click="determineBuildingAndFloor('A01')">Planta 1</a></li>
+      		<li><a ng-click="determineBuildingAndFloor('A02')">Planta 2</a></li>
+      		<li><a ng-click="determineBuildingAndFloor('A03')">Planta 3</a></li>
+      		<li><a ng-click="determineBuildingAndFloor('A04')">Planta 4</a></li>
+      		<li><a ng-click="determineBuildingAndFloor('APT')">Terraza</a></li>
     		</ul>
 		</div>
   </div>
+
+  <div class="col-xs-3" id="torres">
+		<div class="dropdown">
+    		<span data-toggle="dropdown">Torres Quevedo
+    		<span class="caret"></span></span>
+    		<ul class="dropdown-menu">
+          <li><a ng-click="determineBuildingAndFloor('TS1')">Sótano</a></li>
+          <li><a ng-click="determineBuildingAndFloor('T00')">Planta 0</a></li>
+      		<li><a ng-click="determineBuildingAndFloor('T01')">Planta 1</a></li>
+      		<li><a ng-click="determineBuildingAndFloor('T02')">Planta 2</a></li>
+      		<li><a ng-click="determineBuildingAndFloor('T03')">Planta 3</a></li>
+    		</ul>
+		</div>
+  </div>
+
   <div class="col-xs-3" id="betan">
 		<div class="dropdown">
-			<button class="btn sC-border-theme dropdown-toggle" type="button" data-toggle="dropdown">Agustín de Betancourt
-    		<span class="caret"></span></button>
+			<span data-toggle="dropdown">Agustín de Betancourt
+    		<span class="caret"></span></span>
     		<ul class="dropdown-menu">
-      			<li><a ng-click="determineBuildingAndFloor('BS1')">Sótano</a></li>
+      		<li><a ng-click="determineBuildingAndFloor('BS1')">Sótano</a></li>
      			<li><a ng-click="determineBuildingAndFloor('B00')">Planta 0</a></li>
-      			<li><a ng-click="determineBuildingAndFloor('B01')">Planta 1</a></li>
-      			<li><a ng-click="determineBuildingAndFloor('B02')">Planta 2</a></li>
-      			<li><a ng-click="determineBuildingAndFloor('B03')">Planta 3</a></li>
+      		<li><a ng-click="determineBuildingAndFloor('B01')">Planta 1</a></li>
+      		<li><a ng-click="determineBuildingAndFloor('B02')">Planta 2</a></li>
+      		<li><a ng-click="determineBuildingAndFloor('B03')">Planta 3</a></li>
     		</ul>
 		</div>
 	</div>

@@ -47,7 +47,7 @@ public class AdminDashboardController {
         JSONArray feedbackList;
         JSONObject response = new JSONObject();
 
-        if(location.trim().equals("")){
+        if(location.trim().equals("") || location.trim().equals("0")){
             feedbackList = JsonService.createFeedbackList(reportRepository.findAll());
         }
         else{

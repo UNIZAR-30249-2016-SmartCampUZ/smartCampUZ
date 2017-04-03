@@ -1,6 +1,7 @@
 angular.module('smartCampUZApp')
 
-    .controller('adminCtrl', ['$scope', 'feedback', 'workers', function ($scope, feedback, workers) {
+    .controller('adminCtrl', ['$scope', 'feedback', 'workers','userMap',
+        function ($scope, feedback, workers, userMap) {
         /* FEEDBACK MESSAGES */
         // feedback handling variables
         $scope.error = false;
@@ -38,6 +39,15 @@ angular.module('smartCampUZApp')
 
         workers.getListOfWorkers(function () {
             $scope.workerList = workers.getWorkersName();
+            feedback.getFeedback(function(list) {
+                $scope.feedbackList = list;
+            }, showError);
+        });
+
+        // Watches to control if the user have selected a location
+        $scope.$watch(function() {
+            return userMap.getCurrentLocation();
+        }, function () {
             feedback.getFeedback(function(list) {
                 $scope.feedbackList = list;
             }, showError);

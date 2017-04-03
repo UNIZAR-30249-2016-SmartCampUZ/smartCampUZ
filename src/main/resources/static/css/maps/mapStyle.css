@@ -5,16 +5,20 @@
 
 #leaftletMapSection #selectorBuilding{
   position: absolute;
-  /* Déjalo en 600 que sino no se muestra 
+  /* Déjalo en 600 que sino no se muestra
   la lista de plantas de los edificios*/
-  z-index: 600;
+  z-index: 550;
   cursor: pointer;
   min-height: 60px;
   width: 100%;
 }
 
+.leaflet-top, .leaflet-bottom {
+  z-index:500;
+}
+
 #leaftletMapSection #selectorBuilding{
-  padding-top: -2px;
+  padding-top: 10px;
 }
 
 @media only screen and (max-width: 802px){
