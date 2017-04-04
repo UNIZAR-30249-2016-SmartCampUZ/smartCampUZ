@@ -7,6 +7,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+/**
+ * This entity represents a report made in an specific room. It could have a Worker assigned.
+ */
 @Entity
 @Table(name = "report")
 public class Report {
