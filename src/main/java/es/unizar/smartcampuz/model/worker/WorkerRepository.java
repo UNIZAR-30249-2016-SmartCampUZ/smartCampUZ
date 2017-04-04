@@ -4,11 +4,8 @@ import org.springframework.data.repository.CrudRepository;
 
 /**
  * A repository for the entity Worker is simply created by extending the CrudRepository
- * interface provided by spring. The following methods are some of the ones
- * available from such interface: save, delete, deleteAll, findOne and findAll.
- * The magic is that such methods must not be implemented, and moreover it is
- * possible create new query methods working only by defining their signature!
- *
+ * interface provided by spring.
+ * Represents a collection of every Worker stored in the system.
  */
 public interface WorkerRepository extends CrudRepository<Worker, Long> {
     /**

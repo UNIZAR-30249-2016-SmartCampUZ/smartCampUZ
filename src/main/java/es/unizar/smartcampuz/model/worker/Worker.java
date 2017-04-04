@@ -1,17 +1,11 @@
 package es.unizar.smartcampuz.model.worker;
 
-import es.unizar.smartcampuz.model.report.Report;
-import es.unizar.smartcampuz.model.report.ReportRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
+/**
+ * This entity represents a Worker previously registered.
+ */
 @Entity
 @Table(name = "worker")
 public class Worker {

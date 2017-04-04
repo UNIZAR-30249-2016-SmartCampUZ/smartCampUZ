@@ -7,6 +7,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+/**
+ * This entity represents a report made in an specific room. It could have a Worker assigned.
+ */
 @Entity
 @Table(name = "report")
 public class Report {
@@ -25,14 +28,6 @@ public class Report {
 
     @Enumerated(EnumType.STRING)
     private ReportState state = ReportState.INBOX;
-
-//    @Column
-//    @Type(type="timestamp")
-//    private Date createDate;
-//
-//    @Column
-//    @Type(type="timestamp")
-//    private Date modifyDate;
 
     public Report(){ }
 
@@ -85,20 +80,4 @@ public class Report {
     public ReportState getState() {
         return state;
     }
-//
-//    public void setCreateDate(Date createDate) {
-//        this.createDate = createDate;
-//    }
-//
-//    public Date getCreateDate() {
-//        return createDate;
-//    }
-//
-//    public void setModifyDate(Date modifyDate) {
-//        this.modifyDate = modifyDate;
-//    }
-//
-//    public Date getModifyDate() {
-//        return modifyDate;
-//    }
 }

@@ -1,7 +1,7 @@
 package es.unizar.smartcampuz.model.report;
 
 /**
- * Created by sergio on 23/03/17.
+ * This enum represents the possible states of a report.
  */
 public enum ReportState {
     INBOX, NOTIFIED, REFUSED, APPROVED, ASSIGNED, DONE, CONFIRMED

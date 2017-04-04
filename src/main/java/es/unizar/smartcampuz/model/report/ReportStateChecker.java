@@ -11,6 +11,11 @@ package es.unizar.smartcampuz.model.report;
  */
 public class ReportStateChecker {
 
+    /**
+     * Return true if a new state can be set to a given report or false if not.
+     * @param report the report which has the actual state.
+     * @param newState the new state which will be evaluated.
+     */
     public static boolean checkTransition(Report report, ReportState newState){
         switch (report.getState()) {
             case INBOX:
