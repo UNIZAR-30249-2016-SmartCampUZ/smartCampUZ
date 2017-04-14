@@ -196,8 +196,8 @@ angular.module('smartCampUZApp')
             },
 
             // State management of a report
-
             setState: function (state, callbackSuccess, callbackError) {
+                var stateToChange = state.state;
                 if(state.state == '') {state.state = 'INBOX'}
                 else if (state.state == 'Notificado') {state.state = 'NOTIFIED'}
                 else if (state.state == 'Denegado') {state.state = 'REFUSED'}
@@ -216,7 +216,7 @@ angular.module('smartCampUZApp')
                     },
                     data: JSON.stringify(state)
                 }).success(function (data) {
-                    callbackSuccess(data);
+                    callbackSuccess(data, stateToChange);
                 }).error(function (data) {
                     callbackError(data);
                 });

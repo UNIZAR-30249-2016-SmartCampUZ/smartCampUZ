@@ -1,41 +1,49 @@
 angular.module('smartCampUZApp')
 
-    .controller('feedbackCtrl', ['$scope', 'feedback', 'workers', function ($scope, feedback, workers) {
+    .controller('feedbackCtrl', ['$scope', 'feedback', 'workers', 'Notification',
+        function ($scope, feedback, workers, Notification) {
 
         // show the error message
-        var showError = function (error) {
-            alert(error + " Por favor, recarga la página.");
+        var showError = function (message) {
+            Notification.error('&#10008' + message);
         };
 
         // show the success message
         var showSuccess = function (message) {
-            alert(message);
+            Notification.success('&#10004' + message);
         };
 
         $scope.workerList = workers.getWorkersName();
         $scope.selectedWorker = $scope.feedback.worker;
         $scope.currentState = $scope.feedback.state;
+        $scope.disableWorkers = true;
+
         $scope.changeState = function (state) {
-            $scope.currentState = state;
-            if ($scope.currentState == 'Aprobado' || $scope.currentState == 'Denegado'
-                || $scope.currentState == 'Notificado') {
-                $scope.selectedWorker = "";
-            }
-            if ($scope.currentState != 'Asignado') {
+            $scope.disableWorkers = state != 'Asignado';
+            if (state != 'Asignado') {
                 var tmpState = {
                     id: $scope.feedback.id,
-                    state: $scope.currentState
+                    state: state
                 };
-                feedback.setState(tmpState,showSuccess,showError);
+                feedback.setState(tmpState,function (message, state) {
+                    if (state == 'Aprobado' || state == 'Denegado' || state == 'Notificado') {
+                        $scope.selectedWorker = "";
+                    }
+                    $scope.currentState = state;
+                    showSuccess(message);
+                },showError);
             }
         };
         $scope.assignWorker = function () {
-            if ($scope.currentState == 'Asignado') {
+            if (!$scope.disableWorkers) {
                 var tmpState = {
                     id: $scope.feedback.id,
                     worker: workers.getWorkerId($scope.selectedWorker)
                 };
-                workers.assignWorker(tmpState,showSuccess,showError);
+                workers.assignWorker(tmpState,function (message) {
+                    $scope.currentState = 'Asignado';
+                    showSuccess(message);
+                },showError);
             }
         }
     }]);
