@@ -83,20 +83,12 @@ angular.module('smartCampUZApp')
 
         return {
             // Get the current day
-            getCurrentDate: function (callbackSuccess, callbackError) {
-                $http({
-                    method: 'GET',
-                    url: 'currentDate',
-                    headers: {
-                        'Content-Type': 'application/json; charset=UTF-8'
-                    }
-                }).success(function (data) {
-                    callbackSuccess(data);
-                }).error(function (data) {
-                    var date = {month: 01, day: 23};
-                    callbackSuccess(date);
-                    //callbackError(data);
-                });
+            getCurrentDate: function () {
+                var dateObject = new Date();
+                var day = dateObject.getDate() - 1;
+                var month = dateObject.getMonth();
+                var date = {month: month, day: day};
+                return date;
             },
             // Get available hours of a [date]
             getAvailableHours: function (month, day, callbackSuccess, callbackError) {
@@ -110,11 +102,14 @@ angular.module('smartCampUZApp')
                         'Content-Type': 'application/json; charset=UTF-8'
                     }
                 }).success(function (data) {
-                    callbackSuccess(data);
-                }).error(function (data) {
-                    var date = [0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
+                    var hours = data.availableHours;
+                    var date = [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2];
+                    for (i=0;i<hours.length;i++) {
+                        date = hours[i] ? 2 : 0;
+                    }
                     callbackSuccess(date);
-                    //callbackError(data);
+                }).error(function (data) {
+                    callbackError(data);
                 });
             },
             // Reserve [reserveHours] hours with specific [reserveInfo] information

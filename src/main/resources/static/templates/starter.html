@@ -19,20 +19,11 @@
         <!-- options switcher selector -->
         <p style="text-align:center">
           <label class="radio-inline"><input type="radio" ng-model="optionUserMap" value="reserve"
-                                             ng-click="hideError();hideSuccess();getDate()">
+                                             ng-click="getDate()">
             Reservar zona</label>
-          <label class="radio-inline"><input type="radio" ng-model="optionUserMap" ng-click="hideError();hideSuccess()"
+          <label class="radio-inline"><input type="radio" ng-model="optionUserMap"
                                              value="feedback">Dejar sugerencia</label>
         </p>
-
-        <!-- this div will show only when an error occurs -->
-        <div class="alert alert-danger" ng-if="error">
-          <strong>&#10008</strong> {{errorMsg}}
-        </div>
-        <!-- this div will show only when an success occurs -->
-        <div class="alert alert-success" ng-if="success">
-          <strong>&#10004</strong> {{successMsg}}
-        </div>
 
         <div ng-switch="optionUserMap">
           <!-- feedback section -->
@@ -41,7 +32,7 @@
             <form ng-submit="feedback()" role="form">
               <div style="padding: 16px;">
                 <label><b>Descripción</b></label>
-                <textarea ng-click="hideError();hideSuccess()" placeholder="Descripción..." rows="2"
+                <textarea  placeholder="Descripción..." rows="2"
                           ng-model="$parent.descriptionFeedback"></textarea>
 
                 <button type="submit" class="sC-theme-action">Enviar</button>
@@ -95,17 +86,17 @@
 
               <div style="padding: 16px;">
                 <label><b>Nombre de usuario</b></label>
-                <input ng-click="hideError();hideSuccess()" type="text" placeholder="Nombre de usuario..."
+                <input  type="text" placeholder="Nombre de usuario..."
                        ng-model="$parent.userNameReserve" ng-disabled="logged"
                        ng-class="{'inputDisabled': logged}" required>
 
                 <label><b>Correo electrónico</b></label>
-                <input ng-click="hideError();hideSuccess()" type="email" placeholder="Correo electrónico..."
+                <input  type="email" placeholder="Correo electrónico..."
                        ng-model="$parent.emailReserve" ng-disabled="logged"
                        ng-class="{'inputDisabled': logged}" required>
 
                 <label><b>Descripción</b></label>
-                <textarea ng-click="hideError();hideSuccess()" placeholder="Descripción..." rows="2"
+                <textarea  placeholder="Descripción..." rows="2"
                           ng-model="$parent.descriptionReserve"></textarea>
 
                 <button type="submit" class="sC-theme-action">Hacer reserva</button>

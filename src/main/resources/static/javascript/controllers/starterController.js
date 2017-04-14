@@ -1,7 +1,7 @@
 angular.module('smartCampUZApp')
 
-    .controller('starterCtrl', ['$scope', '$state', 'auth', 'reserve', 'feedback', 'userMap',
-        function ($scope, $state, auth, reserve, feedback, userMap) {
+    .controller('starterCtrl', ['$scope', '$state', 'auth', 'reserve', 'feedback', 'userMap', 'Notification',
+        function ($scope, $state, auth, reserve, feedback, userMap, Notification) {
         $scope.location = {id:0,name:""};
         $scope.located = false;
         // Watches to control if the user have selected a location
@@ -13,33 +13,14 @@ angular.module('smartCampUZApp')
         });
 
         /* FEEDBACK MESSAGES */
-        // feedback handling variables
-        $scope.error = false;
-        $scope.success = false;
-        $scope.successMsg = "";
-        $scope.errorMsg = "";
-
-        // hide the error message
-        $scope.hideError = function () {
-            $scope.errorMsg = "";
-            $scope.error = false;
-        };
         // show the error message
-        var showError = function (error) {
-            $scope.errorMsg = error;
-            $scope.error = true;
+        var showError = function (message) {
+            Notification.error('&#10008' + message);
         };
 
         // show the success message
         var showSuccess = function (message) {
-            $scope.successMsg = message;
-            $scope.success = true;
-        };
-
-        // hide the success message
-        $scope.hideSuccess = function () {
-            $scope.success = false;
-            $scope.successMsg = "";
+            Notification.success('&#10004' + message);
         };
 
         /* CALENDAR SECTION*/
@@ -81,25 +62,23 @@ angular.module('smartCampUZApp')
         };
         // Get current date
         $scope.getDate = function () {
-            reserve.getCurrentDate(function (date) {
-                $scope.currentMonth = date.month;
-                $scope.currentDay = date.day;
-                $scope.getAvailableHours($scope.currentMonth, $scope.currentDay);
-            }, showError);
+            var date = reserve.getCurrentDate();
+            $scope.currentMonth = date.month;
+            $scope.currentDay = date.day;
+            $scope.getAvailableHours($scope.currentMonth, $scope.currentDay);
         };
         /* HOUR SELECTOR SECTION */
         // Reservable hours
-        $scope.reservableHours = ["8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00", "13:00-14:00",
-            "14:00-15:00", "15:00-16:00", "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00"];
+        $scope.reservableHours = ["00:00-01:00", "01:00-02:00", "02:00-03:00", "03:00-04:00", "04:00-05:00",
+            "05:00-06:00", "06:00-07:00", "07:00-08:00", "08:00-09:00", "09:00-10:00", "10:00-11:00",
+            "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00", "16:00-17:00",
+            "17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00", "21:00-22:00", "22:00-23:00", "23:00-00:00"];
         /* State of the reservable hours
          * 0: Disabled
          * 1: Selected
          * 2: Unselected
          */
-        $scope.hoursSelected = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
-        $scope.disableHours = function () {
-            $("#hourUL ul li.disabled").off('click');
-        };
+        $scope.hoursSelected = [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2];
         // Change the [num] reservable hour state
         $scope.setReservableHour = function (num) {
             if ($scope.hoursSelected[num] == 1) {
@@ -112,7 +91,6 @@ angular.module('smartCampUZApp')
         $scope.getAvailableHours = function (month, day) {
             reserve.getAvailableHours(month, day, function (hours) {
                 $scope.hoursSelected = hours;
-                $scope.disableHours();
             }, showError);
         };
 
@@ -128,11 +106,11 @@ angular.module('smartCampUZApp')
                 email: $scope.emailReserve,
                 description: $scope.descriptionReserve
             };
-            reserve.reserveHours(reserveInfo, $scope.hoursSelected, function (data) {
+            reserve.reserveHours(reserveInfo, $scope.hoursSelected, function (message) {
                 for (i=0; i<$scope.hoursSelected.length;i++) {
                     $scope.hoursSelected[i] = $scope.hoursSelected[i] == 1 ? 0 : $scope.hoursSelected[i];
                 }
-                showSuccess(data);
+                showSuccess(message);
             }, showError);
         };
         // Watches to control if the user is authenticated
