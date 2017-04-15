@@ -319,7 +319,7 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                 	callbackSuccess(data);
                 }).error(function (data) {
-                	//callbackError(data);
+                	callbackError(data);
                 });
             },
             
