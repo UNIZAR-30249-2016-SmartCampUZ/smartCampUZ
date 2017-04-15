@@ -22,23 +22,23 @@
                                              ng-click="getDate()">
             Reservar zona</label>
           <label class="radio-inline"><input type="radio" ng-model="optionUserMap"
-                                             value="feedback">Dejar sugerencia</label>
+                                             value="report">Dejar sugerencia</label>
         </p>
 
         <div ng-switch="optionUserMap">
-          <!-- feedback section -->
-          <div ng-switch-when="feedback">
-            <!-- feedback form -->
-            <form ng-submit="feedback()" role="form">
+          <!-- report section -->
+          <div ng-switch-when="report">
+            <!-- report form -->
+            <form ng-submit="report()" role="form">
               <div style="padding: 16px;">
                 <label><b>Descripción</b></label>
                 <textarea  placeholder="Descripción..." rows="2"
-                          ng-model="$parent.descriptionFeedback"></textarea>
+                          ng-model="$parent.descriptionReport"></textarea>
 
                 <button type="submit" class="sC-theme-action">Enviar</button>
               </div>
             </form>
-          </div><!-- end ng-switch-when=feedback -->
+          </div><!-- end ng-switch-when=report -->
 
           <!-- reserve section -->
           <div ng-switch-when="reserve">

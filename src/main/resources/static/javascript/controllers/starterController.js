@@ -1,7 +1,7 @@
 angular.module('smartCampUZApp')
 
-    .controller('starterCtrl', ['$scope', '$state', 'auth', 'reserve', 'feedback', 'userMap', 'Notification',
-        function ($scope, $state, auth, reserve, feedback, userMap, Notification) {
+    .controller('starterCtrl', ['$scope', '$state', 'auth', 'reserve', 'report', 'userMap', 'Notification',
+        function ($scope, $state, auth, reserve, report, userMap, Notification) {
         $scope.location = {id:0,name:""};
         $scope.located = false;
         // Watches to control if the user have selected a location
@@ -122,8 +122,8 @@ angular.module('smartCampUZApp')
             $scope.userNameReserve = $scope.logged ? auth.getUserName() : "";
             $scope.emailReserve = $scope.logged ? auth.getEmail() : "";
         });
-        /* FEEDBACK FORM SECTION */
-        $scope.feedback = function () {
-            feedback.reportFeedback($scope.descriptionFeedback, showSuccess, showError)
+        /* REPORT FORM SECTION */
+        $scope.report = function () {
+            report.makeReport($scope.descriptionReport, showSuccess, showError)
         }
     }]);
