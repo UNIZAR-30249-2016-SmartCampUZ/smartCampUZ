@@ -1,7 +1,7 @@
 angular.module('smartCampUZApp')
 
     // 'auth' service manage the authentication function of the page with the server
-    .factory('auth', function ($state, $http, $base64) {
+    .factory('auth', function ($state, $http, $base64, userMap) {
 
         var _identity = undefined,
             _authenticated = false;
@@ -32,6 +32,7 @@ angular.module('smartCampUZApp')
 
             //logout function
             logout: function () {
+                userMap.resetCurrentLocation();
                 _identity = undefined;
                 _authenticated = false;
                 localStorage.removeItem('smartJWT');
@@ -65,6 +66,7 @@ angular.module('smartCampUZApp')
                     }
                 }).success(function (data, status, headers) {
                     that.authenticate(data, headers().token);
+                    userMap.resetCurrentLocation();
                     callbackSuccess();
                     if (data.type == 'admin') {
                         $state.go('admin');
@@ -326,6 +328,15 @@ angular.module('smartCampUZApp')
             // Set the current location
             setCurrentLocation: function (location) {        
             	currentLocation = location;
+            },
+
+            // Reset the current location
+            resetCurrentLocation: function () {
+                var aux = {
+                    id:0,
+                    name: ""
+                };
+                currentLocation = aux;
             }
         };
     });
