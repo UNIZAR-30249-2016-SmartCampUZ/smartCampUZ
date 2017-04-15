@@ -1,7 +1,7 @@
 angular.module('smartCampUZApp')
 
-    .controller('feedbackCtrl', ['$scope', 'feedback', 'workers', 'Notification',
-        function ($scope, feedback, workers, Notification) {
+    .controller('reportCtrl', ['$scope', 'report', 'workers', 'Notification',
+        function ($scope, report, workers, Notification) {
 
         // show the error message
         var showError = function (message) {
@@ -14,18 +14,18 @@ angular.module('smartCampUZApp')
         };
 
         $scope.workerList = workers.getWorkersName();
-        $scope.selectedWorker = $scope.feedback.worker;
-        $scope.currentState = $scope.feedback.state;
+        $scope.selectedWorker = $scope.report.worker;
+        $scope.currentState = $scope.report.state;
         $scope.disableWorkers = true;
 
         $scope.changeState = function (state) {
             $scope.disableWorkers = state != 'Asignado';
             if (state != 'Asignado') {
                 var tmpState = {
-                    id: $scope.feedback.id,
+                    id: $scope.report.id,
                     state: state
                 };
-                feedback.setState(tmpState,function (message, state) {
+                report.setState(tmpState,function (message, state) {
                     if (state == 'Aprobado' || state == 'Denegado' || state == 'Notificado') {
                         $scope.selectedWorker = "";
                     }
@@ -37,7 +37,7 @@ angular.module('smartCampUZApp')
         $scope.assignWorker = function () {
             if (!$scope.disableWorkers) {
                 var tmpState = {
-                    id: $scope.feedback.id,
+                    id: $scope.report.id,
                     worker: workers.getWorkerId($scope.selectedWorker)
                 };
                 workers.assignWorker(tmpState,function (message) {
