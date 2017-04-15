@@ -147,19 +147,19 @@ angular.module('smartCampUZApp')
         };
     })
 
-    // 'feedback' service manage the feedback service of the page with the server
-    .factory('feedback', function ($state, $http, userMap) {
+    // 'report' service manage the report service of the page with the server
+    .factory('report', function ($state, $http, userMap) {
 
         return {
-            // Report a description of a feedback
-            reportFeedback: function (description, callbackSuccess, callbackError) {
+            // Make a description of a report
+            makeReport: function (description, callbackSuccess, callbackError) {
                 var aux = {
                     description: description,
                     location: userMap.getCurrentLocation().id
                 };
                 $http({
                     method: 'POST',
-                    url: 'reportFeedback',
+                    url: 'report',
                     headers: {
                         'Content-Type': 'application/json; charset=UTF-8'
                     },
@@ -171,29 +171,29 @@ angular.module('smartCampUZApp')
                 });
             },
 
-            // List all feedback from the server
-            getFeedback: function (callbackSuccess, callbackError) {
+            // List all report from the server
+            getReports: function (callbackSuccess, callbackError) {
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({
                     method: 'GET',
-                    url: 'listFeedback',
+                    url: 'listReports',
                     headers: {
                         'Authorization': 'Bearer ' + token,
                         location: userMap.getCurrentLocation().id,
                         'Content-Type': 'application/json; charset=UTF-8'
                     }
                 }).success(function (data) {
-                    var feedbacks = data.feedbacks;
-                    for (i=0;i<feedbacks.length;i++) {
-                        if(feedbacks[i].state == 'INBOX') {feedbacks[i].state = '' }
-                        else if (feedbacks[i].state == 'NOTIFIED') {feedbacks[i].state = 'Notificado' }
-                        else if (feedbacks[i].state == 'REFUSED') {feedbacks[i].state = 'Denegado' }
-                        else if (feedbacks[i].state == 'APPROVED') {feedbacks[i].state = 'Aprobado' }
-                        else if (feedbacks[i].state == 'ASSIGNED') {feedbacks[i].state = 'Asignado' }
-                        else if (feedbacks[i].state == 'DONE') {feedbacks[i].state = 'Hecho' }
-                        else if (feedbacks[i].state == 'CONFIRMED') {feedbacks[i].state = 'Confirmado' }
+                    var reports = data.reports;
+                    for (i=0;i<reports.length;i++) {
+                        if(reports[i].state == 'INBOX') {reports[i].state = '' }
+                        else if (reports[i].state == 'NOTIFIED') {reports[i].state = 'Notificado' }
+                        else if (reports[i].state == 'REFUSED') {reports[i].state = 'Denegado' }
+                        else if (reports[i].state == 'APPROVED') {reports[i].state = 'Aprobado' }
+                        else if (reports[i].state == 'ASSIGNED') {reports[i].state = 'Asignado' }
+                        else if (reports[i].state == 'DONE') {reports[i].state = 'Hecho' }
+                        else if (reports[i].state == 'CONFIRMED') {reports[i].state = 'Confirmado' }
                     }
-                    callbackSuccess(feedbacks);
+                    callbackSuccess(reports);
                 }).error(function (data) {
                     callbackError(data);
                 });
