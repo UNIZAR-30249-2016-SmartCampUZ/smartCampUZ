@@ -102,9 +102,10 @@ angular.module('smartCampUZApp')
         // Make a reserve
         $scope.reserve = function () {
             var reserveInfo = {
-                name: $scope.userNameReserve,
                 email: $scope.emailReserve,
-                description: $scope.descriptionReserve
+                description: $scope.descriptionReserve,
+                day: $scope.currentDay,
+                month: $scope.currentMonth
             };
             reserve.reserveHours(reserveInfo, $scope.hoursSelected, function (message) {
                 for (i=0; i<$scope.hoursSelected.length;i++) {

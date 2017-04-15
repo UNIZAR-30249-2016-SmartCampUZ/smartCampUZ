@@ -114,16 +114,23 @@ angular.module('smartCampUZApp')
             },
             // Reserve [reserveHours] hours with specific [reserveInfo] information
             reserveHours: function (reserveInfo, reserveHours, callbackSuccess, callbackError) {
+                var hours = [false,false,false,false,false,false,false,false,false,false,false,false,
+                    false,false, false,false,false,false,false,false,false,false,false,false];
+                for (i=0;i<reserveHours.length;i++) {
+                    hours = reserveHours[i] == 1;
+                }
                 var aux = {
-                    info: reserveInfo,
-                    hours: reserveHours,
+                    email: $scope.emailReserve,
+                    description: $scope.descriptionReserve,
+                    day: $scope.currentDay,
+                    month: $scope.currentMonth,
                     location: userMap.getCurrentLocation().id,
-                    logged: auth.isAuthenticated() ? true : false
+                    requestedHours: hours
                 };
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({
                     method: 'POST',
-                    url: 'reserveHours',
+                    url: 'reservation',
                     headers: {
                         'Authorization': 'Bearer ' + token,
                         'Content-Type': 'application/json; charset=UTF-8'
