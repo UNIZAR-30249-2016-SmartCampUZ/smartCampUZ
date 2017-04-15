@@ -1,7 +1,7 @@
 angular.module('smartCampUZApp')
 
-    .controller('adminCtrl', ['$scope', 'feedback', 'workers','userMap', 'Notification',
-        function ($scope, feedback, workers, userMap, Notification) {
+    .controller('adminCtrl', ['$scope', 'report', 'workers','userMap', 'Notification',
+        function ($scope, report, workers, userMap, Notification) {
         /* FEEDBACK MESSAGES */
         // show the error message
         var showError = function (message) {
@@ -16,12 +16,12 @@ angular.module('smartCampUZApp')
         // LOGIC VIEW
 
         $scope.workerList = [];
-        $scope.feedbackList = [];
+        $scope.reportList = [];
 
         workers.getListOfWorkers(function () {
             $scope.workerList = workers.getWorkersName();
-            feedback.getFeedback(function(list) {
-                $scope.feedbackList = list;
+            report.getReports(function(list) {
+                $scope.reportList = list;
             }, showError);
         }, showError);
 
@@ -29,8 +29,8 @@ angular.module('smartCampUZApp')
         $scope.$watch(function() {
             return userMap.getCurrentLocation();
         }, function () {
-            feedback.getFeedback(function(list) {
-                $scope.feedbackList = list;
+            report.getReports(function(list) {
+                $scope.reportList = list;
             }, showError);
         });
 

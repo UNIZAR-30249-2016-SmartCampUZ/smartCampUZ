@@ -30,12 +30,12 @@ angular.module('smartCampUZApp')
         }
     })
 
-    // include the 'feedback.html' into the <feedback> tag
-    .directive('feedback', function () {
+    // include the 'report.html' into the <report> tag
+    .directive('report', function () {
         return {
             restrict: 'E',
-            templateUrl: 'templates/components/feedback.html',
-            controller: 'feedbackCtrl',
+            templateUrl: 'templates/components/report.html',
+            controller: 'reportCtrl',
             scope: true
         }
     });
