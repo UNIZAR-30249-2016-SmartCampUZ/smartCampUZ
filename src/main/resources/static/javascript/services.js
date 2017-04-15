@@ -233,7 +233,7 @@ angular.module('smartCampUZApp')
 
         return {
             // Get the list of the workers
-            getListOfWorkers: function (callback) {
+            getListOfWorkers: function (callbackSuccess, callbackError) {
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({
                     method: 'GET',
@@ -244,9 +244,9 @@ angular.module('smartCampUZApp')
                     }
                 }).success(function (data) {
                     workers = data.workers;
-                    callback();
+                    callbackSuccess();
                 }).error(function (data) {
-                    alert(data);
+                    callbackError(data);
                 });
             },
 
