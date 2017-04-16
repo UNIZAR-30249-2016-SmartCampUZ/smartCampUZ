@@ -26,7 +26,8 @@ angular.module('smartCampUZApp')
                     state: state
                 };
                 report.setState(tmpState,function (message, state) {
-                    if (state == 'Aprobado' || state == 'Denegado' || state == 'Notificado') {
+                    if (state == 'Pendiente' || state == 'Aprobado' || state == 'Denegado' ||
+                        state == 'Notificado') {
                         $scope.selectedWorker = "";
                     }
                     $scope.currentState = state;

@@ -34,7 +34,8 @@ angular.module('smartCampUZApp')
             }, showError);
         });
 
-        $scope.stateList = ["Aprobado", "Asignado", "Hecho", "Confirmado", "Denegado", "Notificado"];
+        $scope.stateList = ["Pendiente", "Aprobado", "Asignado", "Hecho", "Confirmado", "Problema",
+            "Denegado", "Notificado"];
         $scope.resetFilters = function () {
             $scope.titleFilter = "";
             $scope.workerFilter = "";

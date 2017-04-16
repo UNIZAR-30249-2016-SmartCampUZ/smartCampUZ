@@ -185,13 +185,14 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                     var reports = data.reports;
                     for (i=0;i<reports.length;i++) {
-                        if(reports[i].state == 'INBOX') {reports[i].state = '' }
+                        if(reports[i].state == 'INBOX') {reports[i].state = 'Pendiente' }
                         else if (reports[i].state == 'NOTIFIED') {reports[i].state = 'Notificado' }
                         else if (reports[i].state == 'REFUSED') {reports[i].state = 'Denegado' }
                         else if (reports[i].state == 'APPROVED') {reports[i].state = 'Aprobado' }
                         else if (reports[i].state == 'ASSIGNED') {reports[i].state = 'Asignado' }
                         else if (reports[i].state == 'DONE') {reports[i].state = 'Hecho' }
                         else if (reports[i].state == 'CONFIRMED') {reports[i].state = 'Confirmado' }
+                        else if (reports[i].state == 'TROUBLE') {reports[i].state = 'Problema' }
                     }
                     callbackSuccess(reports);
                 }).error(function (data) {
@@ -202,13 +203,14 @@ angular.module('smartCampUZApp')
             // State management of a report
             setState: function (state, callbackSuccess, callbackError) {
                 var stateToChange = state.state;
-                if(state.state == '') {state.state = 'INBOX'}
+                if(state.state == 'Pendiente') {state.state = 'INBOX'}
                 else if (state.state == 'Notificado') {state.state = 'NOTIFIED'}
                 else if (state.state == 'Denegado') {state.state = 'REFUSED'}
                 else if (state.state == 'Aprobado') {state.state = 'APPROVED'}
                 else if (state.state == 'Asignado') {state.state = 'ASSIGNED'}
                 else if (state.state == 'Hecho') {state.state = 'DONE'}
                 else if (state.state == 'Confirmado') {state.state = 'CONFIRMED'}
+                else if (state.state == 'Problema') {state.state = 'TROUBLE'}
 
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({
