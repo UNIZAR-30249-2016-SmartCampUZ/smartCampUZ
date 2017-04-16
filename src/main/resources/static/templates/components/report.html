@@ -1,12 +1,12 @@
 <div class="accordionCard">
   <button class="accordion" ng-click="showCommentary = !showCommentary" ng-class="{active: showCommentary}">
-    {{feedback.title}}
+    {{report.title}}
   </button>
   <div class="panel" ng-class="{show: showCommentary}">
 
-    <p><strong>Descripción:</strong> {{feedback.description}}</p>
+    <p><strong>Descripción:</strong> {{report.description}}</p>
 
-    <p><strong>Localización:</strong> {{feedback.location}}</p>
+    <p><strong>Localización:</strong> {{report.location}}</p>
 
     <p><strong>Estado:</strong></p>
 
@@ -37,8 +37,8 @@
     <div class="row">
       <label for="worker" class="col-xs-2">Trabajador:</label>
       <select id="worker" class="col-xs-6 col-xs-offset-2" ng-model="selectedWorker"
-              ng-disabled="currentState!='Asignado'" ng-change="assignWorker()"
-              ng-options="x for x in workerList" ng-class="{disabled: currentState!='Asignado'}">
+              ng-disabled="disableWorkers" ng-change="assignWorker()"
+              ng-options="x for x in workerList" ng-class="{disabled: disableWorkers}">
         <option value="" disabled selected>Selecciona el trabajador</option>
       </select>
     </div>

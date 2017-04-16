@@ -1,55 +1,36 @@
 angular.module('smartCampUZApp')
 
-    .controller('adminCtrl', ['$scope', 'feedback', 'workers','userMap',
-        function ($scope, feedback, workers, userMap) {
+    .controller('adminCtrl', ['$scope', 'report', 'workers','userMap', 'Notification',
+        function ($scope, report, workers, userMap, Notification) {
         /* FEEDBACK MESSAGES */
-        // feedback handling variables
-        $scope.error = false;
-        $scope.success = false;
-        $scope.successMsg = "";
-        $scope.errorMsg = "";
-
-        // hide the error message
-        $scope.hideError = function () {
-            $scope.errorMsg = "";
-            $scope.error = false;
-        };
         // show the error message
-        var showError = function (error) {
-            $scope.errorMsg = error;
-            $scope.error = true;
+        var showError = function (message) {
+            Notification.error('&#10008' + message);
         };
 
         // show the success message
         var showSuccess = function (message) {
-            $scope.successMsg = message;
-            $scope.success = true;
-        };
-
-        // hide the success message
-        $scope.hideSuccess = function () {
-            $scope.success = false;
-            $scope.successMsg = "";
+            Notification.success('&#10004' + message);
         };
 
         // LOGIC VIEW
 
         $scope.workerList = [];
-        $scope.feedbackList = [];
+        $scope.reportList = [];
 
         workers.getListOfWorkers(function () {
             $scope.workerList = workers.getWorkersName();
-            feedback.getFeedback(function(list) {
-                $scope.feedbackList = list;
+            report.getReports(function(list) {
+                $scope.reportList = list;
             }, showError);
-        });
+        }, showError);
 
         // Watches to control if the user have selected a location
         $scope.$watch(function() {
             return userMap.getCurrentLocation();
         }, function () {
-            feedback.getFeedback(function(list) {
-                $scope.feedbackList = list;
+            report.getReports(function(list) {
+                $scope.reportList = list;
             }, showError);
         });
 

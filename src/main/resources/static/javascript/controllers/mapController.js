@@ -1,6 +1,6 @@
 angular.module('smartCampUZApp')
 
-    .controller('mapCtrl', ['$scope', '$state', 'userMap', function ($scope, $state, userMap) {
+    .controller('mapCtrl', ['$scope', '$state', 'userMap', 'Notification', function ($scope, $state, userMap, Notification) {
 
         $(document).ready(function(){
 
@@ -71,10 +71,15 @@ angular.module('smartCampUZApp')
             }
             map.on('click', onMapClick);
 
-            // show the error login message when is false respectively
-            var showError = function (error) {
-                $scope.errorMsg = error;
-                $scope.error = true;
+            /* FEEDBACK MESSAGES */
+            // show the error message
+            var showError = function (message) {
+                Notification.error('&#10008' + message);
+            };
+
+            // show the success message
+            var showSuccess = function (message) {
+                Notification.success('&#10004' + message);
             };
 
             var successMap = function (location) {

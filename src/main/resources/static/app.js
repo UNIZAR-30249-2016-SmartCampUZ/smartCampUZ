@@ -1,4 +1,11 @@
-angular.module('smartCampUZApp', ['ui.router', 'base64', 'angular-jwt'])
+angular.module('smartCampUZApp', ['ui.router', 'base64', 'angular-jwt', 'ui-notification'])
+
+    .config(function(NotificationProvider) {
+        NotificationProvider.setOptions({
+            positionX: 'center',
+            maxCount: 4
+        });
+    })
 
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider

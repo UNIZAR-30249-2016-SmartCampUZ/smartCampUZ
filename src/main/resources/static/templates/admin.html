@@ -10,13 +10,13 @@
       <div class="col-sm-6" id="optionsMapSection">
 
         <ul class="nav nav-tabs text-center" style="margin-top: 1%">
-          <li class="active" id="activeToggleable"><a data-toggle="tab" href="#feedbacks">Sugerencias</a></li>
+          <li class="active" id="activeToggleable"><a data-toggle="tab" href="#reports">Sugerencias</a></li>
           <li><a data-toggle="tab" href="#reserves">Reservas</a></li>
         </ul>
 
 
         <div class="tab-content">
-          <div id="feedbacks" class="tab-pane fade in active">
+          <div id="reports" class="tab-pane fade in active">
             <h3 style="font-size: 130%">Filtrar por:
               <i class="fa fa-times" ng-click="resetFilters()" style="cursor:pointer;float:right;color:#f44336"></i></h3>
 
@@ -36,18 +36,9 @@
               </div>
             </div><!-- END: Filters section -->
 
-            <!-- this div will show only when an error occurs -->
-            <div class="alert alert-danger" ng-if="error" ng-click="$parent.errorMsg='';$parent.error=false">
-              <strong>&#10008</strong>Pincha aquí para ocultar. {{errorMsg}}
-            </div>
-            <!-- this div will show only when an success occurs -->
-            <div class="alert alert-success" ng-if="success" ng-click="$parent.successMsg='';$parent.success=false">
-              <strong>&#10004</strong>Pincha aquí para ocultar. {{successMsg}}
-            </div>
-
-            <div id="feedbackList">
-              <feedback ng-repeat="feedback in feedbackList | filter: {'title': titleFilter, 'worker': workerFilter,  'state': stateFilter}">
-              </feedback>
+            <div id="reportList">
+              <report ng-repeat="report in reportList | filter: {'title': titleFilter, 'worker': workerFilter,  'state': stateFilter}">
+              </report>
             </div>
 
           </div>

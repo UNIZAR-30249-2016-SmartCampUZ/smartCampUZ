@@ -1,7 +1,7 @@
 angular.module('smartCampUZApp')
 
     // 'auth' service manage the authentication function of the page with the server
-    .factory('auth', function ($state, $http, $base64) {
+    .factory('auth', function ($state, $http, $base64, userMap) {
 
         var _identity = undefined,
             _authenticated = false;
@@ -32,6 +32,7 @@ angular.module('smartCampUZApp')
 
             //logout function
             logout: function () {
+                userMap.resetCurrentLocation();
                 _identity = undefined;
                 _authenticated = false;
                 localStorage.removeItem('smartJWT');
@@ -65,6 +66,7 @@ angular.module('smartCampUZApp')
                     }
                 }).success(function (data, status, headers) {
                     that.authenticate(data, headers().token);
+                    userMap.resetCurrentLocation();
                     callbackSuccess();
                     if (data.type == 'admin') {
                         $state.go('admin');
@@ -83,20 +85,12 @@ angular.module('smartCampUZApp')
 
         return {
             // Get the current day
-            getCurrentDate: function (callbackSuccess, callbackError) {
-                $http({
-                    method: 'GET',
-                    url: 'currentDate',
-                    headers: {
-                        'Content-Type': 'application/json; charset=UTF-8'
-                    }
-                }).success(function (data) {
-                    callbackSuccess(data);
-                }).error(function (data) {
-                    var date = {month: 01, day: 23};
-                    callbackSuccess(date);
-                    //callbackError(data);
-                });
+            getCurrentDate: function () {
+                var dateObject = new Date();
+                var day = dateObject.getDate() - 1;
+                var month = dateObject.getMonth();
+                var date = {month: month, day: day};
+                return date;
             },
             // Get available hours of a [date]
             getAvailableHours: function (month, day, callbackSuccess, callbackError) {
@@ -110,25 +104,35 @@ angular.module('smartCampUZApp')
                         'Content-Type': 'application/json; charset=UTF-8'
                     }
                 }).success(function (data) {
-                    callbackSuccess(data);
-                }).error(function (data) {
-                    var date = [0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
+                    var hours = data.availableHours;
+                    var date = [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2];
+                    for (i=0;i<hours.length;i++) {
+                        date = hours[i] ? 2 : 0;
+                    }
                     callbackSuccess(date);
-                    //callbackError(data);
+                }).error(function (data) {
+                    callbackError(data);
                 });
             },
             // Reserve [reserveHours] hours with specific [reserveInfo] information
             reserveHours: function (reserveInfo, reserveHours, callbackSuccess, callbackError) {
+                var hours = [false,false,false,false,false,false,false,false,false,false,false,false,
+                    false,false, false,false,false,false,false,false,false,false,false,false];
+                for (i=0;i<reserveHours.length;i++) {
+                    hours = reserveHours[i] == 1;
+                }
                 var aux = {
-                    info: reserveInfo,
-                    hours: reserveHours,
+                    email: $scope.emailReserve,
+                    description: $scope.descriptionReserve,
+                    day: $scope.currentDay,
+                    month: $scope.currentMonth,
                     location: userMap.getCurrentLocation().id,
-                    logged: auth.isAuthenticated() ? true : false
+                    requestedHours: hours
                 };
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({
                     method: 'POST',
-                    url: 'reserveHours',
+                    url: 'reservation',
                     headers: {
                         'Authorization': 'Bearer ' + token,
                         'Content-Type': 'application/json; charset=UTF-8'
@@ -143,19 +147,19 @@ angular.module('smartCampUZApp')
         };
     })
 
-    // 'feedback' service manage the feedback service of the page with the server
-    .factory('feedback', function ($state, $http, userMap) {
+    // 'report' service manage the report service of the page with the server
+    .factory('report', function ($state, $http, userMap) {
 
         return {
-            // Report a description of a feedback
-            reportFeedback: function (description, callbackSuccess, callbackError) {
+            // Make a description of a report
+            makeReport: function (description, callbackSuccess, callbackError) {
                 var aux = {
                     description: description,
                     location: userMap.getCurrentLocation().id
                 };
                 $http({
                     method: 'POST',
-                    url: 'reportFeedback',
+                    url: 'report',
                     headers: {
                         'Content-Type': 'application/json; charset=UTF-8'
                     },
@@ -167,37 +171,37 @@ angular.module('smartCampUZApp')
                 });
             },
 
-            // List all feedback from the server
-            getFeedback: function (callbackSuccess, callbackError) {
+            // List all report from the server
+            getReports: function (callbackSuccess, callbackError) {
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({
                     method: 'GET',
-                    url: 'listFeedback',
+                    url: 'listReports',
                     headers: {
                         'Authorization': 'Bearer ' + token,
                         location: userMap.getCurrentLocation().id,
                         'Content-Type': 'application/json; charset=UTF-8'
                     }
                 }).success(function (data) {
-                    var feedbacks = data.feedbacks;
-                    for (i=0;i<feedbacks.length;i++) {
-                        if(feedbacks[i].state == 'INBOX') {feedbacks[i].state = '' }
-                        else if (feedbacks[i].state == 'NOTIFIED') {feedbacks[i].state = 'Notificado' }
-                        else if (feedbacks[i].state == 'REFUSED') {feedbacks[i].state = 'Denegado' }
-                        else if (feedbacks[i].state == 'APPROVED') {feedbacks[i].state = 'Aprobado' }
-                        else if (feedbacks[i].state == 'ASSIGNED') {feedbacks[i].state = 'Asignado' }
-                        else if (feedbacks[i].state == 'DONE') {feedbacks[i].state = 'Hecho' }
-                        else if (feedbacks[i].state == 'CONFIRMED') {feedbacks[i].state = 'Confirmado' }
+                    var reports = data.reports;
+                    for (i=0;i<reports.length;i++) {
+                        if(reports[i].state == 'INBOX') {reports[i].state = '' }
+                        else if (reports[i].state == 'NOTIFIED') {reports[i].state = 'Notificado' }
+                        else if (reports[i].state == 'REFUSED') {reports[i].state = 'Denegado' }
+                        else if (reports[i].state == 'APPROVED') {reports[i].state = 'Aprobado' }
+                        else if (reports[i].state == 'ASSIGNED') {reports[i].state = 'Asignado' }
+                        else if (reports[i].state == 'DONE') {reports[i].state = 'Hecho' }
+                        else if (reports[i].state == 'CONFIRMED') {reports[i].state = 'Confirmado' }
                     }
-                    callbackSuccess(feedbacks);
+                    callbackSuccess(reports);
                 }).error(function (data) {
                     callbackError(data);
                 });
             },
 
             // State management of a report
-
             setState: function (state, callbackSuccess, callbackError) {
+                var stateToChange = state.state;
                 if(state.state == '') {state.state = 'INBOX'}
                 else if (state.state == 'Notificado') {state.state = 'NOTIFIED'}
                 else if (state.state == 'Denegado') {state.state = 'REFUSED'}
@@ -216,7 +220,7 @@ angular.module('smartCampUZApp')
                     },
                     data: JSON.stringify(state)
                 }).success(function (data) {
-                    callbackSuccess(data);
+                    callbackSuccess(data, stateToChange);
                 }).error(function (data) {
                     callbackError(data);
                 });
@@ -231,7 +235,7 @@ angular.module('smartCampUZApp')
 
         return {
             // Get the list of the workers
-            getListOfWorkers: function (callback) {
+            getListOfWorkers: function (callbackSuccess, callbackError) {
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({
                     method: 'GET',
@@ -242,9 +246,9 @@ angular.module('smartCampUZApp')
                     }
                 }).success(function (data) {
                     workers = data.workers;
-                    callback();
+                    callbackSuccess();
                 }).error(function (data) {
-                    alert(data);
+                    callbackError(data);
                 });
             },
 
@@ -317,13 +321,22 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                 	callbackSuccess(data);
                 }).error(function (data) {
-                	//callbackError(data);
+                	callbackError(data);
                 });
             },
             
             // Set the current location
             setCurrentLocation: function (location) {        
             	currentLocation = location;
+            },
+
+            // Reset the current location
+            resetCurrentLocation: function () {
+                var aux = {
+                    id:0,
+                    name: ""
+                };
+                currentLocation = aux;
             }
         };
     });
