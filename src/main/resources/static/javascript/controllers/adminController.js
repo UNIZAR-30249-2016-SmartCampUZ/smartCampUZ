@@ -73,9 +73,11 @@ angular.module('smartCampUZApp')
             }, showError)
         };
 
-        $scope.deny = function(id) {
-            reserve.approveDenyReservation(id, false, function (idList) {
-
+        $scope.deny = function(currentId) {
+            reserve.approveDenyReservation(currentId, false, function () {
+                var index = $scope.reservationList.map(function(tmp) {return tmp.id;}).indexOf(currentId);
+                $scope.reservationList.splice(index, 1);
+                showSuccess('Reserva denegada correctamente.');
             }, showError)
         };
 
