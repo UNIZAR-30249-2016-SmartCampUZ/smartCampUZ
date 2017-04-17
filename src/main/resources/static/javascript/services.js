@@ -348,6 +348,38 @@ angular.module('smartCampUZApp')
         };
     })
 
+    // 'maintenance' service manage the maintenance functionallities of the app with the server
+    .factory('maintenance', function ($http, auth, userMap) {
+
+        return {
+            // Get the list of the reports assigned to a maintenance guy
+            getReports: function (callbackSuccess, callbackError) {
+                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                $http({
+                    method: 'GET',
+                    url: 'listWorkerReports',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json; charset=UTF-8',
+                        'location': userMap.getCurrentLocation().id,
+                        'emailWorker': auth.getEmail()
+                    }
+                }).success(function (data) {
+                    callbackSuccess(data.reports);
+                }).error(function (data) {
+                    var temp = [
+                        {id: 3, location: "3", title: "3", description: "33"},
+                        {id: 1, location: "1", title: "1", description: "11"},
+                        {id: 4, location: "4", title: "4", description: "44"},
+                        {id: 2, location: "2", title: "2", description: "22"}
+                    ];
+                    callbackSuccess(temp);
+                    callbackError(data);
+                });
+            }
+        };
+    })
+
     // 'userMap' service manage the user view of the map with the server
     .factory('userMap', function ($http) {
 
