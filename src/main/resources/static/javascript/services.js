@@ -92,6 +92,7 @@ angular.module('smartCampUZApp')
                 var date = {month: month, day: day};
                 return date;
             },
+
             // Get available hours of a [date]
             getAvailableHours: function (month, day, callbackSuccess, callbackError) {
                 $http({
@@ -114,6 +115,7 @@ angular.module('smartCampUZApp')
                     callbackError(data);
                 });
             },
+
             // Reserve [reserveHours] hours with specific [reserveInfo] information
             reserveHours: function (reserveInfo, reserveHours, callbackSuccess, callbackError) {
                 var hours = [false,false,false,false,false,false,false,false,false,false,false,false,
@@ -141,6 +143,30 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                     callbackSuccess(data);
                 }).error(function (data) {
+                    callbackError(data);
+                });
+            },
+
+            // Get pending reservations of the system
+            getReservations: function (callbackSuccess, callbackError) {
+                $http({
+                    method: 'GET',
+                    url: 'listReservations',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json; charset=UTF-8',
+                        'location': userMap.getCurrentLocation().id
+                    }
+                }).success(function (data) {
+                    callbackSuccess(data.reservations);
+                }).error(function (data) {
+                    var temp = [
+                        {id: 1, location: "1", day: 16, month: 03, professor: false, email: "1@1", description: "11"},
+                        {id: 2, location: "2", day: 16, month: 03, professor: true, email: "2@2", description: "22"},
+                        {id: 3, location: "3", day: 17, month: 03, professor: false, email: "3@3", description: "33"},
+                        {id: 4, location: "4", day: 16, month: 04, professor: false, email: "4@4", description: "44"}
+                    ];
+                    callbackSuccess(temp);
                     callbackError(data);
                 });
             }

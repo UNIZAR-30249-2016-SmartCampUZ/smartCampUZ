@@ -1,7 +1,7 @@
 angular.module('smartCampUZApp')
 
-    .controller('adminCtrl', ['$scope', 'report', 'workers','userMap', 'Notification',
-        function ($scope, report, workers, userMap, Notification) {
+    .controller('adminCtrl', ['$scope', 'report', 'workers','userMap', 'Notification', 'reserve',
+        function ($scope, report, workers, userMap, Notification, reserve) {
         /* FEEDBACK MESSAGES */
         // show the error message
         var showError = function (message) {
@@ -13,7 +13,7 @@ angular.module('smartCampUZApp')
             Notification.success('&#10004' + message);
         };
 
-        // LOGIC VIEW
+        // LOGIC VIEW OF REPORTS
 
         $scope.workerList = [];
         $scope.reportList = [];
@@ -25,15 +25,6 @@ angular.module('smartCampUZApp')
             }, showError);
         }, showError);
 
-        // Watches to control if the user have selected a location
-        $scope.$watch(function() {
-            return userMap.getCurrentLocation();
-        }, function () {
-            report.getReports(function(list) {
-                $scope.reportList = list;
-            }, showError);
-        });
-
         $scope.stateList = ["Pendiente", "Aprobado", "Asignado", "Hecho", "Confirmado", "Problema",
             "Denegado", "Notificado"];
         $scope.resetFilters = function () {
@@ -41,4 +32,23 @@ angular.module('smartCampUZApp')
             $scope.workerFilter = "";
             $scope.stateFilter = "";
         };
+
+        // LOGIC VIEW OF RESERVATIONS
+        $scope.reservationList = [];
+
+        reserve.getReservations(function (list) {
+            $scope.reservationList = list;
+        }, showError);
+
+        // Watches to control if the user have selected a location
+        $scope.$watch(function() {
+            return userMap.getCurrentLocation();
+        }, function () {
+            report.getReports(function(list) {
+                $scope.reportList = list;
+            }, showError);
+            reserve.getReservations(function (list) {
+                $scope.reservationList = list;
+            }, showError);
+        });
     }]);
