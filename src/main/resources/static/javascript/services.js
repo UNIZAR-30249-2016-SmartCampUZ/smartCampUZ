@@ -92,6 +92,7 @@ angular.module('smartCampUZApp')
                 var date = {month: month, day: day};
                 return date;
             },
+
             // Get available hours of a [date]
             getAvailableHours: function (month, day, callbackSuccess, callbackError) {
                 $http({
@@ -114,6 +115,7 @@ angular.module('smartCampUZApp')
                     callbackError(data);
                 });
             },
+
             // Reserve [reserveHours] hours with specific [reserveInfo] information
             reserveHours: function (reserveInfo, reserveHours, callbackSuccess, callbackError) {
                 var hours = [false,false,false,false,false,false,false,false,false,false,false,false,
@@ -141,6 +143,55 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                     callbackSuccess(data);
                 }).error(function (data) {
+                    callbackError(data);
+                });
+            },
+
+            // Get pending reservations of the system
+            getReservations: function (callbackSuccess, callbackError) {
+                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                $http({
+                    method: 'GET',
+                    url: 'listReservations',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json; charset=UTF-8',
+                        'location': userMap.getCurrentLocation().id
+                    }
+                }).success(function (data) {
+                    callbackSuccess(data.reservations);
+                }).error(function (data) {
+                    var temp = [
+                        {id: 3, location: "3", day: 17, month: 03, professor: false, email: "3@3", description: "33"},
+                        {id: 1, location: "1", day: 16, month: 03, professor: false, email: "1@1", description: "11"},
+                        {id: 4, location: "4", day: 16, month: 04, professor: false, email: "4@4", description: "44"},
+                        {id: 2, location: "2", day: 16, month: 03, professor: true, email: "2@2", description: "22"}
+                    ];
+                    callbackSuccess(temp);
+                    callbackError(data);
+                });
+            },
+
+            // Approve or deny a reservation
+            approveDenyReservation: function (id, approve, callbackSuccess, callbackError) {
+                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                var temp = {
+                    id: id,
+                    approved: approve
+                };
+                $http({
+                    method: 'PUT',
+                    url: 'reservation',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    },
+                    data: JSON.stringify(temp)
+                }).success(function (data) {
+                    callbackSuccess(data.deletedRequests);
+                }).error(function (data) {
+                    var temp = [2,3];
+                    callbackSuccess(temp);
                     callbackError(data);
                 });
             }
@@ -185,13 +236,14 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                     var reports = data.reports;
                     for (i=0;i<reports.length;i++) {
-                        if(reports[i].state == 'INBOX') {reports[i].state = '' }
+                        if(reports[i].state == 'INBOX') {reports[i].state = 'Pendiente' }
                         else if (reports[i].state == 'NOTIFIED') {reports[i].state = 'Notificado' }
                         else if (reports[i].state == 'REFUSED') {reports[i].state = 'Denegado' }
                         else if (reports[i].state == 'APPROVED') {reports[i].state = 'Aprobado' }
                         else if (reports[i].state == 'ASSIGNED') {reports[i].state = 'Asignado' }
                         else if (reports[i].state == 'DONE') {reports[i].state = 'Hecho' }
                         else if (reports[i].state == 'CONFIRMED') {reports[i].state = 'Confirmado' }
+                        else if (reports[i].state == 'TROUBLE') {reports[i].state = 'Problema' }
                     }
                     callbackSuccess(reports);
                 }).error(function (data) {
@@ -202,13 +254,14 @@ angular.module('smartCampUZApp')
             // State management of a report
             setState: function (state, callbackSuccess, callbackError) {
                 var stateToChange = state.state;
-                if(state.state == '') {state.state = 'INBOX'}
+                if(state.state == 'Pendiente') {state.state = 'INBOX'}
                 else if (state.state == 'Notificado') {state.state = 'NOTIFIED'}
                 else if (state.state == 'Denegado') {state.state = 'REFUSED'}
                 else if (state.state == 'Aprobado') {state.state = 'APPROVED'}
                 else if (state.state == 'Asignado') {state.state = 'ASSIGNED'}
                 else if (state.state == 'Hecho') {state.state = 'DONE'}
                 else if (state.state == 'Confirmado') {state.state = 'CONFIRMED'}
+                else if (state.state == 'Problema') {state.state = 'TROUBLE'}
 
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
                 $http({

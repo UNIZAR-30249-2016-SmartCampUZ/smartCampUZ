@@ -43,7 +43,26 @@
 
           </div>
           <div id="reserves" class="tab-pane fade">
-            <h3 style="font-size: 130%">día X:</h3>
+            <div class="accordionCard" ng-repeat="reserve in reservationList">
+
+              <button class="accordion" ng-click="showCommentary = !showCommentary" ng-class="{active: showCommentary}">
+                Mes: {{reserve.month}} Día: {{reserve.day}} <span
+                ng-if="reserve.professor"><strong>Profesor</strong></span>
+              </button>
+              <div class="panel" ng-class="{show: showCommentary}">
+
+                <p><strong>Localización:</strong> {{reserve.location}}</p>
+
+                <p><strong>Email:</strong> {{reserve.email}}</p>
+
+                <p><strong>Descripción:</strong> {{reserve.description}}</p>
+
+                <div class="col-xs-12 text-right" id="approveDenyReservation">
+                  <button ng-click="approve(reserve.id)" class="btn-success">Aprobar</button>
+                  <button ng-click="deny(reserve.id)" class="btn-danger">Denegar</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

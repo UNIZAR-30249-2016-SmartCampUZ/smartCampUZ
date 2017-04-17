@@ -9,3 +9,23 @@
 #adminStyle #activeToggleable {
   margin-left: 10%
 }
+
+#adminStyle #reserves {
+  padding-top: 5%
+}
+
+#adminStyle #approveDenyReservation {
+  margin-bottom: 10px;
+}
+
+/* Set a style for all buttons */
+#adminStyle #approveDenyReservation button {
+  font-weight: 600;
+  padding: 5px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+#adminStyle #approveDenyReservation button:hover {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 3px 10px 0 rgba(0,0,0,0.19);
+}
