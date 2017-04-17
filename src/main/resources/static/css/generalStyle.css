@@ -12,7 +12,7 @@ a:focus, a:hover {
   text-decoration: none;
 }
 
-html, body, #starterStyle, #adminStyle {
+html, body, #starterStyle, #adminStyle, #maintenanceStyle {
   height: 100%;
 }
 
