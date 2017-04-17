@@ -46,7 +46,7 @@
             <div class="accordionCard" ng-repeat="reserve in reservationList">
 
               <button class="accordion" ng-click="showCommentary = !showCommentary" ng-class="{active: showCommentary}">
-                Mes: {{reserve.month}} Día: {{reserve.month}} <span
+                Mes: {{reserve.month}} Día: {{reserve.day}} <span
                 ng-if="reserve.professor"><strong>Profesor</strong></span>
               </button>
               <div class="panel" ng-class="{show: showCommentary}">
