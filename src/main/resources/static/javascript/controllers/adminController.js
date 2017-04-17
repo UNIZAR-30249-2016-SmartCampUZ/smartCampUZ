@@ -46,6 +46,14 @@ angular.module('smartCampUZApp')
             }));
         }, showError);
 
+        $scope.approve = function(id) {
+
+        };
+
+        $scope.deny = function(id) {
+
+        };
+
         // Watches to control if the user have selected a location
         $scope.$watch(function() {
             return userMap.getCurrentLocation();

@@ -57,7 +57,10 @@
 
                 <p><strong>Descripción:</strong> {{reserve.description}}</p>
 
-
+                <div class="col-xs-12 text-right" id="approveDenyReservation">
+                  <button ng-click="approve(reserve.id)" class="btn-success">Aprobar</button>
+                  <button ng-click="deny(reserve.id)" class="btn-danger">Denegar</button>
+                </div>
               </div>
             </div>
           </div>
