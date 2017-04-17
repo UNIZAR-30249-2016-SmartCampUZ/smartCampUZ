@@ -33,15 +33,15 @@ public class AdminDashboardControllerTest {
     private Credential manager;
     private String token = "";
 
-    private static final String FEEDBACK_LOCATION_LIST=
-        "{\"feedbacks\":[{\"state\":\"INBOX\",\"worker\":\"Worker7\",\"description\":\"Report1\",\"title\":\"Report1\",\"location\":\"HD-403\",\"id\":10}," +
+    private static final String REPORT_LOCATION_LIST =
+        "{\"reports\":[{\"state\":\"INBOX\",\"worker\":\"Worker7\",\"description\":\"Report1\",\"title\":\"Report1\",\"location\":\"HD-403\",\"id\":10}," +
         "{\"state\":\"INBOX\",\"worker\":\"Worker7\",\"description\":\"Report2\",\"title\":\"Report2\",\"location\":\"HD-403\",\"id\":11}]}";
 
     private static final String WORKERS_LIST = "{\"workers\":[{\"id\":7,\"email\":\"maintenance@unizar.es\",\"name\":\"Worker7\"}," +
         "{\"id\":8,\"email\":\"maintenance2@unizar.es\",\"name\":\"Worker8\"}]}";
 
-    private static final int FEEDBACK_COMPLETE_LIST = 7;
-    private static final int FEEDBACK_TEST_SQL_LIST = 6;
+    private static final int REPORT_COMPLETE_LIST = 7;
+    private static final int REPORT_TEST_SQL_LIST = 6;
     private static final String STATE_CHANGED_SUCCESS_MSG = "\"Estado modificado correctamente\"";
     private static final String STATE_CHANGED_ERROR_MSG = "\"El cambio de estado solicitado no es posible.\"";
     private static final String REPORT_NOT_FOUND_MSG = "\"La sugerencia no existe.\"";
@@ -81,30 +81,30 @@ public class AdminDashboardControllerTest {
     }
 
     /*
-    * Checks if the process of listing all the existing feedbacks works correctly.
+    * Checks if the process of listing all the existing reports works correctly.
     */
     @Test
-    public void listAllFeedback() throws Exception{
+    public void listAllReports() throws Exception{
         String header1 = "Bearer "+token;
         String header2 = "";
-        ResultActions result = sendFeedbackListRequest(header1, header2);
+        ResultActions result = sendReportListRequest(header1, header2);
         result.andExpect(status().isOk());
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
         int listSize = StringUtils.countMatches(mockResponse.getContentAsString(), "id");
-        assertTrue(listSize==FEEDBACK_COMPLETE_LIST || listSize==FEEDBACK_TEST_SQL_LIST);
+        assertTrue(listSize== REPORT_COMPLETE_LIST || listSize== REPORT_TEST_SQL_LIST);
     }
 
     /*
-    * Checks if the process of listing all the existing feedbacks
+    * Checks if the process of listing all the existing reports
     * in a concrete location works correctly.
     */
     @Test
-    public void listLocationFeedback() throws Exception{
+    public void listLocationReport() throws Exception{
         String header1 = "Bearer "+token;
-        ResultActions result = sendFeedbackListRequest(header1, LOCATION);
+        ResultActions result = sendReportListRequest(header1, LOCATION);
         result.andExpect(status().isOk());
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
-        assertTrue(mockResponse.getContentAsString().equals(FEEDBACK_LOCATION_LIST));
+        assertTrue(mockResponse.getContentAsString().equals(REPORT_LOCATION_LIST));
     }
 
     /**
@@ -271,10 +271,10 @@ public class AdminDashboardControllerTest {
     }
 
     /*
-     * Sends the request to the listFeedback endpoint with the given body and authorization header
+     * Sends the request to the listReports endpoint with the given body and authorization header
      */
-    private ResultActions sendFeedbackListRequest(String header1, String header2) throws Exception{
-        return this.mvc.perform(get("/listFeedback")
+    private ResultActions sendReportListRequest(String header1, String header2) throws Exception{
+        return this.mvc.perform(get("/listReports")
             .header("Authorization", header1)
             .header("location", header2));
     }

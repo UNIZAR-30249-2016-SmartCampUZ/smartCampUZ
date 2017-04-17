@@ -26,9 +26,9 @@ public class DashboardController {
     @Autowired
     private ReportRepository reportRepository;
 
-    @PostMapping("/reportFeedback")
+    @PostMapping("/report")
     @ResponseBody
-    public ResponseEntity<String> newFeedback(HttpServletRequest request) throws IOException{
+    public ResponseEntity<String> newReport (HttpServletRequest request) throws IOException{
         String description = "";
         String location = "";
 
@@ -53,6 +53,6 @@ public class DashboardController {
 
         Report newReport = new Report(location, null, description);
         reportRepository.save(newReport);
-        return new ResponseEntity<>("\"Feedback guardado correctamente.\"", HttpStatus.OK);
+        return new ResponseEntity<>("\"Report guardado correctamente.\"", HttpStatus.OK);
     }
 }
