@@ -175,13 +175,18 @@ angular.module('smartCampUZApp')
             // Approve or deny a reservation
             approveDenyReservation: function (id, approve, callbackSuccess, callbackError) {
                 var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                var temp = {
+                    id: id,
+                    approved: approve
+                };
                 $http({
                     method: 'PUT',
                     url: 'reservation',
                     headers: {
                         'Authorization': 'Bearer ' + token,
                         'Content-Type': 'application/json; charset=UTF-8'
-                    }
+                    },
+                    data: JSON.stringify(temp)
                 }).success(function (data) {
                     callbackSuccess(data.deletedRequests);
                 }).error(function (data) {
