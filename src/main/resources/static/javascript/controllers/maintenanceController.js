@@ -28,4 +28,20 @@ angular.module('smartCampUZApp')
             }, showError);
         });
 
+        $scope.done = function(currentId) {
+            maintenance.doneTroubleReport(currentId, true, function (message) {
+                var index = $scope.reportsList.map(function(tmp) {return tmp.id;}).indexOf(currentId);
+                $scope.reportsList.splice(index, 1);
+                showSuccess(message);
+            }, showError)
+        };
+
+        $scope.trouble = function(currentId) {
+            maintenance.doneTroubleReport(currentId, false, function (message) {
+                var index = $scope.reportsList.map(function(tmp) {return tmp.id;}).indexOf(currentId);
+                $scope.reportsList.splice(index, 1);
+                showSuccess(message);
+            }, showError)
+        };
+
     }]);

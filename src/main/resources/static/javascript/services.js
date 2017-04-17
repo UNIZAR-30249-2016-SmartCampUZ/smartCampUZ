@@ -376,6 +376,29 @@ angular.module('smartCampUZApp')
                     callbackSuccess(temp);
                     callbackError(data);
                 });
+            },
+
+            // Mark a report as done or trouble
+            doneTroubleReport: function (id, done, callbackSuccess, callbackError) {
+                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                var temp = {
+                    idReport: id,
+                    done: done
+                };
+                $http({
+                    method: 'PUT',
+                    url: 'markReport',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    },
+                    data: JSON.stringify(temp)
+                }).success(function (data) {
+                    callbackSuccess(data);
+                }).error(function (data) {
+                    callbackSuccess(data);
+                    callbackError(data);
+                });
             }
         };
     })
