@@ -34,7 +34,7 @@
       <p ng-class="{currentState: currentState=='Problema'}" style="cursor:pointer"
          ng-click="changeState('Problema')">Problema</p>
     </div>
-    <div class="col-xs-offset-4 col-xs-4 text-center">
+    <div class="col-xs-4 text-center">
       <p ng-class="{currentState: currentState=='Denegado'}" style="cursor:pointer"
          ng-click="changeState('Denegado')">Denegado</p>
     </div>
@@ -42,6 +42,7 @@
       <p ng-class="{currentState: currentState=='Notificado'}" style="cursor:pointer"
          ng-click="changeState('Notificado')">Notificado</p>
     </div>
+    <div class="col-xs-4"></div>
     <div class="row">
       <label for="worker" class="col-xs-2">Trabajador:</label>
       <select id="worker" class="col-xs-6 col-xs-offset-2" ng-model="selectedWorker"

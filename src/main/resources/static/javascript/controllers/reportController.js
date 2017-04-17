@@ -30,9 +30,12 @@ angular.module('smartCampUZApp')
                         state == 'Notificado') {
                         $scope.selectedWorker = "";
                     }
+                    $scope.report.state = state;
                     $scope.currentState = state;
                     showSuccess(message);
                 },showError);
+            } else {
+                $scope.currentState = 'Asignado';
             }
         };
         $scope.assignWorker = function () {
@@ -42,9 +45,14 @@ angular.module('smartCampUZApp')
                     worker: workers.getWorkerId($scope.selectedWorker)
                 };
                 workers.assignWorker(tmpState,function (message) {
-                    $scope.currentState = 'Asignado';
+                    $scope.report.worker = $scope.selectedWorker;
+                    $scope.report.state = 'Asignado';
                     showSuccess(message);
-                },showError);
+                }, function (message) {
+                    $scope.selectedWorker = "";
+                    $scope.currentState = $scope.report.state;
+                    showError(message);
+                });
             }
         }
     }]);
