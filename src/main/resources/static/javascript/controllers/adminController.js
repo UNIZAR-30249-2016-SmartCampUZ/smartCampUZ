@@ -13,6 +13,12 @@ angular.module('smartCampUZApp')
             Notification.success('&#10004' + message);
         };
 
+        // show the success message
+        var showWarning = function (message) {
+            Notification.warning({title: '¡Atención!', delay: null, message: message + ' Haz' +
+            ' click aquí para eliminar la notificación.'});
+        };
+
         // LOGIC VIEW OF REPORTS
 
         $scope.workerList = [];
@@ -46,12 +52,31 @@ angular.module('smartCampUZApp')
             }));
         }, showError);
 
-        $scope.approve = function(id) {
-
+        $scope.approve = function(currentId) {
+            reserve.approveDenyReservation(currentId, true, function (idList) {
+                var index = $scope.reservationList.map(function(tmp) {return tmp.id;}).indexOf(currentId);
+                $scope.reservationList.splice(index, 1);
+                showSuccess('Reserva aprobada correctamente.');
+                if (idList.length > 0) {
+                    var message = 'Al aprobar esa reserva, se han cancelado por incompatibilidad' +
+                        ' las siguientes:';
+                    for (i=0;i<idList.length-1;i++) {
+                        index = $scope.reservationList.map(function(tmp) {return tmp.id;}).indexOf(idList[i]);
+                        $scope.reservationList.splice(index, 1);
+                        message += (' ' + idList[i] + ',');
+                    }
+                    index = $scope.reservationList.map(function(tmp) {return tmp.id;}).indexOf(idList[idList.length-1]);
+                    $scope.reservationList.splice(index, 1);
+                    message += (' y ' + idList[i] + '.');
+                    showWarning(message);
+                }
+            }, showError)
         };
 
         $scope.deny = function(id) {
+            reserve.approveDenyReservation(id, false, function (idList) {
 
+            }, showError)
         };
 
         // Watches to control if the user have selected a location

@@ -170,6 +170,25 @@ angular.module('smartCampUZApp')
                     callbackSuccess(temp);
                     callbackError(data);
                 });
+            },
+
+            // Approve or deny a reservation
+            approveDenyReservation: function (id, approve, callbackSuccess, callbackError) {
+                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                $http({
+                    method: 'PUT',
+                    url: 'reservation',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    }
+                }).success(function (data) {
+                    callbackSuccess(data.deletedRequests);
+                }).error(function (data) {
+                    var temp = [2,3];
+                    callbackSuccess(temp);
+                    callbackError(data);
+                });
             }
         };
     })
