@@ -161,13 +161,13 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                     callbackSuccess(data.reservations);
                 }).error(function (data) {
-                    var temp = [
+                    /*var temp = [
                         {id: 3, location: "3", day: 17, month: 03, professor: false, email: "3@3", description: "33"},
                         {id: 1, location: "1", day: 16, month: 03, professor: false, email: "1@1", description: "11"},
                         {id: 4, location: "4", day: 16, month: 04, professor: false, email: "4@4", description: "44"},
                         {id: 2, location: "2", day: 16, month: 03, professor: true, email: "2@2", description: "22"}
                     ];
-                    callbackSuccess(temp);
+                    callbackSuccess(temp);*/
                     callbackError(data);
                 });
             },
@@ -190,8 +190,8 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                     callbackSuccess(data.deletedRequests);
                 }).error(function (data) {
-                    var temp = [2,3];
-                    callbackSuccess(temp);
+                    /*var temp = [2,3];
+                    callbackSuccess(temp);*/
                     callbackError(data);
                 });
             }
@@ -367,13 +367,13 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                     callbackSuccess(data.reports);
                 }).error(function (data) {
-                    var temp = [
+                    /*var temp = [
                         {id: 3, location: "3", title: "3", description: "33"},
                         {id: 1, location: "1", title: "1", description: "11"},
                         {id: 4, location: "4", title: "4", description: "44"},
                         {id: 2, location: "2", title: "2", description: "22"}
                     ];
-                    callbackSuccess(temp);
+                    callbackSuccess(temp);*/
                     callbackError(data);
                 });
             },
@@ -396,7 +396,7 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                     callbackSuccess(data);
                 }).error(function (data) {
-                    callbackSuccess(data);
+                    //callbackSuccess(data);
                     callbackError(data);
                 });
             }
