@@ -35,25 +35,25 @@ public class AdminDashboardController {
     @Autowired
     private WorkerRepository workerRepository;
 
-    @GetMapping("/listFeedback")
+    @GetMapping("/listReports")
     @ResponseBody
-    public ResponseEntity<String> listFeedbacks(HttpServletRequest request) throws IOException{
+    public ResponseEntity<String> listReports (HttpServletRequest request) throws IOException{
         String location = request.getHeader("location");
 
         if(location==null){
             return new ResponseEntity<>("\"Debe introducir una localización válida.\"", HttpStatus.BAD_REQUEST);
         }
 
-        JSONArray feedbackList;
+        JSONArray reportList;
         JSONObject response = new JSONObject();
 
         if(location.trim().equals("") || location.trim().equals("0")){
-            feedbackList = JsonService.createFeedbackList(reportRepository.findAll());
+            reportList = JsonService.createReportList(reportRepository.findAll());
         }
         else{
-            feedbackList = JsonService.createFeedbackList(reportRepository.findByRoomID(location));
+            reportList = JsonService.createReportList(reportRepository.findByRoomID(location));
         }
-        response.put("feedbacks", feedbackList);
+        response.put("reports", reportList);
         return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     }
 

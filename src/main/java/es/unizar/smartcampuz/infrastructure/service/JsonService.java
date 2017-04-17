@@ -20,23 +20,23 @@ public class JsonService {
         return JSONObject.fromObject(jb.toString());
     }
 
-    public static JSONArray createFeedbackList(Iterable<Report> iter){
-        JSONArray feedbackList = new JSONArray();
+    public static JSONArray createReportList(Iterable<Report> iter){
+        JSONArray reportList = new JSONArray();
         for(Report report : iter){
             String title = report.getDescription().length()>40 ?
                 report.getDescription().substring(0, 40) : report.getDescription();
 
-            JSONObject feedback = new JSONObject();
-            feedback.element("state", report.getState());
-            feedback.element("worker", report.getWorker()==null ? "" : report.getWorker().getUserData().getName());
-            feedback.element("description", report.getDescription());
-            feedback.element("title", title);
+            JSONObject jReport = new JSONObject();
+            jReport.element("state", report.getState());
+            jReport.element("worker", report.getWorker()==null ? "" : report.getWorker().getUserData().getName());
+            jReport.element("description", report.getDescription());
+            jReport.element("title", title);
             // Por el momento devuelvo el ID del lugar en vez de el nombre porque aún no existe la entidad Room
-            feedback.element("location", report.getRoomID());
-            feedback.element("id", report.getId());
-            feedbackList.add(feedback);
+            jReport.element("location", report.getRoomID());
+            jReport.element("id", report.getId());
+            reportList.add(jReport);
         }
-        return feedbackList;
+        return reportList;
     }
 
     public static JSONArray createWorkerList(Iterable<Worker> iter){

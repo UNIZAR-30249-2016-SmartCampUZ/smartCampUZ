@@ -10,7 +10,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -21,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class DashboardControllerTest {
 
-    private static final String FEEDBACK_STORED_MESSAGE = "\"Feedback guardado correctamente.\"";
+    private static final String REPORT_STORED_MESSAGE = "\"Report guardado correctamente.\"";
     private static final String DESCRIPTION_IS_BLANK_MESSAGE = "\"Debe introducir una descripción.\"";
     private static final String LOCATION_IS_BLANK_MESSAGE = "\"Debe introducir una localización.\"";
 
@@ -30,15 +29,15 @@ public class DashboardControllerTest {
 
 
     /*
-    * Checks if the process of reporting a new feedback works correctly.
+    * Checks if the process of reporting a new report works correctly.
     */
     @Test
-    public void reportFeedback() throws Exception{
+    public void report() throws Exception{
         String body = "{\"description\":\"Una descripcion\", \"location\":\"Una localizacion\"}";
         ResultActions result = sendRequest(body);
         result.andExpect(status().isOk());
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
-        assertTrue(mockResponse.getContentAsString().equals(FEEDBACK_STORED_MESSAGE));
+        assertTrue(mockResponse.getContentAsString().equals(REPORT_STORED_MESSAGE));
     }
 
     /*
@@ -46,7 +45,7 @@ public class DashboardControllerTest {
     * two fields blank.
     */
     @Test
-    public void reportFeedbackWithBlankFields() throws Exception{
+    public void reportWithBlankFields() throws Exception{
         String body = "{\"description\":\"\", \"location\":\"Una localizacion\"}";
         ResultActions result = sendRequest(body);
         result.andExpect(status().isBadRequest());
@@ -67,10 +66,10 @@ public class DashboardControllerTest {
     }
 
     /*
-     * Sends the request to the reportFeedback endpoint with the given body
+     * Sends the request to the report endpoint with the given body
      */
     private ResultActions sendRequest(String body) throws Exception{
-        return this.mvc.perform(post("/reportFeedback")
+        return this.mvc.perform(post("/report")
             .content(body));
     }
 
