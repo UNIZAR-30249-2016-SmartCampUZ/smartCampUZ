@@ -43,8 +43,23 @@
 
           </div>
           <div id="reserves" class="tab-pane fade">
-            <reserve ng-repeat="reserve in reservationList">
-            </reserve>
+            <div class="accordionCard" ng-repeat="reserve in reservationList">
+
+              <button class="accordion" ng-click="showCommentary = !showCommentary" ng-class="{active: showCommentary}">
+                Mes: {{reserve.month}} Día: {{reserve.month}} <span
+                ng-if="reserve.professor"><strong>Profesor</strong></span>
+              </button>
+              <div class="panel" ng-class="{show: showCommentary}">
+
+                <p><strong>Localización:</strong> {{reserve.location}}</p>
+
+                <p><strong>Email:</strong> {{reserve.email}}</p>
+
+                <p><strong>Descripción:</strong> {{reserve.description}}</p>
+
+
+              </div>
+            </div>
           </div>
         </div>
 
