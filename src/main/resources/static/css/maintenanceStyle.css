@@ -1,0 +1,19 @@
+#maintenanceStyle #reportList {
+  padding-top: 5%
+}
+
+#maintenanceStyle #doneTroubleReport {
+  margin-bottom: 10px;
+}
+
+/* Set a style for all buttons */
+#maintenanceStyle #doneTroubleReport button {
+  font-weight: 600;
+  padding: 5px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+#maintenanceStyle #doneTroubleReport button:hover {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 3px 10px 0 rgba(0,0,0,0.19);
+}

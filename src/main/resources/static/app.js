@@ -24,7 +24,7 @@ angular.module('smartCampUZApp', ['ui.router', 'base64', 'angular-jwt', 'ui-noti
                 }
             })
 
-            //starter screen
+            //admin screen
             .state('admin', {
                 url: "/admin",
                 templateUrl: "templates/admin.html",
@@ -34,6 +34,20 @@ angular.module('smartCampUZApp', ['ui.router', 'base64', 'angular-jwt', 'ui-noti
                         $state.go('starter');
                     } else if (auth.isAuthenticated() && (auth.getType() == 'maintenance')) {
                         $state.go('maintenance');
+                    }
+                }
+            })
+
+            //maintenance screen
+            .state('maintenance', {
+                url: "/maintenance",
+                templateUrl: "templates/maintenance.html",
+                controller: "maintenanceCtrl",
+                onEnter: function ($state, auth) {
+                    if (!auth.isAuthenticated() || auth.isAuthenticated() && (auth.getType() == 'professor')) {
+                        $state.go('starter');
+                    } else if (auth.isAuthenticated() && (auth.getType() == 'admin')) {
+                        $state.go('admin');
                     }
                 }
             });

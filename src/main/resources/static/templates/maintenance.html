@@ -1,0 +1,37 @@
+<div id="maintenanceStyle">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-sm-6" id="leaftletMapSection">
+        <!-- leaftlet map directive -->
+        <leaftlet-map></leaftlet-map>
+      </div>
+
+      <div class="col-sm-6" id="optionsMapSection">
+
+        <h1 class="text-center">Echa un vistazo a tus tareas</h1>
+
+        <div id="reportList">
+          <div class="accordionCard" ng-repeat="report in reportsList">
+
+            <button class="accordion" ng-click="showCommentary = !showCommentary" ng-class="{active: showCommentary}">
+              {{report.title}}
+            </button>
+            <div class="panel" ng-class="{show: showCommentary}">
+
+              <p><strong>Localización:</strong> {{report.location}}</p>
+
+              <p><strong>Descripción:</strong> {{report.description}}</p>
+
+              <div class="col-xs-12 text-right" id="doneTroubleReport">
+                <button ng-click="done(report.id)" class="btn-success">Hecha</button>
+                <button ng-click="trouble(report.id)" class="btn-danger">Problema</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

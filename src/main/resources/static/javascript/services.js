@@ -12,9 +12,11 @@ angular.module('smartCampUZApp')
                 if (_authenticated) {
                     return _authenticated;
                 } else {
-                    var tmp = angular.fromJson(localStorage.userIdentity);
-                    if (tmp !== undefined) {
-                        this.authenticate(tmp);
+                    var tmpUser = angular.fromJson(localStorage.userIdentity);
+                    var tmpJwt = angular.fromJson(localStorage.smartJWT);
+                    if ((typeof tmpUser !== 'undefined' && tmpUser !== null) &&
+                        (typeof tmpJwt !== 'undefined' && tmpJwt !== null)) {
+                        this.authenticate(tmpUser, tmpJwt);
                         return _authenticated;
                     } else {
                         return false;
@@ -25,7 +27,7 @@ angular.module('smartCampUZApp')
             //authenticate the [identity] user
             authenticate: function (identity, jwt) {
                 _identity = identity;
-                _authenticated = identity !== undefined;
+                _authenticated = (typeof identity !== 'undefined' && identity !== null);
                 localStorage.smartJWT = angular.toJson(jwt);
                 localStorage.userIdentity = angular.toJson(_identity);
             },
@@ -121,17 +123,20 @@ angular.module('smartCampUZApp')
                 var hours = [false,false,false,false,false,false,false,false,false,false,false,false,
                     false,false, false,false,false,false,false,false,false,false,false,false];
                 for (i=0;i<reserveHours.length;i++) {
-                    hours = reserveHours[i] == 1;
+                    hours[i] = reserveHours[i] == 1;
                 }
                 var aux = {
-                    email: $scope.emailReserve,
-                    description: $scope.descriptionReserve,
-                    day: $scope.currentDay,
-                    month: $scope.currentMonth,
+                    email: reserveInfo.email,
+                    description: reserveInfo.description,
+                    day: reserveInfo.day,
+                    month: reserveInfo.month,
                     location: userMap.getCurrentLocation().id,
                     requestedHours: hours
                 };
-                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                var token = angular.fromJson(localStorage.smartJWT);
+                if (!(typeof token !== 'undefined' && token !== null)) {
+                    token = ""
+                }
                 $http({
                     method: 'POST',
                     url: 'reservation',
@@ -149,7 +154,10 @@ angular.module('smartCampUZApp')
 
             // Get pending reservations of the system
             getReservations: function (callbackSuccess, callbackError) {
-                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                var token = angular.fromJson(localStorage.smartJWT);
+                if (!(typeof token !== 'undefined' && token !== null)) {
+                    token = ""
+                }
                 $http({
                     method: 'GET',
                     url: 'listReservations',
@@ -161,20 +169,23 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                     callbackSuccess(data.reservations);
                 }).error(function (data) {
-                    var temp = [
+                    /*var temp = [
                         {id: 3, location: "3", day: 17, month: 03, professor: false, email: "3@3", description: "33"},
                         {id: 1, location: "1", day: 16, month: 03, professor: false, email: "1@1", description: "11"},
                         {id: 4, location: "4", day: 16, month: 04, professor: false, email: "4@4", description: "44"},
                         {id: 2, location: "2", day: 16, month: 03, professor: true, email: "2@2", description: "22"}
                     ];
-                    callbackSuccess(temp);
+                    callbackSuccess(temp);*/
                     callbackError(data);
                 });
             },
 
             // Approve or deny a reservation
             approveDenyReservation: function (id, approve, callbackSuccess, callbackError) {
-                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                var token = angular.fromJson(localStorage.smartJWT);
+                if (!(typeof token !== 'undefined' && token !== null)) {
+                    token = ""
+                }
                 var temp = {
                     id: id,
                     approved: approve
@@ -190,8 +201,8 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                     callbackSuccess(data.deletedRequests);
                 }).error(function (data) {
-                    var temp = [2,3];
-                    callbackSuccess(temp);
+                    /*var temp = [2,3];
+                    callbackSuccess(temp);*/
                     callbackError(data);
                 });
             }
@@ -224,7 +235,10 @@ angular.module('smartCampUZApp')
 
             // List all report from the server
             getReports: function (callbackSuccess, callbackError) {
-                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                var token = angular.fromJson(localStorage.smartJWT);
+                if (!(typeof token !== 'undefined' && token !== null)) {
+                    token = ""
+                }
                 $http({
                     method: 'GET',
                     url: 'listReports',
@@ -263,7 +277,10 @@ angular.module('smartCampUZApp')
                 else if (state.state == 'Confirmado') {state.state = 'CONFIRMED'}
                 else if (state.state == 'Problema') {state.state = 'TROUBLE'}
 
-                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                var token = angular.fromJson(localStorage.smartJWT);
+                if (!(typeof token !== 'undefined' && token !== null)) {
+                    token = ""
+                }
                 $http({
                     method: 'PUT',
                     url: 'state',
@@ -289,7 +306,10 @@ angular.module('smartCampUZApp')
         return {
             // Get the list of the workers
             getListOfWorkers: function (callbackSuccess, callbackError) {
-                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                var token = angular.fromJson(localStorage.smartJWT);
+                if (!(typeof token !== 'undefined' && token !== null)) {
+                    token = ""
+                }
                 $http({
                     method: 'GET',
                     url: 'listWorkers',
@@ -330,7 +350,10 @@ angular.module('smartCampUZApp')
 
             // Assign worker to a report
             assignWorker: function (worker, callbackSuccess, callbackError) {
-                var token = angular.fromJson(localStorage.smartJWT) !== undefined ? angular.fromJson(localStorage.smartJWT) : "";
+                var token = angular.fromJson(localStorage.smartJWT);
+                if (!(typeof token !== 'undefined' && token !== null)) {
+                    token = ""
+                }
                 $http({
                     method: 'PUT',
                     url: 'assignWorker',
@@ -342,6 +365,67 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                     callbackSuccess(data);
                 }).error(function (data) {
+                    callbackError(data);
+                });
+            }
+        };
+    })
+
+    // 'maintenance' service manage the maintenance functionallities of the app with the server
+    .factory('maintenance', function ($http, auth, userMap) {
+
+        return {
+            // Get the list of the reports assigned to a maintenance guy
+            getReports: function (callbackSuccess, callbackError) {
+                var token = angular.fromJson(localStorage.smartJWT);
+                if (!(typeof token !== 'undefined' && token !== null)) {
+                    token = ""
+                }
+                $http({
+                    method: 'GET',
+                    url: 'listWorkerReports',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json; charset=UTF-8',
+                        'location': userMap.getCurrentLocation().id,
+                        'emailWorker': auth.getEmail()
+                    }
+                }).success(function (data) {
+                    callbackSuccess(data.reports);
+                }).error(function (data) {
+                    /*var temp = [
+                        {id: 3, location: "3", title: "3", description: "33"},
+                        {id: 1, location: "1", title: "1", description: "11"},
+                        {id: 4, location: "4", title: "4", description: "44"},
+                        {id: 2, location: "2", title: "2", description: "22"}
+                    ];
+                    callbackSuccess(temp);*/
+                    callbackError(data);
+                });
+            },
+
+            // Mark a report as done or trouble
+            doneTroubleReport: function (id, done, callbackSuccess, callbackError) {
+                var token = angular.fromJson(localStorage.smartJWT);
+                if (!(typeof token !== 'undefined' && token !== null)) {
+                    token = ""
+                }
+                var temp = {
+                    idReport: id,
+                    done: done
+                };
+                $http({
+                    method: 'PUT',
+                    url: 'markReport',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json; charset=UTF-8'
+                    },
+                    data: JSON.stringify(temp)
+                }).success(function (data) {
+                    callbackSuccess(data);
+                }).error(function (data) {
+                    //callbackSuccess(data);
                     callbackError(data);
                 });
             }
