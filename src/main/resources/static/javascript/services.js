@@ -123,13 +123,13 @@ angular.module('smartCampUZApp')
                 var hours = [false,false,false,false,false,false,false,false,false,false,false,false,
                     false,false, false,false,false,false,false,false,false,false,false,false];
                 for (i=0;i<reserveHours.length;i++) {
-                    hours = reserveHours[i] == 1;
+                    hours[i] = reserveHours[i] == 1;
                 }
                 var aux = {
-                    email: $scope.emailReserve,
-                    description: $scope.descriptionReserve,
-                    day: $scope.currentDay,
-                    month: $scope.currentMonth,
+                    email: reserveInfo.email,
+                    description: reserveInfo.description,
+                    day: reserveInfo.day,
+                    month: reserveInfo.month,
                     location: userMap.getCurrentLocation().id,
                     requestedHours: hours
                 };
