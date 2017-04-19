@@ -116,7 +116,6 @@ public class AdminDashboardControllerTest {
         String header = "Bearer "+token;
         ReportState[] states = ReportState.values();
         for(int i=3;i<states.length-1;i++){
-            LOG.info("****ESTADO"+i+states[i]);
             String body = "{\"state\":\""+ states[i]+"\", \"id\":"+REPORT_ID_6+"}";
             ResultActions result = sendChangeStateRequest(header, body);
             result.andExpect(status().isOk());
