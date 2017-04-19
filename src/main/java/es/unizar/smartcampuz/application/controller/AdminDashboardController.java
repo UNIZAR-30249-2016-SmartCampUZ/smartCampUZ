@@ -76,7 +76,6 @@ public class AdminDashboardController {
         if(state==null || state.trim().equals("")){
             return new ResponseEntity<>("\"Debe introducir un estado válido\"", HttpStatus.BAD_REQUEST);
         }
-
         Report report = reportRepository.findOne(reportId);
         if(report != null){
             if(ReportStateChecker.checkTransition(report, ReportState.valueOf(state))){

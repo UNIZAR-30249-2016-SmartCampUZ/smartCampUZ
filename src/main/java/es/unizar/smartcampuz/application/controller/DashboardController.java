@@ -45,10 +45,10 @@ public class DashboardController {
             return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         LOG.info("Location: "+location+" Description: "+description);
-        if(isBlank(location)){
+        if(isBlank(description)){
             return new ResponseEntity<>("\"Debe introducir una descripción.\"", HttpStatus.BAD_REQUEST);
         }
-        if(isBlank(description)){
+        if(isBlank(location)){
             return new ResponseEntity<>("\"Debe introducir una localización.\"", HttpStatus.BAD_REQUEST);
         }
         //TODO: ¿Comprobar que la localización existe?
@@ -102,7 +102,6 @@ public class DashboardController {
         if(requestedHours.length != 24){
             return new ResponseEntity<>("\"La lista de horas no es válida\"", HttpStatus.BAD_REQUEST);
         }
-
         if(isBlank(email) && isBlank(description) && isBlank(location)){
             return new ResponseEntity<>("\"Debes introducir localización, email y descripción\"", HttpStatus.BAD_REQUEST);
         }
