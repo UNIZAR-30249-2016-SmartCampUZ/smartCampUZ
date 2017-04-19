@@ -104,20 +104,6 @@ public class CredentialController {
                     e.printStackTrace();
                 }
                 JSONObject jUser = new JSONObject();
-                switch (credential.getRole()){
-                    case "admin":
-                        jUser.element("userName", "Admin");
-                        break;
-
-                    case "maintenance":
-                        String name = workerRepository.findByEmail(credential.getEmail()).getUserData().getName();
-                        jUser.element("userName", name);
-                        break;
-
-                    case "professor":
-                        jUser.element("userName", "Professor");
-                        break;
-                }
                 jUser.element("email", credential.getEmail());
                 jUser.element("type", credential.getRole());
                 return new ResponseEntity<>(jUser.toString(), headers, HttpStatus.OK);

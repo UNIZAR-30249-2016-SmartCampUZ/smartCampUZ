@@ -20,6 +20,14 @@ public class JsonService {
         return JSONObject.fromObject(jb.toString());
     }
 
+    public static boolean[] JSONArrayToBooleanArray (JSONArray jArray){
+        boolean [] array = new boolean [jArray.size()];
+        for(int i=0; i<jArray.size(); i++){
+            array [i] = jArray.getBoolean(i);
+        }
+        return array;
+    }
+
     public static JSONArray createReportList(Iterable<Report> iter){
         JSONArray reportList = new JSONArray();
         for(Report report : iter){
