@@ -96,7 +96,6 @@ angular.module('smartCampUZApp')
 
         /* RESERVE FORM SECTION */
         $scope.logged = auth.isAuthenticated();
-        $scope.userNameReserve = $scope.logged ? auth.getUserName() : "";
         $scope.emailReserve = $scope.logged ? auth.getEmail() : "";
         $scope.descriptionReserve = "";
         // Make a reserve
@@ -119,7 +118,6 @@ angular.module('smartCampUZApp')
             return auth.isAuthenticated();
         }, function () {
             $scope.logged = auth.isAuthenticated();
-            $scope.userNameReserve = $scope.logged ? auth.getUserName() : "";
             $scope.emailReserve = $scope.logged ? auth.getEmail() : "";
         });
         /* REPORT FORM SECTION */
