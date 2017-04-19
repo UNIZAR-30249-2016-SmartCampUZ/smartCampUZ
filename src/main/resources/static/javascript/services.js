@@ -387,8 +387,7 @@ angular.module('smartCampUZApp')
                     headers: {
                         'Authorization': 'Bearer ' + token,
                         'Content-Type': 'application/json; charset=UTF-8',
-                        'location': userMap.getCurrentLocation().id,
-                        'emailWorker': auth.getEmail()
+                        'location': userMap.getCurrentLocation().id
                     }
                 }).success(function (data) {
                     callbackSuccess(data.reports);
