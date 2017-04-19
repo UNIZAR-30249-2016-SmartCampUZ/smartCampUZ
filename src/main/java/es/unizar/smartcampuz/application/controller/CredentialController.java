@@ -3,6 +3,7 @@ package es.unizar.smartcampuz.application.controller;
 import es.unizar.smartcampuz.infrastructure.auth.Credential;
 import es.unizar.smartcampuz.infrastructure.auth.CredentialRepository;
 import es.unizar.smartcampuz.infrastructure.service.JwtService;
+import es.unizar.smartcampuz.model.worker.WorkerRepository;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,9 @@ public class CredentialController {
 
     @Autowired
     private CredentialRepository credentialRepository;
+
+    @Autowired
+    private WorkerRepository workerRepository;
 
     private static final Logger LOG = LoggerFactory
         .getLogger(CredentialController.class);
@@ -100,7 +104,6 @@ public class CredentialController {
                     e.printStackTrace();
                 }
                 JSONObject jUser = new JSONObject();
-                jUser.element("userName", "Paco");
                 jUser.element("email", credential.getEmail());
                 jUser.element("type", credential.getRole());
                 return new ResponseEntity<>(jUser.toString(), headers, HttpStatus.OK);

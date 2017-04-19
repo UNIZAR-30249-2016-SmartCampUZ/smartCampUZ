@@ -20,6 +20,14 @@ public class JsonService {
         return JSONObject.fromObject(jb.toString());
     }
 
+    public static boolean[] JSONArrayToBooleanArray (JSONArray jArray){
+        boolean [] array = new boolean [jArray.size()];
+        for(int i=0; i<jArray.size(); i++){
+            array [i] = jArray.getBoolean(i);
+        }
+        return array;
+    }
+
     public static JSONArray createReportList(Iterable<Report> iter){
         JSONArray reportList = new JSONArray();
         for(Report report : iter){
@@ -31,7 +39,6 @@ public class JsonService {
             jReport.element("worker", report.getWorker()==null ? "" : report.getWorker().getUserData().getName());
             jReport.element("description", report.getDescription());
             jReport.element("title", title);
-            // Por el momento devuelvo el ID del lugar en vez de el nombre porque aún no existe la entidad Room
             jReport.element("location", report.getRoomID());
             jReport.element("id", report.getId());
             reportList.add(jReport);
