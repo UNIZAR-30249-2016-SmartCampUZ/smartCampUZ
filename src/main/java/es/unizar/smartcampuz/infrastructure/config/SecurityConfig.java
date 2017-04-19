@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure (HttpSecurity http) throws Exception{
         http.csrf().disable();
 
-        String[] matchers = {
+        String[] adminMatchers = {
 
             "/listFeedback",
             "/state",
@@ -40,9 +40,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         };
 
+        String[] workerMatchers = {
+
+            "/listWorkerReports"
+
+        };
+
         http.authorizeRequests()
-            .antMatchers(matchers)
+            .antMatchers(adminMatchers)
             .hasAuthority("ROLE_ADMIN")
+            .antMatchers(workerMatchers)
+            .hasAuthority("ROLE_MAINTENANCE")
             .antMatchers("/**/*")
             .permitAll()
             .and()

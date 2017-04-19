@@ -31,7 +31,6 @@ public class JsonService {
             jReport.element("worker", report.getWorker()==null ? "" : report.getWorker().getUserData().getName());
             jReport.element("description", report.getDescription());
             jReport.element("title", title);
-            // Por el momento devuelvo el ID del lugar en vez de el nombre porque aún no existe la entidad Room
             jReport.element("location", report.getRoomID());
             jReport.element("id", report.getId());
             reportList.add(jReport);
