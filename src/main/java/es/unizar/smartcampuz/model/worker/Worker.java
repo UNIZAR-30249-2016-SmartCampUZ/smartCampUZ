@@ -19,6 +19,7 @@ public class Worker {
     private long id;
 
     @NotNull
+    @Column(unique=true)
     private String email;
 
     @NotNull
