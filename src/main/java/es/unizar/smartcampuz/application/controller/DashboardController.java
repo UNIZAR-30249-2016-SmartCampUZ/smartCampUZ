@@ -105,7 +105,7 @@ public class DashboardController {
         if(isBlank(email) && isBlank(description) && isBlank(location)){
             return new ResponseEntity<>("\"Debes introducir localización, email y descripción\"", HttpStatus.BAD_REQUEST);
         }
-
+        // TODO: Comprobar si se puede reservar cuando esté hecha la política de comprobación
         // TODO: Crear reserva
         return new ResponseEntity<>("\"Reserva solicitada correctamente.\"", HttpStatus.OK);
     }

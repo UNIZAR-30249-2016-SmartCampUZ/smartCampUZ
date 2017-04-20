@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 @Controller
@@ -136,5 +137,32 @@ public class AdminDashboardController {
         workersList = JsonService.createWorkerList(workerRepository.findAll());
         response.put("workers", workersList);
         return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+    }
+
+    @GetMapping("/listReservations")
+    @ResponseBody
+    public ResponseEntity<String> listReservations (HttpServletRequest request) throws IOException{
+        String location = request.getHeader("location");
+
+        if(location==null){
+            return new ResponseEntity<>("\"Debe introducir una localización válida.\"", HttpStatus.BAD_REQUEST);
+        }
+
+        JSONArray reportList;
+        JSONObject response = new JSONObject();
+
+        if(location.trim().equals("") || location.trim().equals("0")){
+            // TODO: Pedir reservas pendientes de todo el sistema
+            // El arrayList actual es un mock
+            reportList = JsonService.createReservationList(new ArrayList());
+        }
+        else{
+            // TODO: Pedir reservas pendientes de la localización indicada
+            // El arrayList actual es un mock
+            reportList = JsonService.createReservationList(new ArrayList());
+        }
+        response.put("reservations", reportList);
+        return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+
     }
 }
