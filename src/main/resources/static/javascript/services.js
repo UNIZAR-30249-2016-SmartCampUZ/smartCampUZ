@@ -45,9 +45,6 @@ angular.module('smartCampUZApp')
             getUserObject: function () {
                 return _identity;
             },
-            getUserName: function () {
-              return _identity.userName;
-            },
             getEmail: function () {
                 return _identity.email;
             },
