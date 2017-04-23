@@ -165,4 +165,44 @@ public class AdminDashboardController {
         return new ResponseEntity<>(response.toString(), HttpStatus.OK);
 
     }
+
+    @PutMapping("/reservation")
+    @ResponseBody
+    public ResponseEntity<String> approveOrDenyReservation (HttpServletRequest request) throws IOException{
+        int reservationId;
+        boolean approved;
+
+        JSONObject json;
+
+        try{
+            json = JsonService.readJson(request.getReader());
+            reservationId = json.getInt("id");
+            approved = json.getBoolean("approved");
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // TODO: Pedir la reserva a la BD.
+
+        ArrayList<Integer> removedReservations = new ArrayList<>();
+        JSONObject response = new JSONObject();
+        // TODO: Añadir en el if la llamada al checker de la política de reservas
+        if(approved){
+            // TODO: Asignar el estado "Approved" a la reserva
+            // TODO: Comprobar las reservas que entran en conflicto con esta
+            response.element("deletedRequests", removedReservations.toArray());
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        }
+        else if(!approved){
+            // TODO: Asignar el estado "Denied" a la reserva
+            removedReservations.add(reservationId);
+            response.element("deletedRequests", removedReservations.toArray());
+            return new ResponseEntity<>(response.toString(), HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("\"Reserva en conflicto con otra. No puede aprobarse.\"", HttpStatus.BAD_REQUEST);
+        }
+
+    }
 }
