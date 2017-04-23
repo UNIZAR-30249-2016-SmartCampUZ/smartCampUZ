@@ -9,15 +9,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import es.unizar.smartcampuz.infrastructure.service.*;
 import es.unizar.smartcampuz.model.report.Report;
 import es.unizar.smartcampuz.model.report.ReportRepository;
+import es.unizar.smartcampuz.model.reservation.ReservationChecker;
 
 @Controller
 public class DashboardController {
@@ -88,17 +92,9 @@ public class DashboardController {
         //TODO: ¿Comprobar que la localización existe?
 
         // Checks if the date is a valid one
-        Calendar cal = Calendar.getInstance();
-        cal.setLenient(false);
-        cal.set(Calendar.DAY_OF_MONTH, day);
-        cal.set(Calendar.MONTH, month);
-        try{
-            cal.getTime();
-        }
-        catch (Exception e){
+        if(!isValidDate(day, month)){
             return new ResponseEntity<>("\"La fecha no es válida\"", HttpStatus.BAD_REQUEST);
         }
-
         if(requestedHours.length != 24){
             return new ResponseEntity<>("\"La lista de horas no es válida\"", HttpStatus.BAD_REQUEST);
         }
@@ -106,8 +102,58 @@ public class DashboardController {
             return new ResponseEntity<>("\"Debes introducir localización, email y descripción\"", HttpStatus.BAD_REQUEST);
         }
 
-        // TODO: Crear reserva
-        return new ResponseEntity<>("\"Reserva solicitada correctamente.\"", HttpStatus.OK);
+        //TODO: Pedir a la DB todas las reservas en esa localización para ese día y cambiar parametro checkSchedule
+        if(ReservationChecker.checkSchedule(requestedHours, new ArrayList())){
+            // TODO: Crear reserva
+            return new ResponseEntity<>("\"Reserva solicitada correctamente.\"", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("\"Reserva en conflicto con otra. No puede aprobarse.\"", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    @GetMapping("/availableHours")
+    @ResponseBody
+    public ResponseEntity<String> listAvailableHours (HttpServletRequest request) throws IOException{
+        String location = request.getHeader("location");
+        int day = Integer.parseInt(request.getHeader("day"));
+        int month = Integer.parseInt(request.getHeader("month"));
+
+        //TODO: ¿Comprobar que la localización existe?
+
+        if(!isValidDate(day, month)){
+            return new ResponseEntity<>("\"La fecha no es válida\"", HttpStatus.BAD_REQUEST);
+        }
+
+        //TODO: Pedir reservas aprobadas de una localización en un día concreto
+        Iterable<?> iter = new ArrayList();
+        // Initializes the array with 'false' value in all it's fields
+        boolean [] availableHours = new boolean[24];
+        // Iterates all reservations for that day and location
+        for(Object o: iter){
+            // TODO: Cogeré este array del objeto Reservation
+            boolean [] reservation = new boolean[24];
+            /*
+             * A 'false' value means there's no reservation in that hour in both arrays.
+             *
+             * False OR False -> False (No reservation on that hour)
+             * False OR True  -> True  (A reservation on that hour. Now listed as reservation in availableHours)
+             * True  OR False -> True  (A reservation on that hour. There was a reservation in availableHours)
+             * True  OR True  -> True  (A reservation on that hour. There was a reservation in availableHours. This operation shouldn't happen.)
+             */
+            for(int i=ReservationChecker.START_HOUR;i<=ReservationChecker.FINISH_HOUR;i++){
+                availableHours[i] = availableHours[i] || reservation[i];
+            }
+        }
+        // Reverses all values in availableHours from START_HOUR to FINISH_HOUR
+        // so that a True value will mean an available hour and not a reservation.
+        for(int i = ReservationChecker.START_HOUR;i<=ReservationChecker.FINISH_HOUR;i++){
+            availableHours[i] = !availableHours[i];
+        }
+        JSONObject response = new JSONObject();
+        response.element("availableHours", availableHours);
+        return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     }
 
     /*
@@ -115,5 +161,22 @@ public class DashboardController {
      */
     private boolean isBlank(String field){
         return field==null || field.trim().equals("");
+    }
+
+    /*
+     * Checks if a given date is a valid one.
+     */
+    private boolean isValidDate(int day, int month){
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setLenient(false);
+        cal.set(Calendar.DAY_OF_MONTH, day);
+        cal.set(Calendar.MONTH, month-1);
+        try{
+            cal.getTime();
+        }
+        catch (Exception e){
+            return false;
+        }
+        return true;
     }
 }
