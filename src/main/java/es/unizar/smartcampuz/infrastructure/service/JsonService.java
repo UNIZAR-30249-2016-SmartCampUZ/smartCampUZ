@@ -59,7 +59,7 @@ public class JsonService {
         return workerList;
     }
 
-    // TODO: El iterable hay que cambiar por una Reservation
+    // TODO: El iterable hay que cambiar ? por una Reservation
     public static JSONArray createReservationList(Iterable<?> iter){
         JSONArray reservartionList = new JSONArray();
         // TODO: Cambiar object por Reservation

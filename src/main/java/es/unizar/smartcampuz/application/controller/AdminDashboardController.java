@@ -7,6 +7,7 @@ import es.unizar.smartcampuz.model.report.ReportState;
 import es.unizar.smartcampuz.model.report.ReportStateChecker;
 import es.unizar.smartcampuz.model.worker.Worker;
 import es.unizar.smartcampuz.model.worker.WorkerRepository;
+import es.unizar.smartcampuz.model.reservation.ReservationChecker;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -187,10 +188,26 @@ public class AdminDashboardController {
 
         ArrayList<Integer> removedReservations = new ArrayList<>();
         JSONObject response = new JSONObject();
-        // TODO: Añadir en el if la llamada al checker de la política de reservas
-        if(approved){
+        // TODO: Cambiar los parametros de la llamada del checkSchedule
+        if(approved && ReservationChecker.checkSchedule(new boolean[24], new ArrayList())){
             // TODO: Asignar el estado "Approved" a la reserva
-            // TODO: Comprobar las reservas que entran en conflicto con esta
+
+            //TODO: Pedir a la BD reservas de la misma localización y día que la reserva aprobada
+            Iterable<?> iter = new ArrayList();
+            // TODO: Cogeré este array de la reserva que se ha aprobado
+            boolean [] reservedHours = new boolean[24];
+            boolean conflic = false;
+            for(Object o:iter){
+                // TODO: Cogeré este array del objeto Reservation
+                boolean [] reservation = new boolean[24];
+                for(int i = ReservationChecker.START_HOUR; i<= ReservationChecker.FINISH_HOUR && !conflic; i++){
+                    if(reservedHours[i] && reservation[i]){
+                        // TODO: Añadir el ID de la reserva que entra en conflicto
+                        removedReservations.add(1);
+                        conflic = true;
+                    }
+                }
+            }
             response.element("deletedRequests", removedReservations.toArray());
             return new ResponseEntity<>(response.toString(), HttpStatus.OK);
         }
@@ -203,6 +220,5 @@ public class AdminDashboardController {
         else{
             return new ResponseEntity<>("\"Reserva en conflicto con otra. No puede aprobarse.\"", HttpStatus.BAD_REQUEST);
         }
-
     }
 }

@@ -21,15 +21,13 @@ import java.util.GregorianCalendar;
 import es.unizar.smartcampuz.infrastructure.service.*;
 import es.unizar.smartcampuz.model.report.Report;
 import es.unizar.smartcampuz.model.report.ReportRepository;
+import es.unizar.smartcampuz.model.reservation.ReservationChecker;
 
 @Controller
 public class DashboardController {
 
     private static final Logger LOG = LoggerFactory
         .getLogger(CredentialController.class);
-
-    private static final int START_HOUR = 7;
-    private static final int FINISH_HOUR = 19;
 
     @Autowired
     private ReportRepository reportRepository;
@@ -103,9 +101,15 @@ public class DashboardController {
         if(isBlank(email) && isBlank(description) && isBlank(location)){
             return new ResponseEntity<>("\"Debes introducir localización, email y descripción\"", HttpStatus.BAD_REQUEST);
         }
-        // TODO: Comprobar si se puede reservar cuando esté hecha la política de comprobación
-        // TODO: Crear reserva
-        return new ResponseEntity<>("\"Reserva solicitada correctamente.\"", HttpStatus.OK);
+
+        //TODO: Pedir a la DB todas las reservas en esa localización para ese día y cambiar parametro checkSchedule
+        if(ReservationChecker.checkSchedule(requestedHours, new ArrayList())){
+            // TODO: Crear reserva
+            return new ResponseEntity<>("\"Reserva solicitada correctamente.\"", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("\"Reserva en conflicto con otra. No puede aprobarse.\"", HttpStatus.BAD_REQUEST);
+        }
     }
 
 
@@ -138,13 +142,13 @@ public class DashboardController {
              * True  OR False -> True  (A reservation on that hour. There was a reservation in availableHours)
              * True  OR True  -> True  (A reservation on that hour. There was a reservation in availableHours. This operation shouldn't happen.)
              */
-            for(int i=START_HOUR;i<=FINISH_HOUR;i++){
+            for(int i=ReservationChecker.START_HOUR;i<=ReservationChecker.FINISH_HOUR;i++){
                 availableHours[i] = availableHours[i] || reservation[i];
             }
         }
         // Reverses all values in availableHours from START_HOUR to FINISH_HOUR
         // so that a True value will mean an available hour and not a reservation.
-        for(int i = START_HOUR;i<=FINISH_HOUR;i++){
+        for(int i = ReservationChecker.START_HOUR;i<=ReservationChecker.FINISH_HOUR;i++){
             availableHours[i] = !availableHours[i];
         }
         JSONObject response = new JSONObject();
