@@ -68,7 +68,6 @@ angular.module('smartCampUZApp')
                 RoomMarker = L.marker([ e.latlng.lat, e.latlng.lng]).addTo(map);
                 $scope.coordsPseudoMerkator = L.Projection.SphericalMercator.project(e.latlng);
                 userMap.setLocationFromCoordenates($scope.coordsPseudoMerkator.x, $scope.coordsPseudoMerkator.y, $scope.floors, successMap, showError);
-                alert(localIP);
             }
             map.on('click', onMapClick);
 
