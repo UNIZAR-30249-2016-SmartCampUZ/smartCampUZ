@@ -23,7 +23,23 @@ public class TimeReservationTest {
 
     @Test
     public void getTimeSlots() throws Exception {
-        TimeReservation time = new TimeReservation(array, dateFormater.parse("15-11-1995") );
+        TimeReservation time = new TimeReservation(array);
         assertArrayEquals(array, time.getTimeSlots());
+    }
+
+    @Test
+    public void isCompatibleWith() throws Exception {
+        TimeReservation time = new TimeReservation(array);
+        boolean[] array2 = new boolean[24];
+        array2[3]=true; //It's no a collision with time[3]
+        array2[4]=true; //It's no a collision with time[4]
+        TimeReservation time2 = new TimeReservation(array2);
+
+        boolean[] array3 = new boolean[24];
+        array3[2]=true; //We force a collision with time[2]
+        TimeReservation time3 = new TimeReservation(array3);
+
+        assertTrue(time.isCompatibleWith(time2));
+        assertFalse(time.isCompatibleWith(time3));
     }
 }

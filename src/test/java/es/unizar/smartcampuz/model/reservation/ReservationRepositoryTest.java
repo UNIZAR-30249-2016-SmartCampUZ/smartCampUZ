@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNull;
@@ -28,7 +29,10 @@ public class ReservationRepositoryTest {
         reservation.setRoomID("HD-101");
         reservation.setUserID("testUser");
         reservation.setState(ReservationState.PENDING);
-        reservation.setTimeReservation(new TimeReservation(new boolean[24],new Date(0)));
+        reservation.setDate(new Date(0));
+        boolean[] array = new boolean[24];
+        array[8]=true;
+        reservation.setTimeReservation(new TimeReservation(array));
     }
 
     @Test
@@ -48,7 +52,9 @@ public class ReservationRepositoryTest {
     public void update() {
         reservation = repository.save(reservation);
         assertThat(repository.findOne(reservation.getId()), is(reservation));
-        reservation.setTimeReservation(new TimeReservation(new boolean[24], new Date(100)));
+        boolean[] array = new boolean[24];
+        array[9]=true;
+        reservation.setTimeReservation(new TimeReservation(array));
         reservation = repository.save(reservation);
         assertThat(repository.findOne(reservation.getId()), is(reservation));
     }
@@ -63,6 +69,31 @@ public class ReservationRepositoryTest {
     public void findByUserID() {
         reservation = repository.save(reservation);
         assertThat(repository.findByUserID(reservation.getUserID()), is(reservation));
+    }
+
+    @Test
+    public void findByState() {
+        reservation = repository.save(reservation);
+        Set<Reservation> set = repository.findAllByState(ReservationState.PENDING);
+
+        assertThat(set.iterator().next(), is(reservation));
+    }
+
+    @Test
+    public void findByRoomIDAndState() {
+        reservation = repository.save(reservation);
+        Set<Reservation> set = repository.findAllByRoomIDAndState(reservation.getRoomID(), ReservationState.PENDING);
+
+        assertThat(set.iterator().next(), is(reservation));
+    }
+
+    @Test
+    public void findByRoomIDAndDateAndState() {
+        reservation = repository.save(reservation);
+        Set<Reservation> set = repository.findAllByRoomIDAndDateAndState(reservation.getRoomID(),
+            reservation.getDate(), ReservationState.PENDING);
+
+        assertThat(set.iterator().next(), is(reservation));
     }
 
 }

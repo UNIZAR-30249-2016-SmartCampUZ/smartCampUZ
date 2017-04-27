@@ -1,6 +1,6 @@
 package es.unizar.smartcampuz.application.controller;
 
-import net.sf.json.JSONArray;
+import es.unizar.smartcampuz.model.reservation.*;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,27 +10,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import es.unizar.smartcampuz.infrastructure.service.*;
 import es.unizar.smartcampuz.model.report.Report;
 import es.unizar.smartcampuz.model.report.ReportRepository;
-import es.unizar.smartcampuz.model.reservation.ReservationChecker;
 
 @Controller
 public class DashboardController {
 
     private static final Logger LOG = LoggerFactory
         .getLogger(CredentialController.class);
+    private static final SimpleDateFormat dateFormater = new SimpleDateFormat("ddMMyyyy");
 
     @Autowired
     private ReportRepository reportRepository;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     @PostMapping("/report")
     @ResponseBody
@@ -64,37 +68,33 @@ public class DashboardController {
 
     @PostMapping("/reservation")
     @ResponseBody
-    public ResponseEntity<String> newReservation (HttpServletRequest request) throws IOException{
-        String location;
-        String email;
-        String description;
-        int day;
-        int month;
-        boolean [] requestedHours;
+    public ResponseEntity<String> newReservation (@RequestParam String location, @RequestParam String email,
+                                                  @RequestParam String description, @RequestParam int month, @RequestParam int day,
+                                                  @RequestParam boolean[] requestedHours) throws IOException, ParseException{
 
-        JSONObject json;
-        JSONArray jRequestedHours;
-
-        try{
-            json = JsonService.readJson(request.getReader());
-            location = json.getString("location");
-            email = json.getString("email");
-            description = json.getString("description");
-            day = json.getInt("day");
-            month = json.getInt(("month"));
-            jRequestedHours = json.getJSONArray("requestedHours");
-        }
-        catch (Exception e){
-            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        requestedHours = JsonService.JSONArrayToBooleanArray(jRequestedHours);
+//        JSONObject json;
+//        JSONArray jRequestedHours;
+//
+//        try{
+//            json = JsonService.readJson(request.getReader());
+//            location = json.getString("location");
+//            email = json.getString("email");
+//            description = json.getString("description");
+//            day = json.getInt("day");
+//            month = json.getInt(("month"));
+//            jRequestedHours = json.getJSONArray("requestedHours");
+//        }
+//        catch (Exception e){
+//            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//        requestedHours = JsonService.JSONArrayToBooleanArray(jRequestedHours);
 
         //TODO: ¿Comprobar que la localización existe?
 
         // Checks if the date is a valid one
-        if(!isValidDate(day, month)){
-            return new ResponseEntity<>("\"La fecha no es válida\"", HttpStatus.BAD_REQUEST);
-        }
+//        if(!isValidDate(day, month)){
+//            return new ResponseEntity<>("\"La fecha no es válida\"", HttpStatus.BAD_REQUEST);
+//        }
         if(requestedHours.length != 24){
             return new ResponseEntity<>("\"La lista de horas no es válida\"", HttpStatus.BAD_REQUEST);
         }
@@ -102,9 +102,18 @@ public class DashboardController {
             return new ResponseEntity<>("\"Debes introducir localización, email y descripción\"", HttpStatus.BAD_REQUEST);
         }
 
-        //TODO: Pedir a la DB todas las reservas en esa localización para ese día y cambiar parametro checkSchedule
-        if(ReservationChecker.checkSchedule(requestedHours, new ArrayList())){
-            // TODO: Crear reserva
+        //Creates our object to work with
+        TimeReservation timeReservation = new TimeReservation(requestedHours);
+        Reservation reservation = new Reservation(location, email,
+            dateFormater.parse(String.format("%02d%02d2017", day, month)), timeReservation);
+
+        //Takes all approved reservations in a room in a day
+        Set<Reservation> approvedReservations = reservationRepository.findAllByRoomIDAndDateAndState(
+            reservation.getRoomID(), reservation.getDate(), ReservationState.APPROVED);
+
+        //Checks compatibility policy with all given approved reservations
+        if(ReservationChecker.checkSchedule(reservation.getTimeReservation(), approvedReservations)){
+            reservationRepository.save(reservation);
             return new ResponseEntity<>("\"Reserva solicitada correctamente.\"", HttpStatus.OK);
         }
         else{
@@ -115,43 +124,30 @@ public class DashboardController {
 
     @GetMapping("/availableHours")
     @ResponseBody
-    public ResponseEntity<String> listAvailableHours (HttpServletRequest request) throws IOException{
-        String location = request.getHeader("location");
-        int day = Integer.parseInt(request.getHeader("day"));
-        int month = Integer.parseInt(request.getHeader("month"));
+    public ResponseEntity<String> listAvailableHours(@RequestParam String location, @RequestParam int day,
+                                                      @RequestParam int month) throws IOException, ParseException{
 
         //TODO: ¿Comprobar que la localización existe?
 
-        if(!isValidDate(day, month)){
-            return new ResponseEntity<>("\"La fecha no es válida\"", HttpStatus.BAD_REQUEST);
-        }
+//        if(!isValidDate(day, month)){
+//            return new ResponseEntity<>("\"La fecha no es válida\"", HttpStatus.BAD_REQUEST);
+//        }
 
-        //TODO: Pedir reservas aprobadas de una localización en un día concreto
-        Iterable<?> iter = new ArrayList();
+        Set<Reservation> approvedReservations = reservationRepository.findAllByRoomIDAndDateAndState(
+            location, dateFormater.parse(String.format("%02d%02d2017", day, month)), ReservationState.APPROVED);
         // Initializes the array with 'false' value in all it's fields
         boolean [] availableHours = new boolean[24];
+        Arrays.fill(availableHours, true);
         // Iterates all reservations for that day and location
-        for(Object o: iter){
-            // TODO: Cogeré este array del objeto Reservation
-            boolean [] reservation = new boolean[24];
-            /*
-             * A 'false' value means there's no reservation in that hour in both arrays.
-             *
-             * False OR False -> False (No reservation on that hour)
-             * False OR True  -> True  (A reservation on that hour. Now listed as reservation in availableHours)
-             * True  OR False -> True  (A reservation on that hour. There was a reservation in availableHours)
-             * True  OR True  -> True  (A reservation on that hour. There was a reservation in availableHours. This operation shouldn't happen.)
-             */
-            for(int i=ReservationChecker.START_HOUR;i<=ReservationChecker.FINISH_HOUR;i++){
-                availableHours[i] = availableHours[i] || reservation[i];
+        for(Reservation approvedReservation: approvedReservations){
+            boolean [] reservationArray = approvedReservation.getTimeReservation().getTimeSlots();
+            //It always represents the available hours
+            for(int i = ReservationChecker.START_TIME_SLOT; i<=ReservationChecker.FINISH_TIME_SLOT; i++){
+                availableHours[i] &= !reservationArray[i]; //If it where available(true) AND it's still available(true)
             }
         }
-        // Reverses all values in availableHours from START_HOUR to FINISH_HOUR
-        // so that a True value will mean an available hour and not a reservation.
-        for(int i = ReservationChecker.START_HOUR;i<=ReservationChecker.FINISH_HOUR;i++){
-            availableHours[i] = !availableHours[i];
-        }
         JSONObject response = new JSONObject();
+
         response.element("availableHours", availableHours);
         return new ResponseEntity<>(response.toString(), HttpStatus.OK);
     }
@@ -166,17 +162,17 @@ public class DashboardController {
     /*
      * Checks if a given date is a valid one.
      */
-    private boolean isValidDate(int day, int month){
-        GregorianCalendar cal = new GregorianCalendar();
-        cal.setLenient(false);
-        cal.set(Calendar.DAY_OF_MONTH, day);
-        cal.set(Calendar.MONTH, month-1);
-        try{
-            cal.getTime();
-        }
-        catch (Exception e){
-            return false;
-        }
-        return true;
-    }
+//    private boolean isValidDate(int day, int month){
+//        GregorianCalendar cal = new GregorianCalendar();
+//        cal.setLenient(false);
+//        cal.set(Calendar.DAY_OF_MONTH, day);
+//        cal.set(Calendar.MONTH, month-1);
+//        try{
+//            cal.getTime();
+//        }
+//        catch (Exception e){
+//            return false;
+//        }
+//        return true;
+//    }
 }

@@ -2,7 +2,6 @@ package es.unizar.smartcampuz.model.reservation;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @Embeddable
 public class TimeReservation {
@@ -13,17 +12,13 @@ public class TimeReservation {
     @NotNull
     private int timeSlots;
 
-    @NotNull
-    private Date date;
-
     //Used by Hibernate. Private is more readable. Protected will improve performance.
     protected TimeReservation(){
 
     }
 
-    public TimeReservation(@NotNull boolean[] timeSlots, @NotNull Date date){
+    public TimeReservation(@NotNull boolean[] timeSlots){
         this.timeSlots=arrayToInteger(timeSlots);
-        this.date=date;
     }
 
     //Used by Hibernate. Private is more readable. Protected will improve performance.
@@ -33,15 +28,6 @@ public class TimeReservation {
 
     public boolean[] getTimeSlots() {
         return integerToArray(timeSlots);
-    }
-
-    //Used by Hibernate. Private is more readable. Protected will improve performance.
-    protected void setDate(Date value) {
-        this.date = value;
-    }
-
-    public Date getDate() {
-        return date;
     }
 
     private boolean[] integerToArray( int timeSlots ){
@@ -71,10 +57,17 @@ public class TimeReservation {
             aux = timeSlots[i] ? 1 : 0;
             result |= aux << i;
         }
+
+        if (result==0) throw new IllegalArgumentException("Reservation should have at least one hour ");
+
         return result;
     }
 
     public boolean equals(TimeReservation time2){
-        return this.date.equals(time2.date) && this.timeSlots==time2.timeSlots;
+        return this.timeSlots==time2.timeSlots;
+    }
+
+    public boolean isCompatibleWith(TimeReservation time2){
+        return (this.timeSlots & time2.timeSlots)==0;
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
@@ -22,7 +23,31 @@ public class GlobalControllerExceptionHandler {
     @ResponseBody
     public String HandleIOException(Exception e) {
         logException(e);
-        return e.getLocalizedMessage();
+        return e.getMessage()   ;
+    }
+
+    /**
+     * Catches ParseException thrown from any Controller.
+     * @param e
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ParseException.class)
+    @ResponseBody
+    public String HandleParseException(Exception e) {
+        logException(e);
+        return e.getMessage();
+    }
+
+    /**
+     * Catches IllegalArgumentException thrown from any Controller.
+     * @param e
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseBody
+    public String HandleIllegalArgumentException(Exception e) {
+        logException(e);
+        return e.getMessage();
     }
 
     /**
