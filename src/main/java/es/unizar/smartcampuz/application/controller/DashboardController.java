@@ -1,5 +1,6 @@
 package es.unizar.smartcampuz.application.controller;
 
+import es.unizar.smartcampuz.model.report.ReportStateChecker;
 import es.unizar.smartcampuz.model.reservation.*;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -72,29 +73,8 @@ public class DashboardController {
                                                   @RequestParam String description, @RequestParam int month, @RequestParam int day,
                                                   @RequestParam boolean[] requestedHours) throws IOException, ParseException{
 
-//        JSONObject json;
-//        JSONArray jRequestedHours;
-//
-//        try{
-//            json = JsonService.readJson(request.getReader());
-//            location = json.getString("location");
-//            email = json.getString("email");
-//            description = json.getString("description");
-//            day = json.getInt("day");
-//            month = json.getInt(("month"));
-//            jRequestedHours = json.getJSONArray("requestedHours");
-//        }
-//        catch (Exception e){
-//            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//        requestedHours = JsonService.JSONArrayToBooleanArray(jRequestedHours);
-
         //TODO: ¿Comprobar que la localización existe?
 
-        // Checks if the date is a valid one
-//        if(!isValidDate(day, month)){
-//            return new ResponseEntity<>("\"La fecha no es válida\"", HttpStatus.BAD_REQUEST);
-//        }
         if(requestedHours.length != 24){
             return new ResponseEntity<>("\"La lista de horas no es válida\"", HttpStatus.BAD_REQUEST);
         }
@@ -129,15 +109,16 @@ public class DashboardController {
 
         //TODO: ¿Comprobar que la localización existe?
 
-//        if(!isValidDate(day, month)){
-//            return new ResponseEntity<>("\"La fecha no es válida\"", HttpStatus.BAD_REQUEST);
-//        }
-
         Set<Reservation> approvedReservations = reservationRepository.findAllByRoomIDAndDateAndState(
             location, dateFormater.parse(String.format("%02d%02d2017", day, month)), ReservationState.APPROVED);
         // Initializes the array with 'false' value in all it's fields
         boolean [] availableHours = new boolean[24];
-        Arrays.fill(availableHours, true);
+
+        //It puts true in the actual available hours
+        for (int i = ReservationChecker.START_TIME_SLOT; i <= ReservationChecker.FINISH_TIME_SLOT ; i++) {
+            availableHours[i] = true;
+        }
+
         // Iterates all reservations for that day and location
         for(Reservation approvedReservation: approvedReservations){
             boolean [] reservationArray = approvedReservation.getTimeReservation().getTimeSlots();
@@ -159,20 +140,4 @@ public class DashboardController {
         return field==null || field.trim().equals("");
     }
 
-    /*
-     * Checks if a given date is a valid one.
-     */
-//    private boolean isValidDate(int day, int month){
-//        GregorianCalendar cal = new GregorianCalendar();
-//        cal.setLenient(false);
-//        cal.set(Calendar.DAY_OF_MONTH, day);
-//        cal.set(Calendar.MONTH, month-1);
-//        try{
-//            cal.getTime();
-//        }
-//        catch (Exception e){
-//            return false;
-//        }
-//        return true;
-//    }
 }

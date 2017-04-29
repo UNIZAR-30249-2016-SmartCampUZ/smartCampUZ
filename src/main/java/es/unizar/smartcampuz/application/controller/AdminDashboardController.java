@@ -160,11 +160,9 @@ public class AdminDashboardController {
 
         if(location.trim().equals("") || location.trim().equals("0")){
 
-            // El arrayList actual es un mock
             reportList = JsonService.createReservationList(reservationRepository.findAllByState(ReservationState.PENDING));
         }
         else{
-            // El arrayList actual es un mock
             reportList = JsonService.createReservationList(
                 reservationRepository.findAllByRoomIDAndState(location, ReservationState.PENDING));
 
@@ -217,7 +215,7 @@ public class AdminDashboardController {
             reservationRepository.save(reservation);
             //Create the response
             deniedReservations.add(reservation.getId());
-            response.element("deletedRequests", deniedReservations);
+            response.element("deletedRequests", deniedReservations.toArray());
             return new ResponseEntity<>(response.toString(), HttpStatus.OK);
         }
         else{

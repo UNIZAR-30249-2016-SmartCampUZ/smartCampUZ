@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 public class TimeReservation {
 
     @Transient
-    private static final int NUM_TIME_SLOTS = 24;
+    public static final int NUM_TIME_SLOTS = 24;
 
     @NotNull
     private int timeSlots;

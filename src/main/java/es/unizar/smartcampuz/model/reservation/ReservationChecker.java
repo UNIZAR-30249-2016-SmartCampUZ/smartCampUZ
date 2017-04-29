@@ -1,6 +1,5 @@
 package es.unizar.smartcampuz.model.reservation;
 
-
 public class ReservationChecker {
 
     //Represents first valid TimeSlot 8:00-9:00
@@ -8,13 +7,12 @@ public class ReservationChecker {
 
     //Represents last valid TimeSlot 20:00-21:00
     public static final int FINISH_TIME_SLOT =20;
-    public static final int NUM_TIME_SLOTS = 24;
 
     public static boolean checkSchedule (TimeReservation candidate, Iterable<Reservation> approvedReservations){
         boolean[] candidateArray = candidate.getTimeSlots();
 
         //Checks the size of the array
-        if(candidateArray.length!=NUM_TIME_SLOTS){
+        if(candidateArray.length != TimeReservation.NUM_TIME_SLOTS){
             throw new IllegalArgumentException("Input array should have 24 elements");
         }
 
@@ -24,7 +22,7 @@ public class ReservationChecker {
         }
 
         //Checks there is no time slots after finish time
-        for(int i = FINISH_TIME_SLOT+1; i < NUM_TIME_SLOTS; i++) {
+        for(int i = FINISH_TIME_SLOT+1; i < TimeReservation.NUM_TIME_SLOTS; i++) {
             if (candidateArray[i]) return false;
         }
 
