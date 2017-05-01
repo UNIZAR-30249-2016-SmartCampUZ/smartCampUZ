@@ -1,6 +1,8 @@
 package es.unizar.smartcampuz.application.controller;
 
 import es.unizar.smartcampuz.infrastructure.service.JsonService;
+import es.unizar.smartcampuz.infrastructure.service.SmtpMailService;
+
 import es.unizar.smartcampuz.model.report.Report;
 import es.unizar.smartcampuz.model.report.ReportRepository;
 import es.unizar.smartcampuz.model.report.ReportState;
@@ -40,6 +42,9 @@ public class AdminDashboardController {
 
     @Autowired
     private WorkerRepository workerRepository;
+    
+    @Autowired
+    private SmtpMailService smtpMailSender;
 
     @Autowired
     private ReservationRepository reservationRepository;
@@ -206,13 +211,35 @@ public class AdminDashboardController {
                     reservationRepository.save(pendingReservation); //Save reservation
                 }
             }
+            
+            //TODO: Aquí habría que quitar esto y poner el email del usuario
+            // Sends confirmation email
+            String email = "catalindumitrache76@gmail.com";
+            
+            
+            //TODO: en el email se podría enviar información sobre la reserva como el aula y la hora, más que el id...
+            // ... pero como de momento eso no está, lo dejo así. 
+            // Sends confirmation email
+            smtpMailSender.sendReservationEmail(email, reservationId, approved);
+
             response.element("deletedRequests", deniedReservations.toArray());
             return new ResponseEntity<>(response.toString(), HttpStatus.OK);
         }
         else if(!approved){
-            //If the command is DENY we change te state and save it
+            //If the command is DENY we change the state and save it
             reservation.setState(ReservationState.DENIED);
             reservationRepository.save(reservation);
+            
+            //TODO: Aquí habría que quitar esto y poner el email del usuario
+            // Sends confirmation email
+            String email = "catalindumitrache76@gmail.com";
+            
+            
+            //TODO: en el email se podría enviar información sobre la reserva como el aula y la hora, más que el id...
+            // ... pero como de momento eso no está, lo dejo así. 
+            // Sends confirmation email
+            smtpMailSender.sendReservationEmail(email, reservationId, approved);
+            
             //Create the response
             deniedReservations.add(reservation.getId());
             response.element("deletedRequests", deniedReservations.toArray());
