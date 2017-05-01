@@ -5,9 +5,9 @@ import es.unizar.smartcampuz.model.report.Report;
 import es.unizar.smartcampuz.model.report.ReportRepository;
 import es.unizar.smartcampuz.model.report.ReportState;
 import es.unizar.smartcampuz.model.report.ReportStateChecker;
+import es.unizar.smartcampuz.model.reservation.*;
 import es.unizar.smartcampuz.model.worker.Worker;
 import es.unizar.smartcampuz.model.worker.WorkerRepository;
-import es.unizar.smartcampuz.model.reservation.ReservationChecker;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -18,11 +18,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 
 @Controller
@@ -36,6 +40,9 @@ public class AdminDashboardController {
 
     @Autowired
     private WorkerRepository workerRepository;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     @GetMapping("/listReports")
     @ResponseBody
@@ -142,8 +149,7 @@ public class AdminDashboardController {
 
     @GetMapping("/listReservations")
     @ResponseBody
-    public ResponseEntity<String> listReservations (HttpServletRequest request) throws IOException{
-        String location = request.getHeader("location");
+    public ResponseEntity<String> listReservations(@RequestParam String location) throws IOException{
 
         if(location==null){
             return new ResponseEntity<>("\"Debe introducir una localización válida.\"", HttpStatus.BAD_REQUEST);
@@ -153,68 +159,63 @@ public class AdminDashboardController {
         JSONObject response = new JSONObject();
 
         if(location.trim().equals("") || location.trim().equals("0")){
-            // TODO: Pedir reservas pendientes de todo el sistema
-            // El arrayList actual es un mock
-            reportList = JsonService.createReservationList(new ArrayList());
+
+            reportList = JsonService.createReservationList(reservationRepository.findAllByState(ReservationState.PENDING));
         }
         else{
-            // TODO: Pedir reservas pendientes de la localización indicada
-            // El arrayList actual es un mock
-            reportList = JsonService.createReservationList(new ArrayList());
+            reportList = JsonService.createReservationList(
+                reservationRepository.findAllByRoomIDAndState(location, ReservationState.PENDING));
+
         }
         response.put("reservations", reportList);
         return new ResponseEntity<>(response.toString(), HttpStatus.OK);
-
     }
 
     @PutMapping("/reservation")
     @ResponseBody
-    public ResponseEntity<String> approveOrDenyReservation (HttpServletRequest request) throws IOException{
-        int reservationId;
-        boolean approved;
+    public ResponseEntity<String> approveOrDenyReservation (@RequestParam(name="id") long reservationId,
+                                                            @RequestParam(name="approved") boolean approved) throws IOException{
 
-        JSONObject json;
+        // TODO: Comprobar que findAllByRoomIDAndDateAndState() busca bien
+        Reservation reservation = reservationRepository.findOne(reservationId);
 
-        try{
-            json = JsonService.readJson(request.getReader());
-            reservationId = json.getInt("id");
-            approved = json.getBoolean("approved");
-        }
-        catch (Exception e){
-            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
+        if(reservation==null){
+            return new ResponseEntity<>("\"Reserva no encontrada.\"", HttpStatus.NOT_FOUND);
         }
 
-        // TODO: Pedir la reserva a la BD.
+        Set<Reservation> approvedReservations = reservationRepository.findAllByRoomIDAndDateAndState(reservation.getRoomID(),
+            reservation.getDate(), ReservationState.APPROVED);
+        List<Long> deniedReservations = new ArrayList<>();
 
-        ArrayList<Integer> removedReservations = new ArrayList<>();
+        //Checks compatibility policy with all given approved reservations
         JSONObject response = new JSONObject();
-        // TODO: Cambiar los parametros de la llamada del checkSchedule
-        if(approved && ReservationChecker.checkSchedule(new boolean[24], new ArrayList())){
-            // TODO: Asignar el estado "Approved" a la reserva
+        if(approved && ReservationChecker.checkSchedule(reservation.getTimeReservation(), approvedReservations)){
+            //If it is compatible we save it as approved
+            reservation.setState(ReservationState.APPROVED);
+            reservationRepository.save(reservation);
 
-            //TODO: Pedir a la BD reservas de la misma localización y día que la reserva aprobada
-            Iterable<?> iter = new ArrayList();
-            // TODO: Cogeré este array de la reserva que se ha aprobado
-            boolean [] reservedHours = new boolean[24];
-            boolean conflic = false;
-            for(Object o:iter){
-                // TODO: Cogeré este array del objeto Reservation
-                boolean [] reservation = new boolean[24];
-                for(int i = ReservationChecker.START_HOUR; i<= ReservationChecker.FINISH_HOUR && !conflic; i++){
-                    if(reservedHours[i] && reservation[i]){
-                        // TODO: Añadir el ID de la reserva que entra en conflicto
-                        removedReservations.add(1);
-                        conflic = true;
-                    }
+            //We look for the pending reservations that are hereinafter incompatible
+            Set<Reservation> pendingReservations = reservationRepository.findAllByRoomIDAndDateAndState(reservation.getRoomID(),
+                reservation.getDate(), ReservationState.PENDING);
+
+            for(Reservation pendingReservation: pendingReservations){
+                if( !reservation.getTimeReservation().isCompatibleWith(pendingReservation.getTimeReservation())){
+
+                    deniedReservations.add(pendingReservation.getId()); //Add id into denied list
+                    pendingReservation.setState(ReservationState.DENIED); //Mark reservation as denied
+                    reservationRepository.save(pendingReservation); //Save reservation
                 }
             }
-            response.element("deletedRequests", removedReservations.toArray());
+            response.element("deletedRequests", deniedReservations.toArray());
             return new ResponseEntity<>(response.toString(), HttpStatus.OK);
         }
         else if(!approved){
-            // TODO: Asignar el estado "Denied" a la reserva
-            removedReservations.add(reservationId);
-            response.element("deletedRequests", removedReservations.toArray());
+            //If the command is DENY we change te state and save it
+            reservation.setState(ReservationState.DENIED);
+            reservationRepository.save(reservation);
+            //Create the response
+            deniedReservations.add(reservation.getId());
+            response.element("deletedRequests", deniedReservations.toArray());
             return new ResponseEntity<>(response.toString(), HttpStatus.OK);
         }
         else{
