@@ -8,14 +8,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-/**
- * He creado los ficheros RootController.java, SmtpMailService.java
- * He modificado el AdminDashboardController para enviar el email cuando aprueban o no la reserva (en /reservation)
- * He modificado el application.properties con las credenciales de gmail y la configuración de smtp.
- * @author catalin
- */
-
-
 
 @Component
 public class SmtpMailService {
@@ -40,7 +32,8 @@ public class SmtpMailService {
     			helper.setText("Hola. Tu reserva <"+ reservationId +"> en SmartCampuz ha sido realizada con éxito.", true);
     		} else {
     			// If the reservation was denied
-    			helper.setText("Hola. Tu reserva <"+ reservationId +"> en SmartCampuz ha sido realizada con éxito.", true);
+    			helper.setText("Hola. Tu reserva <"+ reservationId +"> en SmartCampuz ha sido cancelada, lo sentimos. "
+    					+ "Contacta con el administrador o inténtalo de nuevo.", true);
     		}
     		
     		javaMailSender.send(message);
@@ -52,14 +45,6 @@ public class SmtpMailService {
 		} // true indicates
 		
     	
-    }
-    
-    @Override
-    public String toString(){
-    	return "From: " + //templateMessage.getFrom() + 
-    			"; To: " + //templateMessage.getTo() + 
-    			"; Subject: "+ //templateMessage.getSubject() + 
-    			"; Text: ";// + templateMessage.getText();
     }
 
 }

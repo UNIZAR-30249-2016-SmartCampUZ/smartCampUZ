@@ -211,15 +211,9 @@ public class AdminDashboardController {
                     reservationRepository.save(pendingReservation); //Save reservation
                 }
             }
-            
-            //TODO: Aquí habría que quitar esto y poner el email del usuario
-            // Sends confirmation email
-            String email = "catalindumitrache76@gmail.com";
-            
-            
-            //TODO: en el email se podría enviar información sobre la reserva como el aula y la hora, más que el id...
-            // ... pero como de momento eso no está, lo dejo así. 
-            // Sends confirmation email
+             
+            // Sends an email to the user letting him know his reservation was approved.
+            String email = reservation.getUserID();       
             smtpMailSender.sendReservationEmail(email, reservationId, approved);
 
             response.element("deletedRequests", deniedReservations.toArray());
@@ -228,16 +222,10 @@ public class AdminDashboardController {
         else if(!approved){
             //If the command is DENY we change the state and save it
             reservation.setState(ReservationState.DENIED);
-            reservationRepository.save(reservation);
+            reservationRepository.save(reservation);          
             
-            //TODO: Aquí habría que quitar esto y poner el email del usuario
-            // Sends confirmation email
-            String email = "catalindumitrache76@gmail.com";
-            
-            
-            //TODO: en el email se podría enviar información sobre la reserva como el aula y la hora, más que el id...
-            // ... pero como de momento eso no está, lo dejo así. 
-            // Sends confirmation email
+            // Sends an email to the user letting him know his reservation was denied.
+            String email = reservation.getUserID();
             smtpMailSender.sendReservationEmail(email, reservationId, approved);
             
             //Create the response
