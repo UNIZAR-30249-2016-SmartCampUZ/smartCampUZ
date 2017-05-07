@@ -1,6 +1,8 @@
 package es.unizar.smartcampuz.application.controller;
 
 import es.unizar.smartcampuz.infrastructure.service.JsonService;
+import es.unizar.smartcampuz.infrastructure.service.SmtpMailService;
+
 import es.unizar.smartcampuz.model.report.Report;
 import es.unizar.smartcampuz.model.report.ReportRepository;
 import es.unizar.smartcampuz.model.report.ReportState;
@@ -40,6 +42,9 @@ public class AdminDashboardController {
 
     @Autowired
     private WorkerRepository workerRepository;
+    
+    @Autowired
+    private SmtpMailService smtpMailSender;
 
     @Autowired
     private ReservationRepository reservationRepository;
@@ -206,13 +211,23 @@ public class AdminDashboardController {
                     reservationRepository.save(pendingReservation); //Save reservation
                 }
             }
+             
+            // Sends an email to the user letting him know his reservation was approved.
+            String email = reservation.getUserID();       
+            smtpMailSender.sendReservationEmail(email, reservationId, approved);
+
             response.element("deletedRequests", deniedReservations.toArray());
             return new ResponseEntity<>(response.toString(), HttpStatus.OK);
         }
         else if(!approved){
-            //If the command is DENY we change te state and save it
+            //If the command is DENY we change the state and save it
             reservation.setState(ReservationState.DENIED);
-            reservationRepository.save(reservation);
+            reservationRepository.save(reservation);          
+            
+            // Sends an email to the user letting him know his reservation was denied.
+            String email = reservation.getUserID();
+            smtpMailSender.sendReservationEmail(email, reservationId, approved);
+            
             //Create the response
             deniedReservations.add(reservation.getId());
             response.element("deletedRequests", deniedReservations.toArray());
