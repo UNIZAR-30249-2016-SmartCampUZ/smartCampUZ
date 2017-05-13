@@ -1,16 +1,15 @@
 package es.unizar.smartcampuz.model.report;
 
+import es.unizar.smartcampuz.model.EntityRepository;
 import es.unizar.smartcampuz.model.worker.Worker;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.Set;
 
 /**
- * A repository for the entity Worker is simply created by extending the CrudRepository
- * interface provided by spring.
+ * A repository for the entity Worker is simply created by extending the EntityRepository.
  * Represents a collection of every Report stored in the system.
  */
-public interface ReportRepository extends CrudRepository<Report, Long> {
+public interface ReportRepository extends EntityRepository<Report, Long> {
     /**
      * Return every single report that is owned by a given worker
      * or null if this worker has no reports.

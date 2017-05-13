@@ -1,16 +1,15 @@
 package es.unizar.smartcampuz.model.reservation;
 
-import org.springframework.data.repository.CrudRepository;
+import es.unizar.smartcampuz.model.EntityRepository;
 
 import java.util.Date;
 import java.util.Set;
 
 /**
- * A repository for the entity Reservation is simply created by extending the CrudRepository
- * interface.
+ * A repository for the entity Reservation is simply created by extending the EntityRepository.
  * Represents a collection of every Reservation stored in the system.
  */
-public interface ReservationRepository extends CrudRepository<Reservation, Long> {
+public interface ReservationRepository extends EntityRepository<Reservation, Long> {
     /**
      * Return the reservation having TODO
      *
