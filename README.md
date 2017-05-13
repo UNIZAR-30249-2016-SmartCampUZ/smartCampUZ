@@ -11,7 +11,7 @@ Go to the [Wiki](https://github.com/UNIZAR-30249-2016-SmartCampUZ/smartCampUZ/wi
 
 - [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [Gradle](https://docs.gradle.org/current/userguide/installation.html)
-- [PostgreSQL 9.5](https://www.postgresql.org/download/linux/ubuntu)
+- [PostgreSQL 9.5](https://www.postgresql.org/download/linux/ubuntu) (with[Postgis](http://postgis.net/install/))
 
 ### Steps
 
