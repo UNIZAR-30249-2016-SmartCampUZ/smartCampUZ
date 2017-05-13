@@ -192,7 +192,7 @@ public class AdminDashboardController {
         if(approved && ReservationChecker.checkSchedule(new boolean[24], new ArrayList())){
             // TODO: Asignar el estado "Approved" a la reserva
 
-            //TODO: Pedir a la BD reservas de la misma localización y día que la reserva aprobada
+            //TODO: Pedir a la BD reservas pendientes de la misma localización y día que la reserva aprobada
             Iterable<?> iter = new ArrayList();
             // TODO: Cogeré este array de la reserva que se ha aprobado
             boolean [] reservedHours = new boolean[24];
