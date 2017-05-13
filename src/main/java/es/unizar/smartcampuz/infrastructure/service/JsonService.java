@@ -1,6 +1,7 @@
 package es.unizar.smartcampuz.infrastructure.service;
 
 import es.unizar.smartcampuz.model.report.Report;
+import es.unizar.smartcampuz.model.reservation.Reservation;
 import es.unizar.smartcampuz.model.worker.Worker;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -59,11 +60,9 @@ public class JsonService {
         return workerList;
     }
 
-    // TODO: El iterable hay que cambiar ? por una Reservation
-    public static JSONArray createReservationList(Iterable<?> iter){
+    public static JSONArray createReservationList(Iterable<Reservation> iter){
         JSONArray reservartionList = new JSONArray();
-        // TODO: Cambiar object por Reservation
-        for(Object reservation: iter){
+        for(Reservation reservation: iter){
             JSONObject jReservation = new JSONObject();
             // TODO: rellenar el JSON con los campos
             reservartionList.add(jReservation);

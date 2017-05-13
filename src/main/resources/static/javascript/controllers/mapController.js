@@ -228,6 +228,7 @@ angular.module('smartCampUZApp')
                 }
             };
 
+            
             /**
              * Background map
              */
@@ -240,8 +241,10 @@ angular.module('smartCampUZApp')
                 id: 'mapbox.streets'
             }).addTo(map);
 
-            var catalinIP = "10.1.56.151";
-            var AS1 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            // Dinamicamente coge la ip donde se está ejecutando el servidor.
+            var localIP = location.hostname;
+            
+            var AS1 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:AS1',
@@ -254,7 +257,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             });
 
-            var A00 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var A00 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:A00',
@@ -267,7 +270,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             }).addTo(map);
 
-            var A01 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var A01 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:A01',
@@ -280,7 +283,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             });
 
-            var A02 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var A02 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:A02',
@@ -293,7 +296,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             });
 
-            var A03 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var A03 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:A03',
@@ -306,7 +309,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             });
 
-            var A04 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var A04 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:A04',
@@ -319,7 +322,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             });
 
-            var APT = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var APT = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:APT',
@@ -332,7 +335,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             });
 
-            var BS1 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var BS1 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:BS1',
@@ -345,7 +348,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             });
 
-            var B00 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var B00 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:B00',
@@ -358,7 +361,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             }).addTo(map);
 
-            var B01 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var B01 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:B01',
@@ -371,7 +374,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             });
 
-            var B02 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var B02 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:B02',
@@ -384,7 +387,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             });
 
-            var B03 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var B03 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:B03',
@@ -397,7 +400,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             });
 
-            var TS1 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var TS1 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:TS1',
@@ -410,7 +413,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             });
 
-            var T00 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var T00 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:T00',
@@ -423,7 +426,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             }).addTo(map);
 
-            var T01 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var T01 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:T01',
@@ -436,7 +439,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             });
 
-            var T02 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var T02 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:T02',
@@ -449,7 +452,7 @@ angular.module('smartCampUZApp')
                 zIndex: 2
             });
 
-            var T03 = L.tileLayer.wms("http://" + catalinIP + ":8080/geoserver/wms",{
+            var T03 = L.tileLayer.wms("http://" + localIP + ":8080/geoserver/gwc/service/wms",{
                 request: 'GetMap',
                 maxZoom: 25,
                 layers: 'Smart_CampUZ:T03',
