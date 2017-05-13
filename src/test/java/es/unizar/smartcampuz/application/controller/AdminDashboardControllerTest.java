@@ -40,8 +40,8 @@ public class AdminDashboardControllerTest {
         "{\"id\":8,\"email\":\"maintenance2@unizar.es\",\"name\":\"Worker8\"}]}";
 
     // The complete list have 1 more report since the DasboardTestController adds 1 report to te DB and the order of execution is not known.
-    private static final int REPORT_COMPLETE_LIST = 8;
-    private static final int REPORT_TEST_SQL_LIST = 7;
+    private static final int REPORT_COMPLETE_LIST = 15;
+    private static final int REPORT_TEST_SQL_LIST = 14;
     private static final String STATE_CHANGED_SUCCESS_MSG = "\"Estado modificado correctamente\"";
     private static final String STATE_CHANGED_ERROR_MSG = "\"El cambio de estado solicitado no es posible.\"";
     private static final String REPORT_NOT_FOUND_MSG = "\"La sugerencia no existe.\"";

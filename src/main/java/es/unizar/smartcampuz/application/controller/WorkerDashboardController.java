@@ -104,8 +104,8 @@ public class WorkerDashboardController {
         }
 
         Report report = reportRepository.findOne(reportId);
-        Worker worker = report.getWorker();
-        if(report != null && report.getWorker() != null && worker.getEmail().equals(workerEmail)){
+        Worker worker;
+        if(report != null && (worker = report.getWorker()) != null && worker.getEmail().equals(workerEmail)){
             if(done && ReportStateChecker.checkTransition(report, ReportState.DONE)){
                 report.setState(ReportState.DONE);
                 reportRepository.save(report);
