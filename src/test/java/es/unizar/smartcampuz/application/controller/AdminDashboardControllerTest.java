@@ -30,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class AdminDashboardControllerTest {
 
-    private Credential manager;
     private String token = "";
 
     private static final String REPORT_LOCATION_LIST =
@@ -40,8 +39,9 @@ public class AdminDashboardControllerTest {
     private static final String WORKERS_LIST = "{\"workers\":[{\"id\":7,\"email\":\"maintenance@unizar.es\",\"name\":\"Worker7\"}," +
         "{\"id\":8,\"email\":\"maintenance2@unizar.es\",\"name\":\"Worker8\"}]}";
 
-    private static final int REPORT_COMPLETE_LIST = 7;
-    private static final int REPORT_TEST_SQL_LIST = 6;
+    // The complete list have 1 more report since the DasboardTestController adds 1 report to te DB and the order of execution is not known.
+    private static final int REPORT_COMPLETE_LIST = 8;
+    private static final int REPORT_TEST_SQL_LIST = 7;
     private static final String STATE_CHANGED_SUCCESS_MSG = "\"Estado modificado correctamente\"";
     private static final String STATE_CHANGED_ERROR_MSG = "\"El cambio de estado solicitado no es posible.\"";
     private static final String REPORT_NOT_FOUND_MSG = "\"La sugerencia no existe.\"";
@@ -73,7 +73,7 @@ public class AdminDashboardControllerTest {
      */
     @Before
     public void setUp() throws Exception{
-        manager = credentialRepository.findByEmail("admin@unizar.es");
+        Credential manager = credentialRepository.findByEmail("admin@unizar.es");
         String header = "Basic " + Base64.getEncoder().encodeToString((manager.getEmail() + ":" + manager.getPassword()).getBytes());
         token = this.mvc.perform(post("/signIn")
             .header("Authorization", header)).andReturn().getResponse().getHeader("Token");
