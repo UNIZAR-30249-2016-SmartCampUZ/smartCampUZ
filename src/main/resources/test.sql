@@ -20,3 +20,4 @@ INSERT INTO report (id, roomid, state, description) VALUES (14, 'HD-404', 'APPRO
 INSERT INTO report (id, roomid, state, worker_id, description) VALUES (15, 'HD-404', 'INBOX', 8, 'Report6');
 
 INSERT INTO reservation (id, roomid, userid, state, date, time_slots) VALUES (50, 'HD-407', 'unemail@inventado.com', 'APPROVED', '2017-12-15', 1024);
+INSERT INTO reservation (id, roomid, userid, state, date, time_slots) VALUES (51, 'HD-407', 'unemail@inventado.com', 'PENDING', '2017-12-15', 1024);

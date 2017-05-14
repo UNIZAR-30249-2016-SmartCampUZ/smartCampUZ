@@ -257,11 +257,11 @@ public class DashboardControllerTest {
     /*
      * Sends the request to the report endpoint with the given body
      */
-    private ResultActions sendAvailableHoursRequest(String header1, int header2, int header3) throws Exception{
+    private ResultActions sendAvailableHoursRequest(String location, int day, int month) throws Exception{
         return this.mvc.perform(get("/availableHours")
-            .header("location", header1)
-            .header("day", header2)
-            .header("month", header3));
+            .header("location", location)
+            .header("day", day)
+            .header("month", month));
     }
 
 }

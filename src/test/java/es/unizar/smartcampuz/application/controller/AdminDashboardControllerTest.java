@@ -39,9 +39,13 @@ public class AdminDashboardControllerTest {
     private static final String WORKERS_LIST = "{\"workers\":[{\"id\":7,\"email\":\"maintenance@unizar.es\",\"name\":\"Worker7\"}," +
         "{\"id\":8,\"email\":\"maintenance2@unizar.es\",\"name\":\"Worker8\"}]}";
 
+    private static final String RESERVATION_LOCATION_LIST = "{\"reservations\":[{\"id\":51,\"location\":\"HD-407\",\"day\":15,\"month\":12," +
+        "\"professor\":false,\"email\":\"unemail@inventado.com\"}]}";
+
     // The complete list have 1 more report since the DasboardTestController adds 1 report to te DB and the order of execution is not known.
     private static final int REPORT_COMPLETE_LIST = 15;
     private static final int REPORT_TEST_SQL_LIST = 14;
+    private static final int RESERVATION_COUNT = 1;
     private static final String STATE_CHANGED_SUCCESS_MSG = "\"Estado modificado correctamente\"";
     private static final String STATE_CHANGED_ERROR_MSG = "\"El cambio de estado solicitado no es posible.\"";
     private static final String REPORT_NOT_FOUND_MSG = "\"La sugerencia no existe.\"";
@@ -56,8 +60,6 @@ public class AdminDashboardControllerTest {
     private static final long REPORT_ID_5 = 14;
     private static final long REPORT_ID_6 = 15;
     private static final long WORKER_ID = 8;
-
-
 
     @Autowired
     private MockMvc mvc;
@@ -270,6 +272,28 @@ public class AdminDashboardControllerTest {
         assertTrue(mockResponse.getContentAsString().equals(WORKERS_LIST));
     }
 
+    @Test
+    public void listAllReservations() throws Exception{
+        String header = "Bearer "+token;
+        ResultActions result = sendListReservationsRequest(header, "");
+        result.andExpect(status().isOk());
+        MockHttpServletResponse mockResponse = result.andReturn().getResponse();
+        int listSize = StringUtils.countMatches(mockResponse.getContentAsString(), "id");
+        assertTrue(listSize>=1);
+    }
+
+    @Test
+    public void listLocationReservations() throws Exception{
+        String header = "Bearer "+token;
+        String location = "HD-407";
+        ResultActions result = sendListReservationsRequest(header, location);
+        result.andExpect(status().isOk());
+        MockHttpServletResponse mockResponse = result.andReturn().getResponse();
+        LOG.info("***Response:"+mockResponse.getContentAsString());
+        LOG.info("***MyResponse:"+RESERVATION_LOCATION_LIST);
+        assertTrue(mockResponse.getContentAsString().equals(RESERVATION_LOCATION_LIST));
+    }
+
     /*
      * Sends the request to the listReports endpoint with the given body and authorization header
      */
@@ -294,6 +318,12 @@ public class AdminDashboardControllerTest {
     private ResultActions sendListAllWorkersRequest(String header) throws Exception{
         return this.mvc.perform(get("/listWorkers")
             .header("Authorization", header));
+    }
+
+    private ResultActions sendListReservationsRequest(String header1, String header2) throws Exception{
+        return this.mvc.perform(get("/listReservations")
+            .header("Authorization", header1)
+            .header("location", header2));
     }
 }
 
