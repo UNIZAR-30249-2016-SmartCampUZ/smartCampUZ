@@ -24,7 +24,7 @@ public class JwtAuthFilter implements Filter{
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest servletRequest = (HttpServletRequest) request;
         String authorization = servletRequest.getHeader("Authorization");
-        if(authorization != null && authorization.contains("Bearer")){
+        if(authorization != null && authorization.contains("Bearer") && authorization.length()>7){
             JwtAuthToken token = new JwtAuthToken(authorization.replaceAll("Bearer", ""));
             SecurityContextHolder.getContext().setAuthentication(token);
         }
