@@ -454,6 +454,11 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                 	callbackSuccess(data);
                 }).error(function (data) {
+                    var aux = {
+                        id:0,
+                        name: ""
+                    };
+                    currentLocation = aux;
                 	callbackError(data);
                 });
             },

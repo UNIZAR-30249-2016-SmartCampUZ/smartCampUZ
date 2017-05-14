@@ -88,7 +88,7 @@ public class CoordController {
         String tableName = getTableCode(x,y,buildingFloors); //TODO: Be carefull with floor typo
 
         if(tableName==null){
-            return null;
+            return new ResponseEntity<Room>(HttpStatus.NOT_FOUND);
         }
 
         String query = String.format(Locale.US, "SELECT * FROM \"%s\" WHERE st_contains(geom ,st_geomfromtext(" +
