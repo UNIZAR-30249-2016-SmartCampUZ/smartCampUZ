@@ -97,12 +97,9 @@ public class DashboardControllerTest {
 
     @Test
     public void makeReservation() throws Exception{
-        String description = "Una description";
-        String location = "HD-403";
-        String email = "unemail@correo.com";
-        int day = 12;
-        int month = 12;
-        ResultActions result = sendReservationRequest(description, location, email, day, month, REQUESTED_HOURS);
+        String body = "{\"description\":\"Una descripcion\", \"location\":\"HD-403\", \"email\":\"unemail@correo.com\", " +
+            "\"day\":"+12+", \"month\":" + 12 + ", \"requestedHours\":"+Arrays.toString(REQUESTED_HOURS)+"}";
+        ResultActions result = sendReservationRequest(body);
         result.andExpect(status().isOk());
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
         assertTrue(mockResponse.getContentAsString().equals(RESERVATION_SUCCESSFUL_MESSAGE));
@@ -110,17 +107,16 @@ public class DashboardControllerTest {
 
     @Test
     public void makeReservationWithWrongRequestedHours() throws Exception{
-        String description = "Una description";
-        String location = "HD-403";
-        String email = "unemail@correo.com";
-        int day = 12;
-        int month = 12;
-        ResultActions result = sendReservationRequest(description, location, email, day, month, SHORT_REQUESTED_HOURS);
+        String body = "{\"description\":\"Una descripcion\", \"location\":\"HD-403\", \"email\":\"unemail@correo.com\", " +
+            "\"day\":"+12+", \"month\":" + 12 + ", \"requestedHours\":"+Arrays.toString(SHORT_REQUESTED_HOURS)+"}";
+        ResultActions result = sendReservationRequest(body);
         result.andExpect(status().isBadRequest());
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
         assertTrue(mockResponse.getContentAsString().equals(WRONG_RESERVATION_LIST_LENGTH));
 
-        result = sendReservationRequest(description, location, email, day, month, LONG_REQUESTED_HOURS);
+        body = "{\"description\":\"Una descripcion\", \"location\":\"HD-403\", \"email\":\"unemail@correo.com\", " +
+            "\"day\":"+12+", \"month\":" + 12 + ", \"requestedHours\":"+Arrays.toString(LONG_REQUESTED_HOURS)+"}";
+        result = sendReservationRequest(body);
         result.andExpect(status().isBadRequest());
         mockResponse = result.andReturn().getResponse();
         assertTrue(mockResponse.getContentAsString().equals(WRONG_RESERVATION_LIST_LENGTH));
@@ -128,42 +124,51 @@ public class DashboardControllerTest {
 
     @Test
     public void makeReservationWithBlankFields() throws Exception{
-        String description = "Una description";
-        String location = "";
-        String email = "unemail@correo.com";
-        int day = 12;
-        int month = 12;
-        ResultActions result = sendReservationRequest(description, "", email, day, month, REQUESTED_HOURS);
+        String body = "{\"description\":\"Una descripcion\", \"location\":\"\", \"email\":\"unemail@correo.com\", " +
+            "\"day\":"+12+", \"month\":" + 12 + ", \"requestedHours\":"+Arrays.toString(REQUESTED_HOURS)+"}";
+        ResultActions result = sendReservationRequest(body);
         result.andExpect(status().isBadRequest());
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
         assertTrue(mockResponse.getContentAsString().equals(WRONG_RESERVATION_FIELDS));
 
-        result = sendReservationRequest(description, location, "", day, month, REQUESTED_HOURS);
+        body = "{\"description\":\"Una descripcion\", \"location\":\"HD-403\", \"email\":\"\", " +
+            "\"day\":"+12+", \"month\":" + 12 + ", \"requestedHours\":"+Arrays.toString(REQUESTED_HOURS)+"}";
+        result = sendReservationRequest(body);
         result.andExpect(status().isBadRequest());
         mockResponse = result.andReturn().getResponse();
         assertTrue(mockResponse.getContentAsString().equals(WRONG_RESERVATION_FIELDS));
 
-        result = sendReservationRequest("", location, email, day, month, REQUESTED_HOURS);
+        body = "{\"description\":\"\", \"location\":\"HD-403\", \"email\":\"unemail@correo.com\", " +
+            "\"day\":"+12+", \"month\":" + 12 + ", \"requestedHours\":"+Arrays.toString(REQUESTED_HOURS)+"}";
+        result = sendReservationRequest(body);
         result.andExpect(status().isBadRequest());
         mockResponse = result.andReturn().getResponse();
         assertTrue(mockResponse.getContentAsString().equals(WRONG_RESERVATION_FIELDS));
 
-        result = sendReservationRequest("", "", email, day, month, REQUESTED_HOURS);
+        body = "{\"description\":\"\", \"location\":\"\", \"email\":\"unemail@correo.com\", " +
+            "\"day\":"+12+", \"month\":" + 12 + ", \"requestedHours\":"+Arrays.toString(REQUESTED_HOURS)+"}";
+        result = sendReservationRequest(body);
         result.andExpect(status().isBadRequest());
         mockResponse = result.andReturn().getResponse();
         assertTrue(mockResponse.getContentAsString().equals(WRONG_RESERVATION_FIELDS));
 
-        result = sendReservationRequest("", location, "", day, month, REQUESTED_HOURS);
+        body = "{\"description\":\"\", \"location\":\"HD-403\", \"email\":\"\", " +
+            "\"day\":"+12+", \"month\":" + 12 + ", \"requestedHours\":"+Arrays.toString(REQUESTED_HOURS)+"}";
+        result = sendReservationRequest(body);
         result.andExpect(status().isBadRequest());
         mockResponse = result.andReturn().getResponse();
         assertTrue(mockResponse.getContentAsString().equals(WRONG_RESERVATION_FIELDS));
 
-        result = sendReservationRequest(description, "", "", day, month, REQUESTED_HOURS);
+        body = "{\"description\":\"Una descripcion\", \"location\":\"\", \"email\":\"\", " +
+            "\"day\":"+12+", \"month\":" + 12 + ", \"requestedHours\":"+Arrays.toString(REQUESTED_HOURS)+"}";
+        result = sendReservationRequest(body);
         result.andExpect(status().isBadRequest());
         mockResponse = result.andReturn().getResponse();
         assertTrue(mockResponse.getContentAsString().equals(WRONG_RESERVATION_FIELDS));
 
-        result = sendReservationRequest("", "", "", day, month, REQUESTED_HOURS);
+        body = "{\"description\":\"\", \"location\":\"\", \"email\":\"\", " +
+            "\"day\":"+12+", \"month\":" + 12 + ", \"requestedHours\":"+Arrays.toString(REQUESTED_HOURS)+"}";
+        result = sendReservationRequest(body);
         result.andExpect(status().isBadRequest());
         mockResponse = result.andReturn().getResponse();
         assertTrue(mockResponse.getContentAsString().equals(WRONG_RESERVATION_FIELDS));
@@ -171,12 +176,9 @@ public class DashboardControllerTest {
 
     @Test
     public void makeConflictReservation() throws Exception{
-        String description = "Una description";
-        String location = "HD-407";
-        String email = "unemail@correo.com";
-        int day = 15;
-        int month = 12;
-        ResultActions result = sendReservationRequest(description, location, email, day, month, CONFLICT_REQUESTED_HOURS);
+        String body = "{\"description\":\"Una descripcion\", \"location\":\"HD-407\", \"email\":\"unemail@correo.com\", " +
+            "\"day\":"+15+", \"month\":" + 12 + ", \"requestedHours\":"+Arrays.toString(CONFLICT_REQUESTED_HOURS)+"}";
+        ResultActions result = sendReservationRequest(body);
         result.andExpect(status().isBadRequest());
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
         assertTrue(mockResponse.getContentAsString().equals(CONFLICTING_RESERVATION_MESSAGE));
@@ -246,18 +248,10 @@ public class DashboardControllerTest {
     /*
      * Sends the request to the reservation endpoint with the given params
      */
-    private ResultActions sendReservationRequest(String description, String location, String email,
-                                                 int day, int month, boolean[] requestedHours) throws Exception{
-
-        String requestedHoursStr = Arrays.toString(requestedHours).replace("[", "").replace("]", "");
+    private ResultActions sendReservationRequest(String body) throws Exception{
 
         return this.mvc.perform(post("/reservation")
-            .param("description", description)
-            .param("location", location)
-            .param("email", email)
-            .param("day", String.valueOf(day))
-            .param("month", String.valueOf(month))
-            .param("requestedHours", requestedHoursStr));
+            .content(body));
     }
 
     /*
