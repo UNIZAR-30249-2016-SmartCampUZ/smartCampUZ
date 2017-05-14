@@ -2,6 +2,7 @@ package es.unizar.smartcampuz.application.controller;
 
 import es.unizar.smartcampuz.model.report.ReportStateChecker;
 import es.unizar.smartcampuz.model.reservation.*;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,9 +70,30 @@ public class DashboardController {
 
     @PostMapping("/reservation")
     @ResponseBody
-    public ResponseEntity<String> newReservation (@RequestParam String description, @RequestParam String location, @RequestParam int day,
-                                                  @RequestParam int month, @RequestParam String email,
-                                                  @RequestParam boolean[] requestedHours) throws IOException, ParseException{
+    public ResponseEntity<String> newReservation (HttpServletRequest request) throws IOException, ParseException{
+        String location;
+        String email;
+        String description;
+        int day;
+        int month;
+        boolean [] requestedHours;
+
+        JSONObject json;
+        JSONArray jRequestedHours;
+
+        try{
+            json = JsonService.readJson(request.getReader());
+            location = json.getString("location");
+            email = json.getString("email");
+            description = json.getString("description");
+            day = json.getInt("day");
+            month = json.getInt(("month"));
+            jRequestedHours = json.getJSONArray("requestedHours");
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        requestedHours = JsonService.JSONArrayToBooleanArray(jRequestedHours);
 
         //TODO: ¿Comprobar que la localización existe?
 

@@ -151,7 +151,8 @@ public class AdminDashboardController {
 
     @GetMapping("/listReservations")
     @ResponseBody
-    public ResponseEntity<String> listReservations(@RequestParam String location) throws IOException{
+    public ResponseEntity<String> listReservations (HttpServletRequest request) throws IOException{
+        String location = request.getHeader("location");
 
         if(location==null){
             return new ResponseEntity<>("\"Debe introducir una localización válida.\"", HttpStatus.BAD_REQUEST);
@@ -175,11 +176,24 @@ public class AdminDashboardController {
 
     @PutMapping("/reservation")
     @ResponseBody
-    public ResponseEntity<String> approveOrDenyReservation (@RequestParam(name="id") long reservationId,
-                                                            @RequestParam(name="approved") boolean approved) throws IOException{
+    public ResponseEntity<String> approveOrDenyReservation (HttpServletRequest request) throws IOException{
+        long reservationId;
+        boolean approved;
+        JSONObject json;
+        Reservation reservation;
 
-        // TODO: Comprobar que findAllByRoomIDAndDateAndState() busca bien
-        Reservation reservation = reservationRepository.findOne(reservationId);
+        try{
+            json = JsonService.readJson(request.getReader());
+            reservationId = json.getInt("id");
+            approved = json.getBoolean("approved");
+            reservation = reservationRepository.findOne(reservationId);
+
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+            // TODO: Comprobar que findAllByRoomIDAndDateAndState() busca bien
 
         if(reservation==null){
             return new ResponseEntity<>("\"Reserva no encontrada.\"", HttpStatus.NOT_FOUND);
