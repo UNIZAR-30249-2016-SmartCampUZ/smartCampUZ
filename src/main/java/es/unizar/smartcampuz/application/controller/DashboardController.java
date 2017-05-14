@@ -69,8 +69,8 @@ public class DashboardController {
 
     @PostMapping("/reservation")
     @ResponseBody
-    public ResponseEntity<String> newReservation (@RequestParam String location, @RequestParam String email,
-                                                  @RequestParam String description, @RequestParam int month, @RequestParam int day,
+    public ResponseEntity<String> newReservation (@RequestParam String description, @RequestParam String location, @RequestParam int day,
+                                                  @RequestParam int month, @RequestParam String email,
                                                   @RequestParam boolean[] requestedHours) throws IOException, ParseException{
 
         //TODO: ¿Comprobar que la localización existe?
@@ -78,7 +78,7 @@ public class DashboardController {
         if(requestedHours.length != 24){
             return new ResponseEntity<>("\"La lista de horas no es válida\"", HttpStatus.BAD_REQUEST);
         }
-        if(isBlank(email) && isBlank(description) && isBlank(location)){
+        if(isBlank(email) || isBlank(description) || isBlank(location)){
             return new ResponseEntity<>("\"Debes introducir localización, email y descripción\"", HttpStatus.BAD_REQUEST);
         }
 

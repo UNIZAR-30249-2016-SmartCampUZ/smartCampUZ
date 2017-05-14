@@ -1,6 +1,13 @@
 package es.unizar.smartcampuz.model.reservation;
 
+import es.unizar.smartcampuz.application.controller.CredentialController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ReservationChecker {
+
+    private static final Logger LOG = LoggerFactory
+        .getLogger(CredentialController.class);
 
     //Represents first valid TimeSlot 8:00-9:00
     public static final int START_TIME_SLOT = 8;

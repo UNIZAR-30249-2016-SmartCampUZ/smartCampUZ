@@ -13,6 +13,7 @@ import java.util.Set;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -76,7 +77,7 @@ public class ReservationRepositoryTest {
         reservation = repository.save(reservation);
         Set<Reservation> set = repository.findAllByState(ReservationState.PENDING);
 
-        assertThat(set.iterator().next(), is(reservation));
+        assertTrue(set.contains(reservation));
     }
 
     @Test
