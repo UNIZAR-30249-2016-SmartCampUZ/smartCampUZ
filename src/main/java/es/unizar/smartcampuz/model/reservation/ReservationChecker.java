@@ -25,12 +25,16 @@ public class ReservationChecker {
 
         //Checks there is no time slots before start time
         for(int i = 0; i < START_TIME_SLOT; i++) {
-            if (candidateArray[i]) return false;
+            if (candidateArray[i]){
+                return false;
+            }
         }
 
         //Checks there is no time slots after finish time
         for(int i = FINISH_TIME_SLOT+1; i < TimeReservation.NUM_TIME_SLOTS; i++) {
-            if (candidateArray[i]) return false;
+            if (candidateArray[i]) {
+                return false;
+            }
         }
 
         //Checks there is no collision with any of the given approved TimeReservations

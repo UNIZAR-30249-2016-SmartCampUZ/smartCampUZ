@@ -104,8 +104,16 @@ public class DashboardController {
 
     @GetMapping("/availableHours")
     @ResponseBody
-    public ResponseEntity<String> listAvailableHours(@RequestParam String location, @RequestParam int day,
-                                                      @RequestParam int month) throws IOException, ParseException{
+    public ResponseEntity<String> listAvailableHours(HttpServletRequest request) throws IOException, ParseException{
+
+        String location = request.getHeader("location");
+        int day = request.getIntHeader("day");
+        int month = request.getIntHeader("month");
+
+        // Checks if the headers are not blank. A blank int header will result in -1.
+        if(isBlank(location) || day<1 || month<1 || isBlank(location)){
+            return new ResponseEntity<>("\"Debes introducir localización, día y mes\"", HttpStatus.BAD_REQUEST);
+        }
 
         //TODO: ¿Comprobar que la localización existe?
 
@@ -124,7 +132,7 @@ public class DashboardController {
             boolean [] reservationArray = approvedReservation.getTimeReservation().getTimeSlots();
             //It always represents the available hours
             for(int i = ReservationChecker.START_TIME_SLOT; i<=ReservationChecker.FINISH_TIME_SLOT; i++){
-                availableHours[i] &= !reservationArray[i]; //If it where available(true) AND it's still available(true)
+                availableHours[i] &= !reservationArray[i]; //If it was available(true) AND it's still available(true)
             }
         }
         JSONObject response = new JSONObject();

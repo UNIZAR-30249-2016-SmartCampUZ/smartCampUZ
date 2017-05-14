@@ -17,12 +17,20 @@ import java.util.Arrays;
 
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class DashboardControllerTest {
+
+    private static final String AVAILABLE_HOURS_TEST_SQL = "{\"availableHours\":[false,false,false,false,false,false,false," +
+        "false,true,true,false,true,true,true,true,true,true,true,true,true,true,false,false,false]}";
+
+    // This string counts the reservation made in test suit, since the execution order of the tests is not known
+    private static final String AVAILABLE_HOURS = "{\"availableHours\":[false,false,false,false,false,false,false," +
+        "false,true,true,false,true,true,true,true,true,true,true,true,true,true,false,false,false]}";
 
     private static final String REPORT_STORED_MESSAGE = "\"Report guardado correctamente.\"";
     private static final String DESCRIPTION_IS_BLANK_MESSAGE = "\"Debe introducir una descripción.\"";
@@ -31,6 +39,7 @@ public class DashboardControllerTest {
     private static final String WRONG_RESERVATION_LIST_LENGTH = "\"La lista de horas no es válida\"";
     private static final String WRONG_RESERVATION_FIELDS = "\"Debes introducir localización, email y descripción\"";
     private static final String CONFLICTING_RESERVATION_MESSAGE = "\"Reserva en conflicto con otra. No puede aprobarse.\"";
+    private static final String WRONG_AVAILABLE_HOURS_FIELDS = "\"Debes introducir localización, día y mes\"";
 
     private static final boolean[] REQUESTED_HOURS = {false, false, false, false, false, false, false, false, true, true,
         false, false, false, false, false, false, false, false, false, true, false, false, false, false};
@@ -153,6 +162,11 @@ public class DashboardControllerTest {
         result.andExpect(status().isBadRequest());
         mockResponse = result.andReturn().getResponse();
         assertTrue(mockResponse.getContentAsString().equals(WRONG_RESERVATION_FIELDS));
+
+        result = sendReservationRequest("", "", "", day, month, REQUESTED_HOURS);
+        result.andExpect(status().isBadRequest());
+        mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(WRONG_RESERVATION_FIELDS));
     }
 
     @Test
@@ -166,6 +180,59 @@ public class DashboardControllerTest {
         result.andExpect(status().isBadRequest());
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
         assertTrue(mockResponse.getContentAsString().equals(CONFLICTING_RESERVATION_MESSAGE));
+    }
+
+    @Test
+    public void listAvailableHours() throws Exception{
+        String location = "HD-407";
+        int day = 15;
+        int month = 12;
+        ResultActions result = sendAvailableHoursRequest(location, day, month);
+        result.andExpect(status().isOk());
+        MockHttpServletResponse mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(AVAILABLE_HOURS_TEST_SQL) ||
+            mockResponse.getContentAsString().equals(AVAILABLE_HOURS));
+    }
+
+    @Test
+    public void listAvailableHoursWithWrongFields() throws Exception{
+        String location = "HD-407";
+        int day = 15;
+        int month = 12;
+        ResultActions result = sendAvailableHoursRequest("", day, month);
+        result.andExpect(status().isBadRequest());
+        MockHttpServletResponse mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(WRONG_AVAILABLE_HOURS_FIELDS));
+
+        result = sendAvailableHoursRequest(location, -1, month);
+        result.andExpect(status().isBadRequest());
+        mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(WRONG_AVAILABLE_HOURS_FIELDS));
+
+        result = sendAvailableHoursRequest(location, day, -1);
+        result.andExpect(status().isBadRequest());
+        mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(WRONG_AVAILABLE_HOURS_FIELDS));
+
+        result = sendAvailableHoursRequest("", day, -1);
+        result.andExpect(status().isBadRequest());
+        mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(WRONG_AVAILABLE_HOURS_FIELDS));
+
+        result = sendAvailableHoursRequest("", -1, month);
+        result.andExpect(status().isBadRequest());
+        mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(WRONG_AVAILABLE_HOURS_FIELDS));
+
+        result = sendAvailableHoursRequest(location, -1, -1);
+        result.andExpect(status().isBadRequest());
+        mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(WRONG_AVAILABLE_HOURS_FIELDS));
+
+        result = sendAvailableHoursRequest("", -1, -1);
+        result.andExpect(status().isBadRequest());
+        mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(WRONG_AVAILABLE_HOURS_FIELDS));
     }
 
     /*
@@ -191,6 +258,16 @@ public class DashboardControllerTest {
             .param("day", String.valueOf(day))
             .param("month", String.valueOf(month))
             .param("requestedHours", requestedHoursStr));
+    }
+
+    /*
+     * Sends the request to the report endpoint with the given body
+     */
+    private ResultActions sendAvailableHoursRequest(String header1, int header2, int header3) throws Exception{
+        return this.mvc.perform(get("/availableHours")
+            .header("location", header1)
+            .header("day", header2)
+            .header("month", header3));
     }
 
 }
