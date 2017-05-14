@@ -34,9 +34,6 @@ import java.util.Set;
 @Controller
 public class AdminDashboardController {
 
-    private static final Logger LOG = LoggerFactory
-        .getLogger(CredentialController.class);
-
     @Autowired
     private ReportRepository reportRepository;
 
@@ -87,7 +84,7 @@ public class AdminDashboardController {
             return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        if(state==null || state.trim().equals("")){
+        if(isBlank(state)){
             return new ResponseEntity<>("\"Debe introducir un estado válido\"", HttpStatus.BAD_REQUEST);
         }
         Report report = reportRepository.findOne(reportId);
@@ -236,5 +233,12 @@ public class AdminDashboardController {
         else{
             return new ResponseEntity<>("\"Reserva en conflicto con otra. No puede aprobarse.\"", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    /*
+     * Checks if the username and password fields are null or empty.
+     */
+    private boolean isBlank(String field){
+        return field==null || field.trim().equals("");
     }
 }
