@@ -17,6 +17,8 @@ public interface ReservationRepository extends EntityRepository<Reservation, Lon
      */
     public Reservation findByUserID(String userID);
 
+    public Reservation findByIdAndState(long id, ReservationState state);
+
     /**
      * Return the reservation having TODO
      *
@@ -27,4 +29,5 @@ public interface ReservationRepository extends EntityRepository<Reservation, Lon
     public Set<Reservation> findAllByRoomIDAndState(String location, ReservationState state);
 
     public Set<Reservation> findAllByState(ReservationState state);
+
 }

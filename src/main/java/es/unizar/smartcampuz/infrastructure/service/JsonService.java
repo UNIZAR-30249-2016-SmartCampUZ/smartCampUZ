@@ -1,13 +1,11 @@
 package es.unizar.smartcampuz.infrastructure.service;
 
 import es.unizar.smartcampuz.model.report.Report;
-import es.unizar.smartcampuz.model.reservation.Reservation;
 import es.unizar.smartcampuz.model.worker.Worker;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.util.Iterator;
 
 public class JsonService {
 
@@ -58,15 +56,5 @@ public class JsonService {
             workerList.add(w);
         }
         return workerList;
-    }
-
-    public static JSONArray createReservationList(Iterable<Reservation> iter){
-        JSONArray reservartionList = new JSONArray();
-        for(Reservation reservation: iter){
-            JSONObject jReservation = new JSONObject();
-            // TODO: rellenar el JSON con los campos
-            reservartionList.add(jReservation);
-        }
-        return reservartionList;
     }
 }

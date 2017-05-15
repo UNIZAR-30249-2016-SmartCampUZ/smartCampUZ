@@ -22,4 +22,11 @@ public interface ReportRepository extends EntityRepository<Report, Long> {
      * @param room the room where the reports are registered.
      */
     public Set<Report> findByRoomID(String room);
+
+    /**
+     * Return every single report that is owned by a given worker and registered in a given room
+     * or null if this worker has no reports in that room.
+     * @param room the room where the reports are registered.
+     */
+    public Set<Report> findByRoomIDAndWorker(String room, Worker worker);
 }

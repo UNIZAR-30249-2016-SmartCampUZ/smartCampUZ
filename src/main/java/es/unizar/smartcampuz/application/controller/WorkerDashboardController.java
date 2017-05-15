@@ -76,9 +76,7 @@ public class WorkerDashboardController {
             reportList = JsonService.createReportList(reportRepository.findByWorker(worker));
         }
         else{
-            // TODO: Pedir al repo de reports la lista de reports del worker filtrados por localización
-            // Ahora lo pide sin filtrar por localización
-            reportList = JsonService.createReportList(reportRepository.findByWorker(worker));
+            reportList = JsonService.createReportList(reportRepository.findByRoomIDAndWorker(location, worker));
         }
         JSONObject response = new JSONObject();
         response.element("reports", reportList);
@@ -106,8 +104,8 @@ public class WorkerDashboardController {
         }
 
         Report report = reportRepository.findOne(reportId);
-        Worker worker = report.getWorker();
-        if(report != null && report.getWorker() != null && worker.getEmail().equals(workerEmail)){
+        Worker worker;
+        if(report != null && (worker = report.getWorker()) != null && worker.getEmail().equals(workerEmail)){
             if(done && ReportStateChecker.checkTransition(report, ReportState.DONE)){
                 report.setState(ReportState.DONE);
                 reportRepository.save(report);
