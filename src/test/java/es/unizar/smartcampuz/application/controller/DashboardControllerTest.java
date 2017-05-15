@@ -28,10 +28,6 @@ public class DashboardControllerTest {
     private static final String AVAILABLE_HOURS_TEST_SQL = "{\"availableHours\":[false,false,false,false,false,false,false," +
         "false,true,true,false,true,true,true,true,true,true,true,true,true,true,false,false,false]}";
 
-    // This string counts the reservation made in test suit, since the execution order of the tests is not known
-    private static final String AVAILABLE_HOURS = "{\"availableHours\":[false,false,false,false,false,false,false," +
-        "false,true,true,false,true,true,true,true,true,true,true,true,true,true,false,false,false]}";
-
     private static final String REPORT_STORED_MESSAGE = "\"Report guardado correctamente.\"";
     private static final String DESCRIPTION_IS_BLANK_MESSAGE = "\"Debe introducir una descripción.\"";
     private static final String LOCATION_IS_BLANK_MESSAGE = "\"Debe introducir una localización.\"";
@@ -192,8 +188,7 @@ public class DashboardControllerTest {
         ResultActions result = sendAvailableHoursRequest(location, day, month);
         result.andExpect(status().isOk());
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
-        assertTrue(mockResponse.getContentAsString().equals(AVAILABLE_HOURS_TEST_SQL) ||
-            mockResponse.getContentAsString().equals(AVAILABLE_HOURS));
+        assertTrue(mockResponse.getContentAsString().equals(AVAILABLE_HOURS_TEST_SQL));
     }
 
     @Test

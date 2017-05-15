@@ -52,6 +52,8 @@ public class AdminDashboardControllerTest {
     private static final String WRONG_STATE_MSG = "\"Debe introducir un estado válido\"";
     private static final String ASSIGN_WORKER_SUCCESS_MSG = "\"Trabajador asignado con éxito.\"";
     private static final String WORKER_OR_REPORT_NOT_FOUND = "\"La sugerencia y/o el trabajador no existen.\"";
+    private static final String NON_EXISTING_RESERVATION_ERROR_MESSAGE = "\"Reserva no encontrada.\"";
+    private static final String CONFLICTING_RESERVATION_MESSAGE = "\"Reserva en conflicto con otra. No puede aprobarse.\"";
     private static final String LOCATION  = "HD-403";
     private static final long REPORT_ID_1 = 10;
     private static final long REPORT_ID_2 = 11;
@@ -60,6 +62,18 @@ public class AdminDashboardControllerTest {
     private static final long REPORT_ID_5 = 14;
     private static final long REPORT_ID_6 = 15;
     private static final long WORKER_ID = 8;
+    private static final long RESERVATION_ID_1 = 52;
+    private static final long RESERVATION_ID_2 = 53;
+    private static final long RESERVATION_ID_3 = 55;
+    private static final long RESERVATION_ID_4 = 56;
+    private static final long RESERVATION_ID_5 = 57;
+    private static final long RESERVATION_ID_6 = 58;
+    private static final long RESERVATION_ID_7 = 54;
+    private static final long RESERVATION_ID_8 = 59;
+
+    private static final String DELETED_RESERVATION_REQUESTS_1 = "{\"deletedRequests\":[]}";
+    private static final String DELETED_RESERVATION_REQUESTS_2 = "{\"deletedRequests\":["+RESERVATION_ID_2+"]}";
+    private static final String DELETED_RESERVATION_REQUESTS_3 = "{\"deletedRequests\":["+RESERVATION_ID_5+","+RESERVATION_ID_6+"]}";
 
     @Autowired
     private MockMvc mvc;
@@ -279,7 +293,7 @@ public class AdminDashboardControllerTest {
         result.andExpect(status().isOk());
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
         int listSize = StringUtils.countMatches(mockResponse.getContentAsString(), "id");
-        assertTrue(listSize>=1);
+        assertTrue(listSize>=RESERVATION_COUNT);
     }
 
     @Test
@@ -289,9 +303,77 @@ public class AdminDashboardControllerTest {
         ResultActions result = sendListReservationsRequest(header, location);
         result.andExpect(status().isOk());
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
-        LOG.info("***Response:"+mockResponse.getContentAsString());
-        LOG.info("***MyResponse:"+RESERVATION_LOCATION_LIST);
         assertTrue(mockResponse.getContentAsString().equals(RESERVATION_LOCATION_LIST));
+    }
+
+    @Test
+    public void approveReservation() throws Exception{
+        String header = "Bearer "+token;
+        String body = "{\"id\":"+RESERVATION_ID_1+", \"approved\":"+true+"}";
+        ResultActions result = sendApproveOrDenyReservationsRequest(header, body);
+        result.andExpect(status().isOk());
+        MockHttpServletResponse mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(DELETED_RESERVATION_REQUESTS_1));
+    }
+
+    @Test
+    public void denyReservation() throws Exception{
+        String header = "Bearer "+token;
+        String body = "{\"id\":"+RESERVATION_ID_2+", \"approved\":"+false+"}";
+        ResultActions result = sendApproveOrDenyReservationsRequest(header, body);
+        result.andExpect(status().isOk());
+        MockHttpServletResponse mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(DELETED_RESERVATION_REQUESTS_2));
+    }
+
+    @Test
+    public void approvedNonExistingReservation() throws Exception{
+        String header = "Bearer "+token;
+        String body = "{\"id\":"+100+", \"approved\":"+true+"}";
+        ResultActions result = sendApproveOrDenyReservationsRequest(header, body);
+        result.andExpect(status().isNotFound());
+        MockHttpServletResponse mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(NON_EXISTING_RESERVATION_ERROR_MESSAGE));
+    }
+
+    @Test
+    public void approvedConflictingReservation() throws Exception{
+        String header = "Bearer "+token;
+        String body = "{\"id\":"+RESERVATION_ID_3+", \"approved\":"+true+"}";
+        ResultActions result = sendApproveOrDenyReservationsRequest(header, body);
+        result.andExpect(status().isBadRequest());
+        MockHttpServletResponse mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(CONFLICTING_RESERVATION_MESSAGE));
+    }
+
+    @Test
+    public void approveReservationAndDenyPending() throws Exception{
+        String header = "Bearer "+token;
+        String body = "{\"id\":"+RESERVATION_ID_4+", \"approved\":"+true+"}";
+        ResultActions result = sendApproveOrDenyReservationsRequest(header, body);
+        result.andExpect(status().isOk());
+        MockHttpServletResponse mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(DELETED_RESERVATION_REQUESTS_3));
+    }
+
+    @Test
+    public void approveDeniedReservation() throws Exception{
+        String header = "Bearer "+token;
+        String body = "{\"id\":"+RESERVATION_ID_7+", \"approved\":"+true+"}";
+        ResultActions result = sendApproveOrDenyReservationsRequest(header, body);
+        result.andExpect(status().isNotFound());
+        MockHttpServletResponse mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(NON_EXISTING_RESERVATION_ERROR_MESSAGE));
+    }
+
+    @Test
+    public void denyApprovedReservation() throws Exception{
+        String header = "Bearer "+token;
+        String body = "{\"id\":"+RESERVATION_ID_8+", \"approved\":"+false+"}";
+        ResultActions result = sendApproveOrDenyReservationsRequest(header, body);
+        result.andExpect(status().isNotFound());
+        MockHttpServletResponse mockResponse = result.andReturn().getResponse();
+        assertTrue(mockResponse.getContentAsString().equals(NON_EXISTING_RESERVATION_ERROR_MESSAGE));
     }
 
     /*
@@ -324,6 +406,12 @@ public class AdminDashboardControllerTest {
         return this.mvc.perform(get("/listReservations")
             .header("Authorization", header1)
             .header("location", header2));
+    }
+
+    private ResultActions sendApproveOrDenyReservationsRequest(String header, String body) throws Exception{
+        return this.mvc.perform(put("/reservation")
+            .header("Authorization", header)
+            .content(body));
     }
 }
 

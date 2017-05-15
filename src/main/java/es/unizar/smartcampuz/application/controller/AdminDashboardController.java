@@ -187,7 +187,7 @@ public class AdminDashboardController {
             json = JsonService.readJson(request.getReader());
             reservationId = json.getInt("id");
             approved = json.getBoolean("approved");
-            reservation = reservationRepository.findOne(reservationId);
+            reservation = reservationRepository.findByIdAndState(reservationId, ReservationState.PENDING);
 
         }
         catch (Exception e){
