@@ -107,7 +107,7 @@ angular.module('smartCampUZApp')
                     var hours = data.availableHours;
                     var date = [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2];
                     for (i=0;i<hours.length;i++) {
-                        date = hours[i] ? 2 : 0;
+                        date[i] = hours[i] ? 2 : 0;
                     }
                     callbackSuccess(date);
                 }).error(function (data) {
@@ -429,7 +429,7 @@ angular.module('smartCampUZApp')
     })
 
     // 'userMap' service manage the user view of the map with the server
-    .factory('userMap', function ($http) {
+    .factory('userMap', function ($http, Notification) {
 
     	
         var currentLocation = {
@@ -445,6 +445,7 @@ angular.module('smartCampUZApp')
             
             // Get the room from the given coordenates
             setLocationFromCoordenates: function (x, y, buildingFloors, callbackSuccess, callbackError) {
+                var that = this;
             	$http({
                     method: 'GET',
                     url: 'locationFromCoords?x=' + x + '&y=' + y + '&buildingFloors=' + buildingFloors,
@@ -454,12 +455,9 @@ angular.module('smartCampUZApp')
                 }).success(function (data) {
                 	callbackSuccess(data);
                 }).error(function (data) {
-                    var aux = {
-                        id:0,
-                        name: ""
-                    };
-                    currentLocation = aux;
-                	callbackError(data);
+                    that.resetCurrentLocation();
+                    Notification.warning({title: '¡Atención!', message: 'Has hecho click fuera' +
+                    ' del mapa, se ha reseteado la localización actual.'});
                 });
             },
             
