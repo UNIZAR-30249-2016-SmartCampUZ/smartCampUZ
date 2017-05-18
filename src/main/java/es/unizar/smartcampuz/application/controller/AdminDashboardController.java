@@ -221,6 +221,10 @@ public class AdminDashboardController {
                     deniedReservations.add(pendingReservation.getId()); //Add id into denied list
                     pendingReservation.setState(ReservationState.DENIED); //Mark reservation as denied
                     reservationRepository.save(pendingReservation); //Save reservation
+
+                    // Sends an email to the user letting him know his reservation was approved.
+                    String email = reservation.getUserID();
+                    smtpMailSender.sendReservationEmail(email, reservationId, !approved);
                 }
             }
              
