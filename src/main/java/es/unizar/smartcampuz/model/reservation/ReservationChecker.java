@@ -1,6 +1,13 @@
 package es.unizar.smartcampuz.model.reservation;
 
+import es.unizar.smartcampuz.application.controller.CredentialController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ReservationChecker {
+
+    private static final Logger LOG = LoggerFactory
+        .getLogger(CredentialController.class);
 
     //Represents first valid TimeSlot 8:00-9:00
     public static final int START_TIME_SLOT = 8;
@@ -18,12 +25,16 @@ public class ReservationChecker {
 
         //Checks there is no time slots before start time
         for(int i = 0; i < START_TIME_SLOT; i++) {
-            if (candidateArray[i]) return false;
+            if (candidateArray[i]){
+                return false;
+            }
         }
 
         //Checks there is no time slots after finish time
         for(int i = FINISH_TIME_SLOT+1; i < TimeReservation.NUM_TIME_SLOTS; i++) {
-            if (candidateArray[i]) return false;
+            if (candidateArray[i]) {
+                return false;
+            }
         }
 
         //Checks there is no collision with any of the given approved TimeReservations

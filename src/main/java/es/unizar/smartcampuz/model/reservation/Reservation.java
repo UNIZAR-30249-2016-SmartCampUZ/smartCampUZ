@@ -1,7 +1,5 @@
 package es.unizar.smartcampuz.model.reservation;
 
-import es.unizar.smartcampuz.model.report.ReportState;
-import es.unizar.smartcampuz.model.worker.Worker;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;

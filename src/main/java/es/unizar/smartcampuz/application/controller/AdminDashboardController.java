@@ -1,5 +1,7 @@
 package es.unizar.smartcampuz.application.controller;
 
+import es.unizar.smartcampuz.infrastructure.auth.Credential;
+import es.unizar.smartcampuz.infrastructure.auth.CredentialRepository;
 import es.unizar.smartcampuz.infrastructure.service.JsonService;
 import es.unizar.smartcampuz.infrastructure.service.SmtpMailService;
 
@@ -20,22 +22,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @Controller
 public class AdminDashboardController {
-
-    private static final Logger LOG = LoggerFactory
-        .getLogger(CredentialController.class);
 
     @Autowired
     private ReportRepository reportRepository;
@@ -48,6 +43,9 @@ public class AdminDashboardController {
 
     @Autowired
     private ReservationRepository reservationRepository;
+
+    @Autowired
+    private CredentialRepository credentialRepository;
 
     @GetMapping("/listReports")
     @ResponseBody
@@ -87,7 +85,7 @@ public class AdminDashboardController {
             return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        if(state==null || state.trim().equals("")){
+        if(isBlank(state)){
             return new ResponseEntity<>("\"Debe introducir un estado válido\"", HttpStatus.BAD_REQUEST);
         }
         Report report = reportRepository.findOne(reportId);
@@ -166,10 +164,10 @@ public class AdminDashboardController {
 
         if(location.trim().equals("") || location.trim().equals("0")){
 
-            reportList = JsonService.createReservationList(reservationRepository.findAllByState(ReservationState.PENDING));
+            reportList = createReservationList(reservationRepository.findAllByState(ReservationState.PENDING));
         }
         else{
-            reportList = JsonService.createReservationList(
+            reportList = createReservationList(
                 reservationRepository.findAllByRoomIDAndState(location, ReservationState.PENDING));
 
         }
@@ -189,7 +187,7 @@ public class AdminDashboardController {
             json = JsonService.readJson(request.getReader());
             reservationId = json.getInt("id");
             approved = json.getBoolean("approved");
-            reservation = reservationRepository.findOne(reservationId);
+            reservation = reservationRepository.findByIdAndState(reservationId, ReservationState.PENDING);
 
         }
         catch (Exception e){
@@ -223,6 +221,10 @@ public class AdminDashboardController {
                     deniedReservations.add(pendingReservation.getId()); //Add id into denied list
                     pendingReservation.setState(ReservationState.DENIED); //Mark reservation as denied
                     reservationRepository.save(pendingReservation); //Save reservation
+
+                    // Sends an email to the user letting him know his reservation was approved.
+                    String email = reservation.getUserID();
+                    smtpMailSender.sendReservationEmail(email, reservationId, !approved);
                 }
             }
              
@@ -250,5 +252,33 @@ public class AdminDashboardController {
         else{
             return new ResponseEntity<>("\"Reserva en conflicto con otra. No puede aprobarse.\"", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    /*
+     * Checks if the username and password fields are null or empty.
+     */
+    private boolean isBlank(String field){
+        return field==null || field.trim().equals("");
+    }
+
+    private JSONArray createReservationList(Iterable<Reservation> iter){
+        JSONArray reservartionList = new JSONArray();
+        for(Reservation reservation: iter){
+            JSONObject jReservation = new JSONObject();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(reservation.getDate());
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+            int month = cal.get(Calendar.MONTH)+1;
+            Credential professor = credentialRepository.findByEmail(reservation.getUserID());
+
+            jReservation.element("id", reservation.getId());
+            jReservation.element("location", reservation.getRoomID());
+            jReservation.element("day", day);
+            jReservation.element("month", month);
+            jReservation.element("professor", professor!=null);
+            jReservation.element("email", reservation.getUserID());
+            reservartionList.add(jReservation);
+        }
+        return reservartionList;
     }
 }
