@@ -82,7 +82,7 @@ public class AdminDashboardController {
             reportId = json.getLong("id");
         }
         catch (Exception e){
-            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.BAD_REQUEST);
         }
 
         if(isBlank(state)){
@@ -118,7 +118,7 @@ public class AdminDashboardController {
             reportId = json.getLong("id");
         }
         catch (Exception e){
-            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.BAD_REQUEST);
         }
 
         Report report = reportRepository.findOne(reportId);
@@ -191,7 +191,7 @@ public class AdminDashboardController {
 
         }
         catch (Exception e){
-            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.BAD_REQUEST);
         }
 
             // TODO: Comprobar que findAllByRoomIDAndDateAndState() busca bien

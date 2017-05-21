@@ -64,7 +64,7 @@ public class WorkerDashboardController {
             workerEmail = jwtService.verify(authHeader.replaceAll("Bearer", "")).getEmail();
         }
         catch(Exception e){
-            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.BAD_REQUEST);
         }
 
         Worker worker = workerRepository.findByEmail(workerEmail);
@@ -100,7 +100,7 @@ public class WorkerDashboardController {
             done = json.getBoolean("done");
         }
         catch(Exception e){
-            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.BAD_REQUEST);
         }
 
         Report report = reportRepository.findOne(reportId);
