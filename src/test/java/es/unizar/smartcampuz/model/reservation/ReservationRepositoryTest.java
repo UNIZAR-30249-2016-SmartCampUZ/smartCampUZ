@@ -28,6 +28,7 @@ public class ReservationRepositoryTest {
         reservation = new Reservation();
         reservation.setRoomID("HD-101");
         reservation.setUserID("testUser");
+        reservation.setDescription("testDescription");
         reservation.setState(ReservationState.PENDING);
         reservation.setDate(new Date(0));
         boolean[] array = new boolean[24];

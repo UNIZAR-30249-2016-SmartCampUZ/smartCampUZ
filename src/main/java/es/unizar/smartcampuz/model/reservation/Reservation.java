@@ -26,6 +26,9 @@ public class Reservation {
     private String userID;
 
     @NotNull
+    private String description;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     private ReservationState state = ReservationState.PENDING;
 
@@ -43,10 +46,11 @@ public class Reservation {
         this.id = id;
     }
 
-    public Reservation(@NotNull String roomID, @NotNull String userID, @NotNull Date date,
+    public Reservation(@NotNull String roomID, @NotNull String userID, @NotNull String description, @NotNull Date date,
                        @NotNull TimeReservation timeReservation){
         this.roomID=roomID;
         this.userID=userID;
+        this.description=description;
         this.date=date;
         this.timeReservation=timeReservation;
     }
@@ -69,6 +73,14 @@ public class Reservation {
 
     public void setUserID(String userID) {
         this.userID = userID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getUserID() {
