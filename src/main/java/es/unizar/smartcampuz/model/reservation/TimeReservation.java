@@ -4,6 +4,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Embeddable
+/**
+ * This value object represents a Time Reservation encoded as a 24-length array for the 24h in a day.
+ */
 public class TimeReservation {
 
     @Transient

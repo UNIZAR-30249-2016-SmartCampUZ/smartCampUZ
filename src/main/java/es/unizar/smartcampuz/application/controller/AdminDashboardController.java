@@ -274,6 +274,7 @@ public class AdminDashboardController {
             jReservation.element("id", reservation.getId());
             jReservation.element("location", reservation.getRoomID());
             jReservation.element("day", day);
+            jReservation.element("description", reservation.getDescription());
             jReservation.element("month", month);
             jReservation.element("professor", professor!=null);
             jReservation.element("email", reservation.getUserID());

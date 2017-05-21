@@ -13,13 +13,14 @@ public class ReservationTest {
     public void constructor() throws Exception {
         String room = "HD-101";
         String user = "testUser";
+        String description = "test description";
         ReservationState state = ReservationState.PENDING;
         boolean[] array = new boolean[24];
         array[8]=true;
         Date date = new Date( System.currentTimeMillis());
         TimeReservation timeReservation = new TimeReservation(array);
 
-        Reservation reservation = new Reservation(room, user, date, timeReservation);
+        Reservation reservation = new Reservation(room, user, description, date, timeReservation);
 
         assertEquals(room, reservation.getRoomID());
         assertEquals(user, reservation.getUserID());

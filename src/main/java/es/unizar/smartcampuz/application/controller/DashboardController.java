@@ -106,7 +106,7 @@ public class DashboardController {
 
         //Creates our object to work with
         TimeReservation timeReservation = new TimeReservation(requestedHours);
-        Reservation reservation = new Reservation(location, email,
+        Reservation reservation = new Reservation(location, email, description,
             dateFormater.parse(String.format("%02d%02d2017", day, month)), timeReservation);
 
         //Takes all approved reservations in a room in a day

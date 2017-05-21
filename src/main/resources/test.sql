@@ -19,13 +19,13 @@ INSERT INTO report (id, roomid, state, description) VALUES (13, 'HD-404', 'INBOX
 INSERT INTO report (id, roomid, state, description) VALUES (14, 'HD-404', 'APPROVED', 'Report5');
 INSERT INTO report (id, roomid, state, worker_id, description) VALUES (15, 'HD-404', 'INBOX', 8, 'Report6');
 
-INSERT INTO reservation (id, roomid, userid, state, date, time_slots) VALUES (50, 'HD-407', 'unemail@inventado.com', 'APPROVED', '2017-12-15', 1024);
-INSERT INTO reservation (id, roomid, userid, state, date, time_slots) VALUES (51, 'HD-407', 'unemail@inventado.com', 'PENDING', '2017-12-15', 1024);
-INSERT INTO reservation (id, roomid, userid, state, date, time_slots) VALUES (52, 'HD-408', 'unemail@inventado.com', 'PENDING', '2017-12-15', 1024);
-INSERT INTO reservation (id, roomid, userid, state, date, time_slots) VALUES (53, 'HD-408', 'unemail@inventado.com', 'PENDING', '2017-12-15', 1024);
-INSERT INTO reservation (id, roomid, userid, state, date, time_slots) VALUES (54, 'HD-408', 'unemail@inventado.com', 'APPROVED', '2017-12-16', 1024);
-INSERT INTO reservation (id, roomid, userid, state, date, time_slots) VALUES (55, 'HD-408', 'unemail@inventado.com', 'PENDING', '2017-12-16', 1024);
-INSERT INTO reservation (id, roomid, userid, state, date, time_slots) VALUES (56, 'HD-408', 'unemail@inventado.com', 'PENDING', '2017-12-17', 3072);
-INSERT INTO reservation (id, roomid, userid, state, date, time_slots) VALUES (57, 'HD-408', 'unemail@inventado.com', 'PENDING', '2017-12-17', 1024);
-INSERT INTO reservation (id, roomid, userid, state, date, time_slots) VALUES (58, 'HD-408', 'unemail@inventado.com', 'PENDING', '2017-12-17', 2048);
-INSERT INTO reservation (id, roomid, userid, state, date, time_slots) VALUES (59, 'HD-408', 'unemail@inventado.com', 'DENIED', '2017-12-17', 2048);
+INSERT INTO reservation (id, roomid, description, userid, state, date, time_slots) VALUES (50, 'HD-407', 'description', 'unemail@inventado.com', 'APPROVED', '2017-12-15', 1024);
+INSERT INTO reservation (id, roomid, description, userid, state, date, time_slots) VALUES (51, 'HD-407', 'description', 'unemail@inventado.com', 'PENDING', '2017-12-15', 1024);
+INSERT INTO reservation (id, roomid, description, userid, state, date, time_slots) VALUES (52, 'HD-408', 'description', 'unemail@inventado.com', 'PENDING', '2017-12-15', 1024);
+INSERT INTO reservation (id, roomid, description, userid, state, date, time_slots) VALUES (53, 'HD-408', 'description', 'unemail@inventado.com', 'PENDING', '2017-12-15', 1024);
+INSERT INTO reservation (id, roomid, description, userid, state, date, time_slots) VALUES (54, 'HD-408', 'description', 'unemail@inventado.com', 'APPROVED', '2017-12-16', 1024);
+INSERT INTO reservation (id, roomid, description, userid, state, date, time_slots) VALUES (55, 'HD-408', 'description', 'unemail@inventado.com', 'PENDING', '2017-12-16', 1024);
+INSERT INTO reservation (id, roomid, description, userid, state, date, time_slots) VALUES (56, 'HD-408', 'description', 'unemail@inventado.com', 'PENDING', '2017-12-17', 3072);
+INSERT INTO reservation (id, roomid, description, userid, state, date, time_slots) VALUES (57, 'HD-408', 'description', 'unemail@inventado.com', 'PENDING', '2017-12-17', 1024);
+INSERT INTO reservation (id, roomid, description, userid, state, date, time_slots) VALUES (58, 'HD-408', 'description', 'unemail@inventado.com', 'PENDING', '2017-12-17', 2048);
+INSERT INTO reservation (id, roomid, description, userid, state, date, time_slots) VALUES (59, 'HD-408', 'description', 'unemail@inventado.com', 'DENIED', '2017-12-17', 2048);

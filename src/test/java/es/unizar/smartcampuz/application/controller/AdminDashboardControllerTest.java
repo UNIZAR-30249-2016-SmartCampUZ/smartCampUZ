@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Base64;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -39,8 +40,8 @@ public class AdminDashboardControllerTest {
     private static final String WORKERS_LIST = "{\"workers\":[{\"id\":7,\"email\":\"maintenance@unizar.es\",\"name\":\"Worker7\"}," +
         "{\"id\":8,\"email\":\"maintenance2@unizar.es\",\"name\":\"Worker8\"}]}";
 
-    private static final String RESERVATION_LOCATION_LIST = "{\"reservations\":[{\"id\":51,\"location\":\"HD-407\",\"day\":15,\"month\":12," +
-        "\"professor\":false,\"email\":\"unemail@inventado.com\"}]}";
+    private static final String RESERVATION_LOCATION_LIST = "{\"reservations\":[{\"id\":51,\"location\":\"HD-407\",\"day\":15,\"description\":\"description\"," +
+        "\"month\":12,\"professor\":false,\"email\":\"unemail@inventado.com\"}]}";
 
     // The complete list have 1 more report since the DasboardTestController adds 1 report to te DB and the order of execution is not known.
     private static final int REPORT_COMPLETE_LIST = 15;
@@ -303,7 +304,7 @@ public class AdminDashboardControllerTest {
         ResultActions result = sendListReservationsRequest(header, location);
         result.andExpect(status().isOk());
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
-        assertTrue(mockResponse.getContentAsString().equals(RESERVATION_LOCATION_LIST));
+        assertEquals(mockResponse.getContentAsString(), RESERVATION_LOCATION_LIST);
     }
 
     @Test
@@ -313,7 +314,7 @@ public class AdminDashboardControllerTest {
         ResultActions result = sendApproveOrDenyReservationsRequest(header, body);
         result.andExpect(status().isOk());
         MockHttpServletResponse mockResponse = result.andReturn().getResponse();
-        assertTrue(mockResponse.getContentAsString().equals(DELETED_RESERVATION_REQUESTS_1));
+        assertEquals(mockResponse.getContentAsString(), DELETED_RESERVATION_REQUESTS_1);
     }
 
     @Test
