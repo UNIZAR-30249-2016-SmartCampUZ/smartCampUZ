@@ -1,7 +1,7 @@
 package es.unizar.smartcampuz.model.reservation;
 
 /**
- * This enum represents
+ * This enum represents the reservation state
  */
 public enum ReservationState {
     PENDING, APPROVED, DENIED
