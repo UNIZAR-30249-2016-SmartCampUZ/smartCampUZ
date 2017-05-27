@@ -52,7 +52,7 @@ public class DashboardController {
             location = json.getString("location");
         }
         catch (Exception e){
-            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.BAD_REQUEST);
         }
         LOG.info("Location: "+location+" Description: "+description);
         if(isBlank(description)){
@@ -91,7 +91,7 @@ public class DashboardController {
             jRequestedHours = json.getJSONArray("requestedHours");
         }
         catch (Exception e){
-            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("\"Error interno en el servidor.\"", HttpStatus.BAD_REQUEST);
         }
         requestedHours = JsonService.JSONArrayToBooleanArray(jRequestedHours);
 
